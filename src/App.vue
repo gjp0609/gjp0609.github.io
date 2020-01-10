@@ -26,14 +26,6 @@
                     .catch((e) => {
                         console.log(e);
                     });
-                axios
-                    .get('/test/get?s=123')
-                    .then((resp) => {
-                        console.log(resp);
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                    });
             }
         }
     };
