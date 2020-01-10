@@ -88,7 +88,7 @@ module.exports = {
         }),
         require('autoprefixer'),
         new CleanWebpackPlugin({
-            dry: true,
+            // dry: true, // 测试用，开启则只提示，不真删
             cleanOnceBeforeBuildPatterns: ['css/*', 'fonts/*', 'js/*']
         }),
         new MiniCssExtractPlugin({
