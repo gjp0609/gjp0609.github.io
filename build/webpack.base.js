@@ -84,10 +84,13 @@ module.exports = {
         new webpack.HashedModuleIdsPlugin(),
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../index.html')
+            template: path.resolve(__dirname, '../template.html')
         }),
         require('autoprefixer'),
-        new CleanWebpackPlugin({}),
+        new CleanWebpackPlugin({
+            dry: true,
+            cleanOnceBeforeBuildPatterns: ['css/*', 'fonts/*', 'js/*']
+        }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[hash].css',
             chunkFilename: 'css/[id].[hash].css'
@@ -130,8 +133,8 @@ module.exports = {
     },
     externals: {
         // 如 vendor.js 过大则可通过独立引入的方式减小 js 体积
-        // 'vue': 'Vue',
-        // 'element-ui': 'Element',
-        // 'axios': 'axios'
+        'vue': 'Vue',
+        'element-ui': 'Element',
+        'axios': 'axios'
     }
 };
