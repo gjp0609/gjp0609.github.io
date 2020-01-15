@@ -133,8 +133,8 @@ module.exports = {
     },
     externals: {
         // 如 vendor.js 过大则可通过独立引入的方式减小 js 体积
-        'vue': 'Vue',
-        'element-ui': 'Element',
-        'axios': 'axios'
+        // 'vue': 'Vue',
+        // 'element-ui': 'Element',
+        // 'axios': 'axios'
     }
 };

@@ -2,6 +2,7 @@
     <div class="index">
         <span>{{ test }}</span>
         <el-button @click="asd">qwe</el-button>
+        <el-button @click="index">to index</el-button>
     </div>
 </template>
 
@@ -9,7 +10,7 @@
     const axios = require('axios');
 
     export default {
-        name: 'App',
+        name: 'Test',
         data() {
             return {
                 test: 1
@@ -26,6 +27,9 @@
                     .catch((e) => {
                         console.log(e);
                     });
+            },
+            index() {
+                this.$router.push('/');
             }
         }
     };

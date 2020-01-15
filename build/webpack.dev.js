@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = merge(common, {
     devtool: 'eval',
     devServer: {
-        contentBase: '../dist',
+        contentBase: path.resolve(__dirname, './'),
         compress: true,
         clientLogLevel: 'none',
         host: '127.0.0.1',
@@ -22,7 +22,7 @@ module.exports = merge(common, {
     },
     output: {
         filename: 'js/[name].[hash].js', // 每次保存 hash 都变化
-        path: path.resolve(__dirname, '../dist')
+        path: path.resolve(__dirname, './')
     },
     module: {},
     mode: 'development'
