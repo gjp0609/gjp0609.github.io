@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="home">
         <h1>Hello Webpack!</h1>
     </div>
 </template>
@@ -10,4 +10,11 @@
     };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+    .home {
+        h1 {
+            margin-top: 50px;
+            text-align: center;
+        }
+    }
+</style>
