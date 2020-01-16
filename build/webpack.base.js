@@ -84,7 +84,8 @@ module.exports = {
         new webpack.HashedModuleIdsPlugin(),
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../template.html')
+            template: path.resolve(__dirname, '../static/template.html'),
+            favicon: path.resolve(__dirname, '../favicon.ico')
         }),
         require('autoprefixer'),
         new CleanWebpackPlugin({
