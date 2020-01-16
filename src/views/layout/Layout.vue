@@ -6,12 +6,13 @@
                 @close="handleClose"
                 @select="handleSelect"
                 :collapse="isCollapse"
-                :unique-opened="true"
+                :collapse-transition="true"
                 :router="true"
-                default-active="/"
-                background-color="#545c64"
-                text-color="#fff"
+                :unique-opened="true"
                 active-text-color="#ffd04b"
+                background-color="#545c64"
+                text-color="#ffffff"
+                default-active="/"
             >
                 <template v-for="router in routerMap" v-if="!router.meta.hidden">
                     <el-submenu v-if="router.children" :index="router.path">
@@ -47,11 +48,9 @@
         </aside>
         <div class="main">
             <header>
-                <i @click="isCollapse = !isCollapse" class="material-icons">dehaze</i>
-                <!--                <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">-->
-                <!--                    <el-radio-button :label="false">展开</el-radio-button>-->
-                <!--                    <el-radio-button :label="true">收起</el-radio-button>-->
-                <!--                </el-radio-group>-->
+                <div class="collapse-button-wrapper">
+                    <i @click="isCollapse = !isCollapse" class="material-icons">{{ isCollapse ? 'last_page' : 'first_page' }}</i>
+                </div>
             </header>
             <section>
                 <router-view></router-view>
@@ -89,33 +88,50 @@
 </script>
 
 <style lang="scss" scoped>
+    $backgroundColor: #545c64;
     .layout {
+        height: 100%;
         display: flex;
         flex-direction: row;
         .menu {
+            background-color: $backgroundColor;
             &.is-collapse {
                 width: 65px;
-                /*transition-duration: 100ms;*/
+                transition-duration: 300ms;
             }
             &.not-collapse {
                 width: 300px;
-                /*transition-duration: 100ms;*/
+                transition-duration: 300ms;
             }
-            i {
-                font-size: 18px;
-                text-align: center;
-                width: 20px;
-                &[class^='el-icon-'] {
-                    margin-right: 0;
+            .el-menu {
+                border: none;
+                i {
+                    &.material-icons {
+                        /* 与 el-icon 保持一致 */
+                        vertical-align: middle;
+                        margin-right: 5px;
+                        width: 24px;
+                        text-align: center;
+                        font-size: 18px;
+                    }
                 }
             }
         }
         .main {
             width: 100%;
             header {
-                height: 40px;
-                line-height: 40px;
-                background-color: lightgrey;
+                $headerHeight: 40px;
+                height: $headerHeight;
+                line-height: $headerHeight;
+                background-color: lighten($backgroundColor, 50%);
+                .collapse-button-wrapper {
+                    height: $headerHeight;
+                    line-height: $headerHeight;
+                    i {
+                        vertical-align: middle;
+                        margin-left: $headerHeight/4;
+                    }
+                }
             }
         }
     }

@@ -26,6 +26,7 @@
 
 <style lang="scss" scoped>
     .index {
+        height: 100%;
         .invalid-route {
             text-align: center;
             a {

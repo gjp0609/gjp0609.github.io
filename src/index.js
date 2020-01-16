@@ -6,6 +6,7 @@ import Index from './Index.vue';
 import router from './router';
 
 require('../static/material-design-icons/material-design-icons.css');
+require('./styles/base.scss');
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
