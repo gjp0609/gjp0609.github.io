@@ -9,7 +9,8 @@ module.exports = merge(common, {
         compress: true,
         clientLogLevel: 'none',
         host: '127.0.0.1',
-        port: 8089,
+        allowedHosts: ['me'],
+        port: 80,
         proxy: {
             '/': {
                 target: 'http://127.0.0.1:80',

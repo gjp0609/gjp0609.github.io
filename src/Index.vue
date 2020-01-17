@@ -1,27 +1,11 @@
 <template>
     <div class="index">
-        <div v-if="invalidRoute" class="invalid-route">
-            <h2>Page Not Found</h2>
-            <a :href="indexUrl">Go to index</a>
-        </div>
-        <router-view v-else></router-view>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-    export default {
-        name: 'Index',
-        data() {
-            return {
-                indexUrl: window.location.href.split('#')[0]
-            };
-        },
-        computed: {
-            invalidRoute() {
-                return !this.$route.matched || this.$route.matched.length === 0;
-            }
-        }
-    };
+    export default { name: 'Index' };
 </script>
 
 <style lang="scss" scoped>

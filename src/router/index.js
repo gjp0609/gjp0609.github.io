@@ -5,7 +5,7 @@ import Test from '../views/test/Test.vue';
 
 Vue.use(Router);
 
-export const constantRouterMap = [
+export const constantMenuRouterMap = [
     {
         path: '/',
         component: Layout,
@@ -19,34 +19,15 @@ export const constantRouterMap = [
         }
     },
     {
-        path: '/index',
+        path: '/test',
         component: Layout,
-        // redirect: '/index',
         meta: {
-            name: 'Index',
-            hidden: true,
+            name: 'Test',
             icon: {
                 type: 'material-icons',
-                name: 'home'
+                name: 'help_outline'
             }
         },
-        children: [
-            {
-                path: 'home',
-                component: () => import('../views/Home.vue'),
-                meta: {
-                    name: 'Home',
-                    icon: {
-                        type: 'material-icons',
-                        name: 'home_work'
-                    }
-                }
-            }
-        ]
-    },
-    {
-        path: '/index',
-        component: Layout,
         children: [
             {
                 path: 'test',
@@ -59,14 +40,7 @@ export const constantRouterMap = [
                     }
                 }
             }
-        ],
-        meta: {
-            name: 'Test',
-            icon: {
-                type: 'material-icons',
-                name: 'help_outline'
-            }
-        }
+        ]
     },
     {
         path: '/tools',
@@ -91,6 +65,28 @@ export const constantRouterMap = [
                 }
             }
         ]
+    }
+];
+
+export const constantRouterMap = [
+    ...constantMenuRouterMap,
+    {
+        path: '/index',
+        component: Layout,
+        children: [
+            {
+                path: 'home',
+                component: () => import('../views/Home.vue')
+            }
+        ]
+    },
+    {
+        path: '/404',
+        component: () => import('../views/404.vue')
+    },
+    {
+        path: '/*',
+        redirect: '/404'
     }
 ];
 
