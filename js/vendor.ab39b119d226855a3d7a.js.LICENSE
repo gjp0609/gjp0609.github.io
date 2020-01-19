@@ -5,6 +5,12 @@
  */
 
 /**
+ * vuex v3.1.2
+ * (c) 2019 Evan You
+ * @license MIT
+ */
+
+/**
  * Checks if an event is supported in the current execution environment.
  *
  * NOTE: This will not work correctly for non-generic events such as `change`,
@@ -24,10 +30,3 @@
   * (c) 2019 Evan You
   * @license MIT
   */
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */

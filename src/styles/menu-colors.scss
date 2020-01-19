@@ -1,0 +1,15 @@
+$light-active-text-color: #409eff;
+$light-background-color: #ffffff;
+$light-text-color: #303133;
+$dark-active-text-color: #ffd04b;
+$dark-background-color: #545c64;
+$dark-text-color: #ffffff;
+
+:export {
+    lightActiveTextColor: $light-active-text-color;
+    lightBackgroundColor: $light-background-color;
+    lightTextColor: $light-text-color;
+    darkActiveTextColor: $dark-active-text-color;
+    darkBackgroundColor: $dark-background-color;
+    darkTextColor: $dark-text-color;
+}

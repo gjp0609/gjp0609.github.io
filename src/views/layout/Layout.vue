@@ -51,7 +51,9 @@
             </div>
         </aside>
         <div class="main">
-            <header></header>
+            <header>
+                <span>OnySakura</span>
+            </header>
             <section>
                 <router-view></router-view>
             </section>
@@ -61,6 +63,7 @@
 
 <script>
     import { constantMenuRouterMap } from '../../router';
+    import cssConstants from '../../styles/menu-colors.scss';
 
     export default {
         name: 'Layout',
@@ -76,15 +79,15 @@
             themeColor() {
                 if (this.isDark) {
                     return {
-                        activeTextColor: '#ffd04b',
-                        backgroundColor: '#545c64',
-                        textColor: '#ffffff'
+                        activeTextColor: cssConstants.darkActiveTextColor,
+                        backgroundColor: cssConstants.darkBackgroundColor,
+                        textColor: cssConstants.darkTextColor
                     };
                 } else {
                     return {
-                        activeTextColor: '#409eff',
-                        backgroundColor: '#ffffff',
-                        textColor: '#303133'
+                        activeTextColor: cssConstants.lightActiveTextColor,
+                        backgroundColor: cssConstants.lightBackgroundColor,
+                        textColor: cssConstants.lightTextColor
                     };
                 }
             }
@@ -122,35 +125,61 @@
 </script>
 
 <style lang="scss" scoped>
-    @mixin menu($isCollapse) {
+    @import '../../styles/menu-colors.scss';
+
+    @mixin operations($isCollapse) {
+        @if ($isCollapse== 'isCollapse') {
+            .operations {
+                i {
+                    display: none;
+                    &:first-child {
+                        display: block;
+                    }
+                }
+            }
+        }
     }
     @mixin layout($theme) {
         $menuBackgroundColor: null;
-        $darkThemeColor: #545c64;
-        $lightThemeColor: #ffffff;
         @if ($theme== 'dark') {
-            $menuBackgroundColor: $darkThemeColor;
+            $menuBackgroundColor: $dark-background-color;
         } @else {
-            $menuBackgroundColor: $lightThemeColor;
+            $menuBackgroundColor: $light-background-color;
         }
+        .menu {
+            background-color: $menuBackgroundColor;
+            border-right: $dark-background-color solid 1px;
+        }
+        .operations {
+            @if ($theme== 'dark') {
+                background-color: lighten($menuBackgroundColor, 10%);
+            } @else {
+                background-color: darken($menuBackgroundColor, 10%);
+            }
+        }
+        .main {
+            header {
+                @if ($theme== 'dark') {
+                    background-color: lighten($menuBackgroundColor, 50%);
+                }
+            }
+        }
+    }
+    .layout {
         height: 100%;
         display: flex;
         flex-direction: row;
+        &.light {
+            @include layout('light');
+        }
+        &.dark {
+            @include layout('dark');
+        }
         .menu {
             $menuCollapseWidth: 65px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            background-color: $menuBackgroundColor;
-            border-right: $darkThemeColor solid 1px;
-            &.is-collapse {
-                width: $menuCollapseWidth;
-                transition-duration: 300ms;
-            }
-            &.not-collapse {
-                width: 300px;
-                transition-duration: 300ms;
-            }
             .el-menu {
                 border: none;
                 i {
@@ -164,17 +193,22 @@
                     }
                 }
             }
+            &.is-collapse {
+                width: $menuCollapseWidth;
+                transition-duration: 300ms;
+                @include operations('isCollapse');
+            }
+            &.not-collapse {
+                width: 300px;
+                transition-duration: 300ms;
+                @include operations('notCollapse');
+            }
             .operations {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
                 flex-wrap: wrap;
                 $height: 50px;
-                @if ($theme== 'dark') {
-                    background-color: lighten($menuBackgroundColor, 10%);
-                } @else {
-                    background-color: darken($menuBackgroundColor, 10%);
-                }
                 height: $height;
                 line-height: $height;
                 i {
@@ -192,18 +226,7 @@
                 $headerHeight: 40px;
                 height: $headerHeight;
                 line-height: $headerHeight;
-                @if ($theme== 'dark') {
-                    background-color: lighten($menuBackgroundColor, 50%);
-                }
             }
-        }
-    }
-    .layout {
-        &.light {
-            @include layout('light');
-        }
-        &.dark {
-            @include layout('dark');
         }
     }
 </style>
