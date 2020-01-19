@@ -53,6 +53,7 @@
         <div class="main">
             <header>
                 <span>OnySakura</span>
+                <code class="time">{{ time }}</code>
             </header>
             <section>
                 <router-view></router-view>
@@ -72,7 +73,8 @@
                 isCollapse: localStorage.getItem('menuIsCollapse') === '1' || false,
                 routerMap: constantMenuRouterMap,
                 defaultActive: '/',
-                isDark: false
+                isDark: false,
+                time: ''
             };
         },
         computed: {
@@ -105,6 +107,25 @@
                 }
                 next();
             });
+            setInterval((_) => {
+                let now = new Date();
+                _this.time =
+                    now.getFullYear() +
+                    '-' +
+                    ('0' + (now.getMonth() + 1)).substring(-1) +
+                    '-' +
+                    (now.getDate() < 10 ? '0' : '') +
+                    now.getDate() +
+                    ' ' +
+                    (now.getHours() < 10 ? '0' : '') +
+                    now.getHours() +
+                    ':' +
+                    (now.getMinutes() < 10 ? '0' : '') +
+                    now.getMinutes() +
+                    ':' +
+                    (now.getSeconds() < 10 ? '0' : '') +
+                    now.getSeconds();
+            }, 1000);
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -126,7 +147,6 @@
 
 <style lang="scss" scoped>
     @import '../../styles/menu-colors.scss';
-
     @mixin operations($isCollapse) {
         @if ($isCollapse== 'isCollapse') {
             .operations {
@@ -148,7 +168,6 @@
         }
         .menu {
             background-color: $menuBackgroundColor;
-            border-right: $dark-background-color solid 1px;
         }
         .operations {
             @if ($theme== 'dark') {
@@ -162,6 +181,7 @@
                 @if ($theme== 'dark') {
                     background-color: lighten($menuBackgroundColor, 50%);
                 }
+                border-bottom: lighten($dark-background-color, 50%) solid 1px;
             }
         }
     }
@@ -180,6 +200,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            border-right: $dark-background-color solid 1px;
             .el-menu {
                 border: none;
                 i {
@@ -226,6 +247,10 @@
                 $headerHeight: 40px;
                 height: $headerHeight;
                 line-height: $headerHeight;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0 10px;
             }
         }
     }
