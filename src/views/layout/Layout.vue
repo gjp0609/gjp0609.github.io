@@ -47,7 +47,7 @@
             </el-menu>
             <div class="operations">
                 <i @click="menuCollapseChange" class="material-icons">{{ isCollapse ? 'last_page' : 'first_page' }}</i>
-                <i @click="isDark = !isDark" class="material-icons">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
+                <i @click="handleThemeChange" class="material-icons">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
             </div>
         </aside>
         <div class="main">
@@ -73,7 +73,7 @@
                 isCollapse: localStorage.getItem('menuIsCollapse') === '1' || false,
                 routerMap: constantMenuRouterMap,
                 defaultActive: '/',
-                isDark: false,
+                isDark: localStorage.getItem('themeIsDark') === '1' || false,
                 time: ''
             };
         },
@@ -129,17 +129,21 @@
         },
         methods: {
             handleOpen(key, keyPath) {
-                console.log(key, keyPath);
+                // console.log(key, keyPath);
             },
             handleClose(key, keyPath) {
-                console.log(key, keyPath);
+                // console.log(key, keyPath);
             },
             handleSelect(index, indexPath) {
-                console.log(index, indexPath);
+                // console.log(index, indexPath);
             },
             menuCollapseChange() {
                 this.isCollapse = !this.isCollapse;
                 localStorage.setItem('menuIsCollapse', this.isCollapse ? '1' : '0');
+            },
+            handleThemeChange() {
+                this.isDark = !this.isDark;
+                localStorage.setItem('themeIsDark', this.isDark ? '1' : '0');
             }
         }
     };
@@ -147,12 +151,17 @@
 
 <style lang="scss" scoped>
     @import '../../styles/menu-colors.scss';
-    @mixin operations($isCollapse) {
-        @if ($isCollapse== 'isCollapse') {
+    @mixin operations($isCollapse, $theme) {
+        @if ($isCollapse == 'isCollapse') {
             .operations {
                 i {
                     display: none;
                     &:first-child {
+                        @if ($theme == 'dark') {
+                            color: $dark-active-text-color;
+                        } @else {
+                            color: $light-active-text-color;
+                        }
                         display: block;
                     }
                 }
@@ -161,27 +170,36 @@
     }
     @mixin layout($theme) {
         $menuBackgroundColor: null;
-        @if ($theme== 'dark') {
+        @if ($theme == 'dark') {
             $menuBackgroundColor: $dark-background-color;
         } @else {
             $menuBackgroundColor: $light-background-color;
         }
         .menu {
-            background-color: $menuBackgroundColor;
-        }
-        .operations {
-            @if ($theme== 'dark') {
-                background-color: lighten($menuBackgroundColor, 10%);
-            } @else {
-                background-color: darken($menuBackgroundColor, 10%);
+            background-color: lighten($menuBackgroundColor, 5%);
+            &.is-collapse {
+                @include operations('isCollapse', $theme);
+            }
+            &.not-collapse {
+                @include operations('notCollapse', $theme);
+            }
+            .operations {
+                @if ($theme == 'dark') {
+                    color: $dark-text-color;
+                    background-color: darken($menuBackgroundColor, 10%);
+                } @else {
+                    color: $light-text-color;
+                    background-color: darken($menuBackgroundColor, 10%);
+                }
             }
         }
         .main {
             header {
-                @if ($theme== 'dark') {
-                    background-color: lighten($menuBackgroundColor, 50%);
+                @if ($theme == 'dark') {
+                    background-color: lighten($menuBackgroundColor, 10%);
+                } @else {
+                    background-color: lighten($menuBackgroundColor, 10%);
                 }
-                border-bottom: lighten($dark-background-color, 50%) solid 1px;
             }
         }
     }
@@ -200,7 +218,6 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border-right: $dark-background-color solid 1px;
             .el-menu {
                 border: none;
                 i {
@@ -217,12 +234,10 @@
             &.is-collapse {
                 width: $menuCollapseWidth;
                 transition-duration: 300ms;
-                @include operations('isCollapse');
             }
             &.not-collapse {
                 width: 300px;
                 transition-duration: 300ms;
-                @include operations('notCollapse');
             }
             .operations {
                 display: flex;
