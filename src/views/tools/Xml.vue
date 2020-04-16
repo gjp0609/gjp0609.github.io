@@ -1,10 +1,10 @@
 <template>
     <el-row :gutter="10">
         <el-col :span="8">
-            <el-input :rows="30" v-model="source" autosize type="textarea" placeholder="请输入内容"></el-input>
+            <el-input v-model="source" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
         </el-col>
         <el-col :span="8">
-            <el-input :rows="30" v-model="format[0]" autosize type="textarea" placeholder="请输入内容"></el-input>
+            <el-input v-model="format[0]" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
         </el-col>
         <el-col :span="8">
             <div v-html="format[1]" class="result"></div>
