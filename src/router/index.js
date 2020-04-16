@@ -63,6 +63,17 @@ export const constantMenuRouterMap = [
                         name: 'font_download'
                     }
                 }
+            },
+            {
+                path: 'xml',
+                component: () => import('../views/tools/Xml.vue'),
+                meta: {
+                    name: 'Xml',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'font_download'
+                    }
+                }
             }
         ]
     }

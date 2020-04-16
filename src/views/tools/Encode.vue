@@ -30,7 +30,8 @@
                 ]
             };
         },
-        mounted() {},
+        mounted() {
+        },
         methods: {
             exec(index, func, leftToRight) {
                 if (leftToRight) {
@@ -96,12 +97,17 @@
 
 <style lang="scss" scoped>
     .encode {
-        margin: 20px;
         .funcs {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             margin: 20px auto;
+            &:first-child {
+                margin-top: 0;
+            }
+            &:last-child {
+                margin-bottom: 0;
+            }
             .func-name {
                 text-align: center;
                 line-height: 115px;

@@ -196,17 +196,20 @@
         .main {
             header {
                 @if ($theme == 'dark') {
+                    color: $dark-text-color;
                     background-color: lighten($menuBackgroundColor, 10%);
                 } @else {
+                    color: $light-text-color;
                     background-color: lighten($menuBackgroundColor, 10%);
                 }
             }
         }
     }
     .layout {
-        height: 100%;
+        height: 100vh;
         display: flex;
         flex-direction: row;
+        overflow: hidden;
         &.light {
             @include layout('light');
         }
@@ -266,6 +269,9 @@
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 0 10px;
+            }
+            section {
+                padding: 20px;
             }
         }
     }
