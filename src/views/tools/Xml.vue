@@ -17,8 +17,7 @@
         name: 'Xml',
         data() {
             return {
-                source:
-                    '<?xml version="1.0" encoding="GBK" standalone="no"?><B2CReq><interfaceName>ICBC_WAPB_THIRD</interfaceName><interfaceVersion>1.0.0.0</interfaceVersion><orderInfo><orderDate>20180308094713</orderDate><orderid>20180308094713008000505003</orderid><amount>19000</amount><installmentTimes></installmentTimes><curType>001</curType><merID>1202EE20257014</merID><merAcct>1202027709900246492</merAcct><expireTime>20181212121212</expireTime><unipassID></unipassID><shopAppID>2018wx34454523</shopAppID></orderInfo><custom><verifyJoinFlag>0</verifyJoinFlag><Language>zh_CN</Language></custom><message><goodsID>1159199</goodsID><goodsName>1个月</goodsName><goodsNum>1</goodsNum><carriageAmt>0</carriageAmt><merHint>商城提示</merHint><remark1>remark1</remark1><remark2>remark2</remark2><merURL>http://www.onysakura.com/icbc</merURL><merVAR>备注</merVAR><notifyType>HS</notifyType><resultType>0</resultType><limitPay></limitPay><backup1></backup1><backup2></backup2><backup3></backup3><backup4></backup4><isSupportDISCOUFlag></isSupportDISCOUFlag><thirdPartyFlag></thirdPartyFlag></message></B2CReq>'
+                source: ''
             };
         },
         computed: {
