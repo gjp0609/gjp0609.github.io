@@ -24,7 +24,7 @@
         data() {
             return {
                 type: true,
-                source: `<?xml version="1.0" encoding="utf-8"?><xml ss="asd"><appid><![CDATA[wxeaa1fdab8a84a389]]></appid><attach>123</attach><c/><d><e>2</e><f/></d><f><e>2</e></f></xml>`
+                source: ``
             };
         },
         computed: {
