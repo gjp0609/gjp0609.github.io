@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <h1>Hello Webpack!</h1>
+        <h1>Online Tools Based on JavaScript</h1>
         <div class="infos">
             <a href="https://github.com/gjp0609/gjp0609.github.io" target="_blank">Github</a>
             <a href="https://gjp0609.github.io/static/material-design-icons/index.html" target="_blank">Material Design Icons</a>

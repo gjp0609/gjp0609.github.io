@@ -8,6 +8,8 @@ import store from './store';
 
 require('../static/material-design-icons/material-design-icons.css');
 require('./styles/base.scss');
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.min');
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
