@@ -1,15 +1,21 @@
 <template>
-    <el-row :gutter="10">
-        <el-col :span="8">
-            <el-input v-model="source" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
-        </el-col>
-        <el-col :span="8">
-            <el-input v-model="format[0]" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
-        </el-col>
-        <el-col :span="8">
-            <div v-html="format[1]" class="result"></div>
-        </el-col>
-    </el-row>
+    <div>
+        <el-row class="switchRow">
+            Mode Switch:&emsp;
+            <el-switch v-model="type" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        </el-row>
+        <el-row :gutter="10">
+            <el-col :span="8">
+                <el-input v-model="source" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
+            </el-col>
+            <el-col :span="8">
+                <el-input v-model="format[0]" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
+            </el-col>
+            <el-col :span="8">
+                <div v-html="format[1]" class="result"></div>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 
 <script>
@@ -17,7 +23,8 @@
         name: 'Xml',
         data() {
             return {
-                source: ''
+                type: true,
+                source: `<?xml version="1.0" encoding="utf-8"?><xml ss="asd"><appid><![CDATA[wxeaa1fdab8a84a389]]></appid><attach>123</attach><c/><d><e>2</e><f/></d><f><e>2</e></f></xml>`
             };
         },
         computed: {
@@ -28,12 +35,76 @@
                     .replace(/>[ ]+/g, '>')
                     .replace(/[ ]+</g, '<')
                     .replace(/ +/g, ' ');
-                return this.formatXml(this.source);
+                if (this.type) {
+                    return this.formatXmlBySplit(this.source);
+                } else {
+                    return this.formatXmlByDOMParser(this.source);
+                }
             }
         },
         mounted() {},
         methods: {
-            formatXml(v) {
+            formatXmlByDOMParser(content) {
+                let xml_doc = null;
+                const formatContent = content.replace(/[\n\r]/g, '');
+                try {
+                    xml_doc = new DOMParser().parseFromString(formatContent, 'text/xml');
+                } catch (e) {
+                    return false;
+                }
+                let list = [[], []];
+                console.log('--------------');
+                this.formatXmlWithDOMParser(list, xml_doc.documentElement, 0);
+                console.log(list);
+                return [list[0].join(''), list[1].join('')];
+            },
+            formatXmlWithDOMParser(list, element, level) {
+                let nodeType = element.nodeType;
+                let blankString = 'ㅤ';
+                let srcString = list[0];
+                let styleString = list[1];
+                switch (nodeType) {
+                    case Node.ELEMENT_NODE:
+                        srcString.push(''.padStart(level * blankString.length, blankString) + '<' + element.nodeName + '>');
+                        srcString.push('\n');
+                        styleString.push(
+                            ''.padStart(level * blankString.length, blankString) +
+                                `<span class="inline xml_item_${level}">&lt;${element.nodeName}></span>`
+                        );
+                        styleString.push('<br/>');
+                        for (let i = 0; i < element.childNodes.length; i++) {
+                            this.formatXmlWithDOMParser(list, element.childNodes[i], level + 1);
+                        }
+                        if (element.childNodes.length === 0) {
+                            srcString.splice(srcString.length - 1, 1);
+                            styleString.splice(styleString.length - 1, 1);
+                            blankString = '';
+                        }
+                        if (element.childNodes[0] && element.childNodes[0].nodeType !== Node.ELEMENT_NODE) {
+                            srcString.splice(srcString.length - 2, 1);
+                            styleString.splice(styleString.length - 2, 1);
+                            blankString = '';
+                        }
+                        srcString.push(''.padStart(level * blankString.length, blankString) + '</' + element.nodeName + '>');
+                        srcString.push('\n');
+                        styleString.push(
+                            ''.padStart(level * blankString.length, blankString) +
+                                `<span class="inline xml_item_${level}">&lt;/${element.nodeName}></span>`
+                        );
+                        styleString.push('<br/>');
+                        break;
+                    case Node.TEXT_NODE:
+                        srcString.push(element.nodeValue);
+                        styleString.push(`<span class="inline xml_item_text">${element.nodeValue}</span>`);
+                        break;
+                    case Node.CDATA_SECTION_NODE:
+                        srcString.push(element.nodeValue);
+                        styleString.push(`<span class="inline xml_item_cdata">${element.nodeValue}</span>`);
+                        break;
+                    default:
+                }
+            },
+            formatXmlBySplit(v) {
                 let value = v.replace(/<!\[CDATA\[[\s\S]*?]]>/g, (str) => {
                     return `BEGIN_CDATA${encodeURIComponent(str)}END_CDATA`;
                 });
@@ -173,6 +244,11 @@
 
 <style lang="scss" scoped>
     .el-row {
+        &.switchRow {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 3px;
+        }
         .el-col {
             height: 95vh;
             overflow-y: auto;
@@ -182,6 +258,9 @@
             border: #dbdbdb solid 1px;
             border-radius: 3px;
             padding: 10px;
+            .inline {
+                display: inline !important;
+            }
             .xml_item_text,
             .xml_item_0,
             .xml_item_1,
@@ -192,31 +271,31 @@
                 justify-content: left;
             }
             .xml_item_0 {
-                color: #f39;
-            }
-            .xml_item_1 {
-                color: #39f;
-            }
-            .xml_item_2 {
-                color: #3f9;
-            }
-            .xml_item_3 {
                 color: #f33;
             }
-            .xml_item_4 {
-                color: #a3c;
+            .xml_item_1 {
+                color: #f39;
             }
-            .xml_item_5 {
+            .xml_item_2 {
                 color: #f5f;
             }
-            .xml_item_6 {
+            .xml_item_3 {
+                color: #a3c;
+            }
+            .xml_item_4 {
                 color: #a25;
             }
-            .xml_item_7 {
+            .xml_item_5 {
+                color: #ea3;
+            }
+            .xml_item_6 {
                 color: #fd3;
             }
+            .xml_item_7 {
+                color: #39f;
+            }
             .xml_item_8 {
-                color: #ea3;
+                color: #3f9;
             }
             .xml_item_9 {
                 color: #993;
