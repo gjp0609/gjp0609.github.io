@@ -24,7 +24,7 @@
         data() {
             return {
                 type: true,
-                source: ``
+                source: ''
             };
         },
         computed: {
@@ -247,7 +247,7 @@
         &.switchRow {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 3px;
+            margin-bottom: 10px;
         }
         .el-col {
             height: 95vh;

@@ -12,6 +12,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@chenfengyuan/vue-qrcode": "^1.0.2",
         "@fortawesome/fontawesome-free": "^5.13.0",
         "autoprefixer": "^9.7.3",
         "babel-core": "^6.26.3",

@@ -70,8 +70,19 @@ export const constantMenuRouterMap = [
                 meta: {
                     name: 'Xml',
                     icon: {
-                        type: 'material-icons',
-                        name: 'font_download'
+                        type: 'font-awesome-icons',
+                        name: 'fa-code'
+                    }
+                }
+            },
+            {
+                path: 'QrCode',
+                component: () => import('../views/tools/QrCode.vue'),
+                meta: {
+                    name: 'QrCode',
+                    icon: {
+                        type: 'font-awesome-icons',
+                        name: 'fa-qrcode'
                     }
                 }
             }
