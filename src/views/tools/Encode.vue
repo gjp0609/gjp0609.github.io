@@ -2,13 +2,13 @@
     <div class="encode">
         <el-row v-for="(func, index) in funcs" :key="func.name" class="funcs">
             <el-col :span="11">
-                <el-input v-model="func.src" :rows="5" @blur="exec(index, func, true)" type="textarea"></el-input>
+                <el-input v-model="func.src" :rows="5" @input="exec(index, func, true)" type="textarea"></el-input>
             </el-col>
             <el-col :span="2" class="func-name">
                 <span>{{ func.name }}</span>
             </el-col>
             <el-col :span="11">
-                <el-input v-model="func.result" :rows="5" @blur="exec(index, func, false)" type="textarea"></el-input>
+                <el-input v-model="func.result" :rows="5" @input="exec(index, func, false)" type="textarea"></el-input>
             </el-col>
         </el-row>
     </div>
@@ -29,8 +29,6 @@
                     { name: 'Unicode', src: '', result: '' }
                 ]
             };
-        },
-        mounted() {
         },
         methods: {
             exec(index, func, leftToRight) {
