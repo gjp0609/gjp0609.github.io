@@ -85,6 +85,17 @@ export const constantMenuRouterMap = [
                         name: 'fa-qrcode'
                     }
                 }
+            },
+            {
+                path: 'pcr',
+                component: () => import('../views/tools/Pcr.vue'),
+                meta: {
+                    name: 'PCR',
+                    icon: {
+                        type: 'font-awesome-icons',
+                        name: 'fa-qrcode'
+                    }
+                }
             }
         ]
     }
