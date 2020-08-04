@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+// import Vue from 'vue';
+// import VueRouter from 'vue-router';
 import Layout from '../views/layout/Layout.vue';
 import Test from '../views/test/Test.vue';
 
-Vue.use(Router);
+Vue.use(VueRouter);
 
 export const constantMenuRouterMap = [
     {
@@ -123,7 +123,7 @@ export const constantRouterMap = [
     }
 ];
 
-export default new Router({
+export default new VueRouter({
     // mode: 'history', //后端支持可开
     // scrollBehavior: () => ({
     //     y: 0

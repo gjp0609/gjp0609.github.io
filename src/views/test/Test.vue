@@ -10,8 +10,6 @@
 <script>
     import { SET_COUNT } from '../../store/mutation-types';
 
-    // const axios = require('axios');
-
     export default {
         name: 'Test',
         data() {
@@ -23,14 +21,6 @@
             asd() {
                 console.log(this.$store.state.count);
                 this.$message(this.$store.state.count);
-                // axios
-                //     .get('http://httpbin.org/get?param=test')
-                //     .then((resp) => {
-                //         console.log(resp);
-                //     })
-                //     .catch((e) => {
-                //         console.log(e);
-                //     });
             },
             addCount() {
                 this.$store.commit(SET_COUNT, { count: this.$store.count + 1 });

@@ -7,8 +7,7 @@
 </template>
 
 <script>
-    const axios = require('axios');
-    const url = 'https://www.onysakura.com';
+    import service from 'service';
     export default {
         name: 'Xml',
         data() {
@@ -22,7 +21,7 @@
         methods: {
             testFunc() {
                 let _this = this;
-                axios.get(url + '/test/get?s=' + _this.param).then((res) => {
+                service.get('/test/get?s=' + _this.param).then((res) => {
                     _this.text = res;
                 });
             }
