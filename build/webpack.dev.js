@@ -9,11 +9,11 @@ module.exports = merge(common, {
         compress: true,
         clientLogLevel: 'none',
         host: '127.0.0.1',
-        allowedHosts: ['me'],
-        port: 80,
+        allowedHosts: ['127.0.0.1:23232'],
+        port: 23232,
         proxy: {
             '/': {
-                target: 'http://127.0.0.1:80',
+                target: 'http://127.0.0.1:23232',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/': '/'

@@ -20,7 +20,7 @@
                             <template v-if="router.meta.icon">
                                 <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
                                 <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
-                                <i v-if="router.meta.icon.type === 'font-awesome-icons'" :class="router.meta.icon.name" class="fas"></i>
+                                <!-- <i v-if="router.meta.icon.type === 'font-awesome-icons'" :class="router.meta.icon.name" class="fas"></i>-->
                             </template>
                             <span slot="title">{{ router.meta.name }}</span>
                         </template>
@@ -33,7 +33,7 @@
                             <template v-if="subRouter.meta.icon">
                                 <i v-if="subRouter.meta.icon.type === 'material-icons'" class="material-icons">{{ subRouter.meta.icon.name }}</i>
                                 <i v-if="subRouter.meta.icon.type === 'element-ui'" :class="subRouter.meta.icon.name"></i>
-                                <i v-if="subRouter.meta.icon.type === 'font-awesome-icons'" :class="subRouter.meta.icon.name" class="fas"></i>
+                                <!-- <i v-if="subRouter.meta.icon.type === 'font-awesome-icons'" :class="subRouter.meta.icon.name" class="fas"></i>-->
                             </template>
                             <span> {{ subRouter.meta.name }}</span>
                         </el-menu-item>
@@ -42,7 +42,7 @@
                         <template v-if="router.meta.icon">
                             <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
                             <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
-                            <i v-if="router.meta.icon.type === 'font-awesome-icons'" :class="router.meta.icon.name" class="fas"></i>
+                            <!-- <i v-if="router.meta.icon.type === 'font-awesome-icons'" :class="router.meta.icon.name" class="fas"></i>-->
                         </template>
                         <span>{{ router.meta.name }}</span>
                     </el-menu-item>
@@ -236,8 +236,8 @@
                         font-size: 18px;
                     }
                 }
-                svg{
-                    &.svg-inline--fa{
+                svg {
+                    &.svg-inline--fa {
                         color: #909399;
                         vertical-align: middle;
                         margin-right: 5px;

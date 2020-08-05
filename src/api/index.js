@@ -1,4 +1,4 @@
-// import axios from 'axios';
+import axios from 'axios';
 
 const service = axios.create({
     baseURL: 'https://www.onysakura.com',
