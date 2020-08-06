@@ -13,8 +13,9 @@
                 :color="axisDetail.color"
                 :size="axisDetail.size"
                 :timestamp="axisDetail.time"
+                placement="top"
             >
-                {{ axisDetail.content }}
+                {{ axisDetail.princess }}{{ axisDetail.remark }}
             </el-timeline-item>
         </el-timeline>
     </div>
@@ -29,11 +30,14 @@
             return {
                 param: '',
                 text: '',
+                princessList: [],
                 axis: []
             };
         },
         computed: {},
-        mounted() {},
+        mounted() {
+
+        },
         methods: {
             testFunc() {
                 let _this = this;

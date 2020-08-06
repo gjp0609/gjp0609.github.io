@@ -236,16 +236,16 @@
                         font-size: 18px;
                     }
                 }
-                svg {
-                    &.svg-inline--fa {
-                        color: #909399;
-                        vertical-align: middle;
-                        margin-right: 5px;
-                        width: 24px;
-                        text-align: center;
-                        font-size: 14px;
-                    }
-                }
+                //svg {
+                //    &.svg-inline--fa {
+                //        color: #909399;
+                //        vertical-align: middle;
+                //        margin-right: 5px;
+                //        width: 24px;
+                //        text-align: center;
+                //        font-size: 14px;
+                //    }
+                //}
             }
             &.is-collapse {
                 width: $menuCollapseWidth;

@@ -5,6 +5,11 @@ import Test from '../views/test/Test.vue';
 
 Vue.use(VueRouter);
 
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
+
 export const constantMenuRouterMap = [
     {
         path: '/',
@@ -70,8 +75,8 @@ export const constantMenuRouterMap = [
                 meta: {
                     name: 'Xml',
                     icon: {
-                        type: 'font-awesome-icons',
-                        name: 'fa-code'
+                        type: 'material-icons',
+                        name: 'code'
                     }
                 }
             },
@@ -81,8 +86,8 @@ export const constantMenuRouterMap = [
                 meta: {
                     name: 'QrCode',
                     icon: {
-                        type: 'font-awesome-icons',
-                        name: 'fa-qrcode'
+                        type: 'element-ui',
+                        name: 'el-icon-camera-solid'
                     }
                 }
             },
@@ -92,8 +97,8 @@ export const constantMenuRouterMap = [
                 meta: {
                     name: 'PCR',
                     icon: {
-                        type: 'font-awesome-icons',
-                        name: 'fa-qrcode'
+                        type: 'element-ui',
+                        name: 'el-icon-notebook-2'
                     }
                 }
             }
