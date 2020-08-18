@@ -35,7 +35,7 @@
             getText() {
                 let _this = this;
                 service.get('/api/' + _this.code).then((res) => {
-                    _this.content = res;
+                    _this.content = res.data;
                 });
             },
             saveText() {
@@ -47,7 +47,7 @@
                         }
                     })
                     .then((res) => {
-                        _this.code = res;
+                        _this.code = res.data;
                     });
             }
         }
