@@ -40,9 +40,15 @@
             },
             saveText() {
                 let _this = this;
-                service.put('/api', _this.content).then((res) => {
-                    _this.code = res;
-                });
+                service
+                    .put('/api', _this.content, {
+                        headers: {
+                            'Content-Type': 'text/plain'
+                        }
+                    })
+                    .then((res) => {
+                        _this.code = res;
+                    });
             }
         }
     };
