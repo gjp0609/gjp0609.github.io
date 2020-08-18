@@ -35,7 +35,7 @@
                 if (this.text && this.text.length > 0) {
                     return this.text;
                 } else {
-                    return 'onysakura.xyz';
+                    return 'onysakura.fun';
                 }
             }
         }

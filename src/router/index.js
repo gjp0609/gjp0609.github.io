@@ -81,6 +81,17 @@ export const constantMenuRouterMap = [
                 }
             },
             {
+                path: 'api',
+                component: () => import('../views/tools/Api.vue'),
+                meta: {
+                    name: 'Api',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'create'
+                    }
+                }
+            },
+            {
                 path: 'QrCode',
                 component: () => import('../views/tools/QrCode.vue'),
                 meta: {
