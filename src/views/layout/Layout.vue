@@ -55,7 +55,7 @@
         </aside>
         <div class="main">
             <header>
-                <span>OnySakura.xyz</span>
+                <span>OnySakura.fun</span>
                 <code class="time">{{ time }}</code>
             </header>
             <section>
