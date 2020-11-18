@@ -5,10 +5,10 @@ import Test from '../views/test/Test.vue';
 
 Vue.use(VueRouter);
 
-const originalPush = VueRouter.prototype.push
+const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => err)
-}
+    return originalPush.call(this, location).catch((err) => err);
+};
 
 export const constantMenuRouterMap = [
     {
@@ -81,6 +81,17 @@ export const constantMenuRouterMap = [
                 }
             },
             {
+                path: 'json',
+                component: () => import('../views/tools/Json.vue'),
+                meta: {
+                    name: 'Json',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'code'
+                    }
+                }
+            },
+            {
                 path: 'api',
                 component: () => import('../views/tools/Api.vue'),
                 meta: {
@@ -99,17 +110,6 @@ export const constantMenuRouterMap = [
                     icon: {
                         type: 'element-ui',
                         name: 'el-icon-camera-solid'
-                    }
-                }
-            },
-            {
-                path: 'pcr',
-                component: () => import('../views/tools/Pcr.vue'),
-                meta: {
-                    name: 'PCR',
-                    icon: {
-                        type: 'element-ui',
-                        name: 'el-icon-notebook-2'
                     }
                 }
             }

@@ -5,13 +5,6 @@
             <a href="https://github.com/gjp0609/gjp0609.github.io" target="_blank">Github</a>
             <a href="https://gjp0609.github.io/static/material-design-icons/index.html" target="_blank">Material Design Icons</a>
         </div>
-        <div class="copyright">
-            <div>
-                onysakura.fun&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="http://beian.miit.gov.cn" target="_blank">京ICP备19012557号-1</a>
-            </div>
-            <div>Copyright © 2019 - 2020 All Rights Reserved</div>
-        </div>
     </div>
 </template>
 
@@ -35,10 +28,6 @@
             a {
                 text-decoration: none;
             }
-        }
-        .copyright {
-            text-align: center;
-            margin-top: 20%;
         }
     }
 </style>
