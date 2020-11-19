@@ -2,18 +2,26 @@
     <div>
         <el-row>
             <el-card>
-                <span>Mode Switch:</span>
-                <el-switch v-model="type" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                <div class="buttons">
+                    <div>
+                        <span>Mode Switch:</span>
+                        <el-switch v-model="splitMode" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                    </div>
+                    <div>
+                        <span>Show Plain Text:</span>
+                        <el-switch v-model="plainText" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                    </div>
+                </div>
             </el-card>
         </el-row>
         <el-row :gutter="10">
             <el-col :span="8">
                 <el-input v-model="source" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
             </el-col>
-            <el-col :span="8">
+            <el-col v-if="plainText" :span="8">
                 <el-input v-model="format[0]" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="plainText ? 8 : 16">
                 <div v-html="format[1]" class="result"></div>
             </el-col>
         </el-row>
@@ -25,7 +33,8 @@
         name: 'Xml',
         data() {
             return {
-                type: false,
+                splitMode: false,
+                plainText: false,
                 source: ''
             };
         },
@@ -37,7 +46,7 @@
                     .replace(/>[ ]+/g, '>')
                     .replace(/[ ]+</g, '<')
                     .replace(/ +/g, ' ');
-                if (this.type) {
+                if (this.splitMode) {
                     return this.formatXmlBySplit(this.source);
                 } else {
                     return this.formatXmlByDOMParser(this.source);
@@ -85,7 +94,7 @@
                             styleString.splice(styleString.length - 1, 1);
                             blankString = '';
                         }
-                        if (element.childNodes[0] && element.childNodes[0].nodeType !== Node.ELEMENT_NODE) {
+                        if (element.childNodes[0] && [Node.ELEMENT_NODE, Node.COMMENT_NODE].indexOf(element.childNodes[0].nodeType) === -1) {
                             srcString.splice(srcString.length - 2, 1);
                             styleString.splice(styleString.length - 2, 1);
                             blankString = '';
@@ -101,6 +110,17 @@
                     case Node.TEXT_NODE:
                         srcString.push(element.nodeValue);
                         styleString.push(`<span class="inline xml_item_text">${element.nodeValue}</span>`);
+                        break;
+                    case Node.COMMENT_NODE:
+                        srcString.push(''.padStart(level * blankString.length, blankString) + '<!-- ');
+                        srcString.push(element.nodeValue + ' -->');
+                        srcString.push('\n');
+                        styleString.push(
+                            ''.padStart(level * blankString.length, blankString) + `<span class="inline xml_item_${level}">&lt;!-- </span>`
+                        );
+                        styleString.push(`<span class="inline xml_item_comment">${element.nodeValue}</span>`);
+                        styleString.push(`<span class="inline xml_item_${level}"> --></span>`);
+                        styleString.push(`<br/>`);
                         break;
                     case Node.CDATA_SECTION_NODE:
                         srcString.push(element.nodeValue);
@@ -253,6 +273,14 @@
         &:last-child {
             margin-bottom: 0;
         }
+        .buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            & > div {
+                margin-right: 30px;
+            }
+        }
         .el-col {
             height: 95vh;
             overflow-y: auto;
@@ -336,6 +364,9 @@
             }
             .xml_item_cdata {
                 color: #6cc;
+            }
+            .xml_item_comment {
+                color: grey;
             }
             .xml_item_text {
                 color: forestgreen;
