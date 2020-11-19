@@ -1,8 +1,10 @@
 <template>
     <div>
-        <el-row class="switchRow">
-            Mode Switch:&emsp;
-            <el-switch v-model="type" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        <el-row>
+            <el-card>
+                <span>Mode Switch:</span>
+                <el-switch v-model="type" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            </el-card>
         </el-row>
         <el-row :gutter="10">
             <el-col :span="8">
@@ -23,7 +25,7 @@
         name: 'Xml',
         data() {
             return {
-                type: true,
+                type: false,
                 source: ''
             };
         },
@@ -45,6 +47,9 @@
         mounted() {},
         methods: {
             formatXmlByDOMParser(content) {
+                if (!content) {
+                    return ['', ''];
+                }
                 let xml_doc = null;
                 const formatContent = content.replace(/[\n\r]/g, '');
                 try {
@@ -244,10 +249,9 @@
 
 <style lang="scss" scoped>
     .el-row {
-        &.switchRow {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
+        margin-bottom: 20px;
+        &:last-child {
+            margin-bottom: 0;
         }
         .el-col {
             height: 95vh;
