@@ -4,10 +4,14 @@
             <el-card>
                 <div class="buttons">
                     <div>
+                        <span>Expand All:</span>
+                        <el-switch v-model="expand" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                    </div>
+                    <div>
                         <span>Auto Format:</span>
                         <el-switch v-model="autoFormat" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
                     </div>
-                    <div>
+                    <div v-if="autoFormat">
                         <span>Pretty:</span>
                         <el-switch v-model="pretty" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
                     </div>
@@ -20,7 +24,7 @@
             </el-col>
             <el-col :span="16">
                 <div class="json-text">
-                    <json-display :obj="getObj" :index="1"></json-display>
+                    <json-display :obj="getObj" :index="1" :expand="expand"></json-display>
                 </div>
             </el-col>
         </el-row>
@@ -40,7 +44,8 @@
                 type: true,
                 source: '',
                 autoFormat: false,
-                pretty: false
+                pretty: false,
+                expand: false
             };
         },
         computed: {

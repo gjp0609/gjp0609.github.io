@@ -12,7 +12,7 @@
                                 <span>{{ key }}:</span>
                             </span>
                         </div>
-                        <json-display v-if="shows[key] && shows[key].isOpen" :obj="value" :index="index + 1"></json-display>
+                        <json-display v-if="shows[key] && shows[key].isOpen" :obj="value" :index="index + 1" :expand="expand"></json-display>
                     </div>
                 </template>
                 <template v-else>
@@ -25,7 +25,7 @@
                                 <span>{{ key }}:</span>
                             </span>
                         </div>
-                        <json-display v-if="shows[key] && shows[key].isOpen" :obj="value" :index="index + 1"></json-display>
+                        <json-display v-if="shows[key] && shows[key].isOpen" :obj="value" :index="index + 1" :expand="expand"></json-display>
                     </div>
                 </template>
             </template>
@@ -41,7 +41,8 @@
         name: 'JsonDisplay',
         props: {
             obj: undefined,
-            index: undefined
+            index: undefined,
+            expand: undefined
         },
         data() {
             return {
@@ -63,7 +64,7 @@
                                 type = 'object';
                             }
                         }
-                        this.$set(this.shows, key, { isOpen: type === 'text', type: type });
+                        this.$set(this.shows, key, { isOpen: this.expand || type === 'text', type: type });
                     }
                 }
                 return this.obj;
@@ -77,7 +78,6 @@
                 return obj instanceof Array;
             },
             switchShow(key) {
-                console.log('%%%%%%%%%', this.shows);
                 if (this.shows[key]) {
                     this.shows[key].isOpen = !this.shows[key].isOpen;
                 }
@@ -87,7 +87,7 @@
 </script>
 
 <style type="scss" scoped>
-    $colors: #fc895b #36b109 #45a6e7 #07c4ba #e175e9 #ffdb2d;
+    $colors: #fc895b #e175e9 #45a6e7 #07c4ba #36b109 #ffdb2d;
 
     .value {
         display: flex;
