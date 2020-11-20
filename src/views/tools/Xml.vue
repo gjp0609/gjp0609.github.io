@@ -4,12 +4,16 @@
             <el-card>
                 <div class="buttons">
                     <div>
-                        <span>Mode Switch:</span>
-                        <el-switch v-model="splitMode" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <span>Show Plain Text:</span>
+                        <el-switch v-model="plainText" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
                     </div>
                     <div>
-                        <span>Show Plain Text:</span>
-                        <el-switch v-model="plainText" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <span>Mode Switch:</span>
+                        <el-switch v-model="splitMode" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                    </div>
+                    <div v-if="!splitMode">
+                        <span>Thin:</span>
+                        <el-switch v-model="thin" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
                     </div>
                 </div>
             </el-card>
@@ -33,13 +37,19 @@
         name: 'Xml',
         data() {
             return {
-                splitMode: false,
-                plainText: false,
-                source: ''
+                source: '',
+                splitMode: undefined,
+                plainText: undefined,
+                thin: undefined,
+                isMounted: false
             };
         },
         computed: {
             format() {
+                console.log('save');
+                if (this.isMounted) {
+                    this.save();
+                }
                 this.source = this.source
                     .replace(/\n/g, '')
                     .replace(/\t/g, ' ')
@@ -49,11 +59,28 @@
                 if (this.splitMode) {
                     return this.formatXmlBySplit(this.source);
                 } else {
-                    return this.formatXmlByDOMParser(this.source);
+                    let list = this.formatXmlByDOMParser(this.source);
+                    if (this.thin) {
+                        let list2 = list[2];
+                        let str = '';
+                        if (list2) {
+                            for (let item of list2) {
+                                if (item && item.replace(/[ ㅤ]*\t*/g, '') !== '') {
+                                    str += item;
+                                }
+                            }
+                        }
+                        this.source = str;
+                    }
+                    return list;
                 }
             }
         },
-        mounted() {},
+        mounted() {
+            console.log('get');
+            this.get();
+            this.isMounted = true;
+        },
         methods: {
             formatXmlByDOMParser(content) {
                 if (!content) {
@@ -66,19 +93,20 @@
                 } catch (e) {
                     return false;
                 }
-                let list = [[], []];
+                let list = [[], [], []];
                 console.log('--------------');
                 this.formatXmlWithDOMParser(list, xml_doc.documentElement, 0);
-                console.log(list);
-                return [list[0].join(''), list[1].join('')];
+                return [list[0].join(''), list[1].join(''), list[2]];
             },
             formatXmlWithDOMParser(list, element, level) {
                 let nodeType = element.nodeType;
                 let blankString = 'ㅤ';
                 let srcString = list[0];
                 let styleString = list[1];
+                let noneBlankString = list[2];
                 switch (nodeType) {
                     case Node.ELEMENT_NODE:
+                        noneBlankString.push('<' + element.nodeName + '>');
                         srcString.push(''.padStart(level * blankString.length, blankString) + '<' + element.nodeName + '>');
                         srcString.push('\n');
                         styleString.push(
@@ -99,6 +127,7 @@
                             styleString.splice(styleString.length - 2, 1);
                             blankString = '';
                         }
+                        noneBlankString.push('</' + element.nodeName + '>');
                         srcString.push(''.padStart(level * blankString.length, blankString) + '</' + element.nodeName + '>');
                         srcString.push('\n');
                         styleString.push(
@@ -108,12 +137,13 @@
                         styleString.push('<br/>');
                         break;
                     case Node.TEXT_NODE:
+                        noneBlankString.push(element.nodeValue);
                         srcString.push(element.nodeValue);
                         styleString.push(`<span class="inline xml_item_text">${element.nodeValue}</span>`);
                         break;
                     case Node.COMMENT_NODE:
-                        srcString.push(''.padStart(level * blankString.length, blankString) + '<!-- ');
-                        srcString.push(element.nodeValue + ' -->');
+                        noneBlankString.push('<!-- ' + element.nodeValue + ' -->');
+                        srcString.push(''.padStart(level * blankString.length, blankString) + '<!-- ' + element.nodeValue + ' -->');
                         srcString.push('\n');
                         styleString.push(
                             ''.padStart(level * blankString.length, blankString) + `<span class="inline xml_item_${level}">&lt;!-- </span>`
@@ -123,6 +153,7 @@
                         styleString.push(`<br/>`);
                         break;
                     case Node.CDATA_SECTION_NODE:
+                        noneBlankString.push(element.nodeValue);
                         srcString.push(element.nodeValue);
                         styleString.push(`<span class="inline xml_item_cdata">${element.nodeValue}</span>`);
                         break;
@@ -262,6 +293,33 @@
                 str2 = str2.replace(/&lt;/g, '<');
                 str2 = str2.replace(/&gt;/g, '>');
                 return [str2, str3];
+            },
+            save() {
+                let xmlData = {
+                    source: this.source,
+                    plainText: this.plainText,
+                    thin: this.thin,
+                    splitMode: this.splitMode
+                };
+                localStorage.setItem('xmlData', JSON.stringify(xmlData));
+            },
+            get() {
+                let xmlData;
+                try {
+                    xmlData = JSON.parse(localStorage.getItem('xmlData'));
+                } catch (e) {
+                    xmlData = {
+                        source: '',
+                        plainText: true,
+                        thin: true,
+                        splitMode: true
+                    };
+                }
+                this.source = xmlData.source;
+                this.plainText = xmlData.plainText;
+                this.thin = xmlData.thin;
+                this.splitMode = xmlData.splitMode;
+                console.log(this.pretty);
             }
         }
     };
@@ -290,6 +348,7 @@
             border: #dbdbdb solid 1px;
             border-radius: 3px;
             padding: 10px;
+            overflow-y: auto;
             .inline {
                 display: inline !important;
             }

@@ -5,15 +5,15 @@
                 <div class="buttons">
                     <div>
                         <span>Expand All:</span>
-                        <el-switch v-model="expand" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="expand" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
                     </div>
                     <div>
                         <span>Auto Format:</span>
-                        <el-switch v-model="autoFormat" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="autoFormat" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
                     </div>
                     <div v-if="autoFormat">
                         <span>Pretty:</span>
-                        <el-switch v-model="pretty" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="pretty" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
                     </div>
                 </div>
             </el-card>
@@ -41,16 +41,19 @@
         },
         data() {
             return {
-                type: true,
                 source: '',
-                autoFormat: false,
-                pretty: false,
-                expand: false
+                autoFormat: undefined,
+                pretty: undefined,
+                expand: undefined,
+                isMounted: false
             };
         },
         computed: {
             getObj: function() {
                 let source = this.source;
+                if (this.isMounted) {
+                    this.save();
+                }
                 if (source) {
                     console.log('%c source', 'color:green', source);
                     let obj = undefined;
@@ -77,6 +80,40 @@
                 }
                 return {};
             }
+        },
+        mounted() {
+            console.log('mounted');
+            this.get();
+            this.isMounted = true;
+        },
+        methods: {
+            save() {
+                let jsonData = {
+                    source: this.source,
+                    autoFormat: this.autoFormat,
+                    pretty: this.pretty,
+                    expand: this.expand
+                };
+                localStorage.setItem('jsonData', JSON.stringify(jsonData));
+            },
+            get() {
+                let jsonData;
+                try {
+                    jsonData = JSON.parse(localStorage.getItem('jsonData'));
+                } catch (e) {
+                    jsonData = {
+                        source: '',
+                        autoFormat: true,
+                        pretty: true,
+                        expand: true
+                    };
+                }
+                this.source = jsonData.source;
+                this.autoFormat = jsonData.autoFormat;
+                this.pretty = jsonData.pretty;
+                this.expand = jsonData.expand;
+                console.log(this.pretty);
+            }
         }
     };
 </script>
@@ -102,6 +139,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             .json-text {
+                overflow-y: auto;
                 border: 1px solid #dcdfe6;
                 border-radius: 4px;
             }
