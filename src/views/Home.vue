@@ -3,6 +3,7 @@
         <h1>Online Tools</h1>
         <div class="infos">
             <a href="https://github.com/gjp0609/gjp0609.github.io" target="_blank">Github</a>
+            <a href="https://gitee.com/gjp0609/gjp0609.github.io" target="_blank">Gitee</a>
             <a href="https://gjp0609.github.io/static/material-design-icons/index.html" target="_blank">Material Design Icons</a>
         </div>
     </div>
