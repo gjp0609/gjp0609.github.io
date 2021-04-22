@@ -58,6 +58,7 @@
                     console.log('%c source', 'color:green', source);
                     let obj = undefined;
                     try {
+                        source = source.replace(/:\s*([-+Ee0-9.]{16,})/g, ': "$1"');
                         obj = JSON.parse(source);
                     } catch (e) {
                         console.warn('>>> parse json error, ', e.toString());
@@ -119,8 +120,6 @@
 </script>
 
 <style lang="scss" scoped>
-    $colors: #fc895b #45a6e7 #31d3fc #e175e9 orange;
-    $tabWidth: 1rem;
     .el-row {
         margin-bottom: 20px;
         &:last-child {

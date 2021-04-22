@@ -96,8 +96,8 @@
     };
 </script>
 
-<style type="scss" scoped>
-    $colors: #fc895b #e175e9 #45a6e7 #07c4ba #36b109 #fc895b #e175e9 #45a6e7 #07c4ba #36b109;
+<style lang="scss" scoped>
+    $colors: #fc895b #36b109 #07c4ba #45a6e7 #e175e9 #fc895b #36b109 #07c4ba #45a6e7 #e175e9 #fc895b #36b109 #07c4ba #45a6e7 #e175e9;
 
     .value {
         display: flex;
