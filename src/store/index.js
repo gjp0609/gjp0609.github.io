@@ -5,7 +5,8 @@ import mutations from './mutations.js';
 
 export default new Vuex.Store({
     state: {
-        count: 0
+        count: 0,
+        token: ''
     },
     mutations: mutations
 });

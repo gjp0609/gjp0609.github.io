@@ -10,16 +10,7 @@ module.exports = merge(common, {
         clientLogLevel: 'none',
         host: '127.0.0.1',
         allowedHosts: ['127.0.0.1:23232'],
-        port: 23232,
-        proxy: {
-            '/': {
-                target: 'http://127.0.0.1:23232',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/': '/'
-                }
-            }
-        }
+        port: 23232
     },
     output: {
         filename: 'js/[name].[hash].js', // 每次保存 hash 都变化

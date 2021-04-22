@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Layout from '../views/layout/Layout.vue';
-import Test from '../views/test/Test.vue';
 
 Vue.use(VueRouter);
 
@@ -36,9 +35,44 @@ export const constantMenuRouterMap = [
         children: [
             {
                 path: 'test',
-                component: Test,
+                component: () => import('../views/test/Test.vue'),
                 meta: {
                     name: 'TestPage',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'check_circle_outline'
+                    }
+                }
+            }
+        ]
+    },
+    {
+        path: '/algorithm',
+        component: Layout,
+        meta: {
+            name: 'Algorithm',
+            icon: {
+                type: 'material-icons',
+                name: 'help_outline'
+            }
+        },
+        children: [
+            {
+                path: 'login',
+                component: () => import('../views/algorithm/Login.vue'),
+                meta: {
+                    name: 'Login',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'check_circle_outline'
+                    }
+                }
+            },
+            {
+                path: 'api',
+                component: () => import('../views/algorithm/Api.vue'),
+                meta: {
+                    name: 'Api',
                     icon: {
                         type: 'material-icons',
                         name: 'check_circle_outline'
@@ -107,6 +141,17 @@ export const constantMenuRouterMap = [
                 component: () => import('../views/tools/QrCode.vue'),
                 meta: {
                     name: 'QrCode',
+                    icon: {
+                        type: 'element-ui',
+                        name: 'el-icon-camera-solid'
+                    }
+                }
+            },
+            {
+                path: 'PDM',
+                component: () => import('../views/tools/PDM.vue'),
+                meta: {
+                    name: 'PDM',
                     icon: {
                         type: 'element-ui',
                         name: 'el-icon-camera-solid'
