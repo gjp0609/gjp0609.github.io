@@ -26,6 +26,7 @@
                 this.$store.commit(SET_COUNT, { count: this.$store.count + 1 });
             },
             index() {
+                console.log('test action');
                 this.$router.push('/index/home');
             }
         }
