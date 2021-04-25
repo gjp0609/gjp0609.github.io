@@ -5,15 +5,15 @@
                 <div class="buttons">
                     <div>
                         <span>Show Plain Text:</span>
-                        <el-switch v-model="plainText" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="plainText" active-color="#13ce66" inactive-color="#ff4949" @change="save"></el-switch>
                     </div>
                     <div>
                         <span>Mode Switch:</span>
-                        <el-switch v-model="splitMode" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="splitMode" active-color="#13ce66" inactive-color="#ff4949" @change="save"></el-switch>
                     </div>
                     <div v-if="!splitMode">
                         <span>Thin:</span>
-                        <el-switch v-model="thin" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="thin" active-color="#13ce66" inactive-color="#ff4949" @change="save"></el-switch>
                     </div>
                 </div>
             </el-card>
@@ -26,7 +26,7 @@
                 <el-input v-model="format[0]" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
             </el-col>
             <el-col :span="plainText ? 8 : 16">
-                <div v-html="format[1]" class="result"></div>
+                <div class="result" v-html="format[1]"></div>
             </el-col>
         </el-row>
     </div>
@@ -150,7 +150,7 @@
                         );
                         styleString.push(`<span class="inline xml_item_comment">${element.nodeValue}</span>`);
                         styleString.push(`<span class="inline xml_item_${level}"> --></span>`);
-                        styleString.push(`<br/>`);
+                        styleString.push('<br/>');
                         break;
                     case Node.CDATA_SECTION_NODE:
                         noneBlankString.push(element.nodeValue);
@@ -274,8 +274,8 @@
                     let space3 = '';
                     let space2 = '';
                     for (let i = 0; i < index; i++) {
-                        space3 += `<span class="xml_space"></span>`;
-                        space2 += `  `;
+                        space3 += '<span class="xml_space"></span>';
+                        space2 += '  ';
                     }
                     item2 = item2.replace('my_blank_word', space2);
                     item3 = item3.replace('my_blank_word', space3);
@@ -344,7 +344,7 @@
             overflow-y: auto;
             overflow-x: hidden;
         }
-        ::v-deep.result {
+        :deep(.result) {
             border: #dbdbdb solid 1px;
             border-radius: 3px;
             padding: 10px;

@@ -1,14 +1,5 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import Layout from '../views/layout/Layout.vue';
-import Test from '../views/test/Test.vue';
-
-Vue.use(VueRouter);
-
-const originalPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch((err) => err);
-};
 
 export const constantMenuRouterMap = [
     {
@@ -36,9 +27,20 @@ export const constantMenuRouterMap = [
         children: [
             {
                 path: 'test',
-                component: Test,
+                component: () => import('../views/test/Test.vue'),
                 meta: {
                     name: 'TestPage',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'check_circle_outline'
+                    }
+                }
+            },
+            {
+                path: 'test2',
+                component: () => import('../views/test/Test2.vue'),
+                meta: {
+                    name: 'TestPage2',
                     icon: {
                         type: 'material-icons',
                         name: 'check_circle_outline'
@@ -117,7 +119,7 @@ export const constantMenuRouterMap = [
     }
 ];
 
-export const constantRouterMap = [
+const routes: Array<RouteRecordRaw> = [
     ...constantMenuRouterMap,
     {
         path: '/index',
@@ -134,15 +136,14 @@ export const constantRouterMap = [
         component: () => import('../views/404.vue')
     },
     {
-        path: '/*',
+        path: '/:pathMatch(.*)*',
         redirect: '/404'
     }
 ];
 
-export default new VueRouter({
-    // mode: 'history', //后端支持可开
-    // scrollBehavior: () => ({
-    //     y: 0
-    // }),
-    routes: constantRouterMap
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes
 });
+
+export default router;

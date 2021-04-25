@@ -17,6 +17,9 @@ jobs:
 
     - run: npm ci
 
+    - name: empty build dir
+      run: node .github/actions/empty-build-dir.js
+
     - run: npm run build --if-present
 
     - name: Commit & Push changes

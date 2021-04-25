@@ -1,7 +1,7 @@
 <template>
     <div class="index">
         <el-button @click="index">to index</el-button>
-        <el-button @click="addCount">Add</el-button>
+        <el-button @click="minusCount">Minus</el-button>
         <span>{{ count }}</span>
     </div>
 </template>
@@ -23,8 +23,8 @@
             this.test = this.$store.state.count;
         },
         methods: {
-            addCount() {
-                this.$store.state.count = this.$store.state.count + 1;
+            minusCount() {
+                this.$store.state.count = this.$store.state.count - 1;
             },
             index() {
                 console.log('test action');

@@ -6,15 +6,15 @@
         <!--        </el-row>-->
         <el-row class="search" type="flex">
             <el-col class="code">
-                <el-input v-model="code" @focus="type = false" placeholder="查询请输入编码"></el-input>
+                <el-input v-model="code" placeholder="查询请输入编码" @focus="type = false"></el-input>
             </el-col>
             <el-col class="button">
-                <el-button v-if="type" @click="saveText" type="primary">保存</el-button>
-                <el-button v-else @click="getText" type="success">查询</el-button>
+                <el-button v-if="type" type="primary" @click="saveText">保存</el-button>
+                <el-button v-else type="success" @click="getText">查询</el-button>
             </el-col>
         </el-row>
         <el-row>
-            <el-input v-model="content" @focus="type = true" :autosize="{ minRows: 30 }" type="textarea" placeholder="保存请输入内容"></el-input>
+            <el-input v-model="content" :autosize="{ minRows: 30 }" type="textarea" placeholder="保存请输入内容" @focus="type = true"></el-input>
         </el-row>
     </div>
 </template>

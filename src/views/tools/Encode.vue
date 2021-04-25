@@ -2,20 +2,20 @@
     <div class="encode">
         <el-row v-for="(func, index) in funcs" :key="func.name" class="funcs">
             <el-col :span="11">
-                <el-input v-model="func.src" :rows="5" @input="exec(index, func, true)" type="textarea"></el-input>
+                <el-input v-model="func.src" :rows="5" type="textarea" @input="exec(index, func, true)"></el-input>
             </el-col>
             <el-col :span="2" class="func-name">
                 <span>{{ func.name }}</span>
             </el-col>
             <el-col :span="11">
-                <el-input v-model="func.result" :rows="5" @input="exec(index, func, false)" type="textarea"></el-input>
+                <el-input v-model="func.result" :rows="5" type="textarea" @input="exec(index, func, false)"></el-input>
             </el-col>
         </el-row>
     </div>
 </template>
 
 <script>
-    let MD5 = require('js-md5');
+    import MD5 from 'js-md5';
     import { Base64 } from 'js-base64';
 
     export default {

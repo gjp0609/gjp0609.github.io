@@ -5,7 +5,7 @@
                 <template v-if="isNotEmpty(obj)">
                     <div v-for="(value, key) in obj" :class="getType(key) ? shows[key].type : ''" class="wrapper">
                         <div :class="(isOpen(key) ? 'open' : 'close') + ` index-${index} ` + (isArray(obj) ? 'index' : 'key')">
-                            <span @click="switchShow(key)" class="button-wrapper">
+                            <span class="button-wrapper" @click="switchShow(key)">
                                 <span class="button">
                                     {{ getType(key) === 'text' ? '&#160;' : isOpen(key) ? '-' : '+' }}
                                 </span>
@@ -24,7 +24,7 @@
             </template>
         </template>
         <template v-else>
-            <div class="text" style="color: red;text-decoration: underline">NULL</div>
+            <div class="text" style="color: red; text-decoration: underline">NULL</div>
         </template>
     </div>
 </template>
@@ -44,7 +44,7 @@
             };
         },
         computed: {
-            computedObj: function() {
+            computedObj: function () {
                 console.log('computed obj, ', this.obj);
                 if (this.obj && this.obj instanceof Object) {
                     for (const key in this.obj) {
@@ -65,7 +65,7 @@
                                 }
                             }
                         }
-                        this.$set(this.shows, key, { isOpen: this.expand || type === 'text', type: type });
+                        this.shows[key] = { isOpen: this.expand || type === 'text', type: type };
                     }
                 }
                 return this.obj;

@@ -5,15 +5,15 @@
                 <div class="buttons">
                     <div>
                         <span>Expand All:</span>
-                        <el-switch v-model="expand" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="expand" active-color="#13ce66" inactive-color="#ff4949" @change="save"></el-switch>
                     </div>
                     <div>
                         <span>Auto Format:</span>
-                        <el-switch v-model="autoFormat" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="autoFormat" active-color="#13ce66" inactive-color="#ff4949" @change="save"></el-switch>
                     </div>
                     <div v-if="autoFormat">
                         <span>Pretty:</span>
-                        <el-switch v-model="pretty" @change="save" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                        <el-switch v-model="pretty" active-color="#13ce66" inactive-color="#ff4949" @change="save"></el-switch>
                     </div>
                 </div>
             </el-card>
@@ -49,7 +49,7 @@
             };
         },
         computed: {
-            getObj: function() {
+            getObj: function () {
                 let source = this.source;
                 if (this.isMounted) {
                     this.save();
@@ -101,6 +101,14 @@
                 let jsonData;
                 try {
                     jsonData = JSON.parse(localStorage.getItem('jsonData'));
+                    if (!jsonData) {
+                        jsonData = {
+                            source: '',
+                            autoFormat: true,
+                            pretty: true,
+                            expand: true
+                        };
+                    }
                 } catch (e) {
                     jsonData = {
                         source: '',

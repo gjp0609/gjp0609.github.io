@@ -2,9 +2,6 @@
     <div :class="isDark ? 'dark' : 'light'" class="layout">
         <aside :class="isCollapse ? 'is-collapse' : 'not-collapse'" class="menu">
             <el-menu
-                @open="handleOpen"
-                @close="handleClose"
-                @select="handleSelect"
                 :collapse="isCollapse"
                 :collapse-transition="true"
                 :default-active="defaultActive"
@@ -14,43 +11,42 @@
                 :background-color="themeColor.backgroundColor"
                 :text-color="themeColor.textColor"
             >
-                <template v-for="router in routerMap" v-if="!router.meta.hidden">
-                    <el-submenu v-if="router.children" :index="router.path">
-                        <template slot="title">
+                <template v-for="router in routerMap">
+                    <template v-if="!router.meta.hidden">
+                        <el-submenu v-if="router.children" :index="router.path">
+                            <template #title>
+                                <template v-if="router.meta.icon">
+                                    <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
+                                    <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
+                                </template>
+                                <span>{{ router.meta.name }}</span>
+                            </template>
+                            <el-menu-item v-for="subRouter in router.children" :key="subRouter.path" :index="router.path + '/' + subRouter.path">
+                                <template v-if="!subRouter.meta.hidden">
+                                    <template v-if="subRouter.meta.icon">
+                                        <i v-if="subRouter.meta.icon.type === 'material-icons'" class="material-icons">
+                                            {{ subRouter.meta.icon.name }}
+                                        </i>
+                                        <i v-if="subRouter.meta.icon.type === 'element-ui'" :class="subRouter.meta.icon.name"></i>
+                                    </template>
+                                    <span> {{ subRouter.meta.name }}</span>
+                                </template>
+                            </el-menu-item>
+                        </el-submenu>
+                        <el-menu-item v-else :index="router.path">
                             <template v-if="router.meta.icon">
                                 <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
                                 <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
                                 <!-- <i v-if="router.meta.icon.type === 'font-awesome-icons'" :class="router.meta.icon.name" class="fas"></i>-->
                             </template>
-                            <span slot="title">{{ router.meta.name }}</span>
-                        </template>
-                        <el-menu-item
-                            v-for="subRouter in router.children"
-                            v-if="!subRouter.meta.hidden"
-                            :key="subRouter.path"
-                            :index="router.path + '/' + subRouter.path"
-                        >
-                            <template v-if="subRouter.meta.icon">
-                                <i v-if="subRouter.meta.icon.type === 'material-icons'" class="material-icons">{{ subRouter.meta.icon.name }}</i>
-                                <i v-if="subRouter.meta.icon.type === 'element-ui'" :class="subRouter.meta.icon.name"></i>
-                                <!-- <i v-if="subRouter.meta.icon.type === 'font-awesome-icons'" :class="subRouter.meta.icon.name" class="fas"></i>-->
-                            </template>
-                            <span> {{ subRouter.meta.name }}</span>
+                            <span>{{ router.meta.name }}</span>
                         </el-menu-item>
-                    </el-submenu>
-                    <el-menu-item v-else :index="router.path">
-                        <template v-if="router.meta.icon">
-                            <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
-                            <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
-                            <!-- <i v-if="router.meta.icon.type === 'font-awesome-icons'" :class="router.meta.icon.name" class="fas"></i>-->
-                        </template>
-                        <span>{{ router.meta.name }}</span>
-                    </el-menu-item>
+                    </template>
                 </template>
             </el-menu>
             <div class="operations">
-                <i @click="menuCollapseChange" class="material-icons">{{ isCollapse ? 'last_page' : 'first_page' }}</i>
-                <i @click="handleThemeChange" class="material-icons">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
+                <i class="material-icons" @click="menuCollapseChange">{{ isCollapse ? 'last_page' : 'first_page' }}</i>
+                <i class="material-icons" @click="handleThemeChange">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
             </div>
         </aside>
         <div class="main">
@@ -66,8 +62,7 @@
 </template>
 
 <script>
-    import { constantMenuRouterMap } from '../../router';
-    import cssConstants from '../../styles/menu-colors.scss';
+    import { constantMenuRouterMap } from '../../router/index';
 
     export default {
         name: 'Layout',
@@ -84,15 +79,15 @@
             themeColor() {
                 if (this.isDark) {
                     return {
-                        activeTextColor: cssConstants.darkActiveTextColor,
-                        backgroundColor: cssConstants.darkBackgroundColor,
-                        textColor: cssConstants.darkTextColor
+                        activeTextColor: '#ffd04b',
+                        backgroundColor: '#545c64',
+                        textColor: '#ffffff'
                     };
                 } else {
                     return {
-                        activeTextColor: cssConstants.lightActiveTextColor,
-                        backgroundColor: cssConstants.lightBackgroundColor,
-                        textColor: cssConstants.lightTextColor
+                        activeTextColor: '#3685d6',
+                        backgroundColor: '#dddddd',
+                        textColor: '#000000'
                     };
                 }
             }
@@ -100,17 +95,18 @@
         mounted() {
             let _this = this;
             let indexPath = '/index/home';
-            if (this.$router.currentRoute.path !== indexPath) {
-                _this.defaultActive = this.$router.currentRoute.path;
+            console.log(this.$router.currentRoute.value.fullPath);
+            if (this.$router.currentRoute.value.fullPath !== indexPath) {
+                _this.defaultActive = this.$router.currentRoute.value.fullPath;
             }
-            this.$router.beforeEach(function(to, from, next) {
+            this.$router.beforeEach(function (to, from, next) {
                 _this.defaultActive = to.path;
                 if (to.path === indexPath) {
                     _this.defaultActive = '/';
                 }
                 next();
             });
-            setInterval((_) => {
+            setInterval(() => {
                 let now = new Date();
                 _this.time =
                     now.getFullYear() +
@@ -131,15 +127,6 @@
             }, 1000);
         },
         methods: {
-            handleOpen(key, keyPath) {
-                // console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                // console.log(key, keyPath);
-            },
-            handleSelect(index, indexPath) {
-                // console.log(index, indexPath);
-            },
             menuCollapseChange() {
                 this.isCollapse = !this.isCollapse;
                 localStorage.setItem('menuIsCollapse', this.isCollapse ? '1' : '0');
