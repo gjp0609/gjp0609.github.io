@@ -15,4 +15,4 @@ function emptyDir(dir) {
     }
 }
 
-emptyDir('./static/assets');
+emptyDir('./docs/assets');
