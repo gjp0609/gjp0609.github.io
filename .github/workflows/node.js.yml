@@ -28,4 +28,4 @@ jobs:
         author_name: github-actions
         author_email: github-actions[bot]@users.noreply.github.com
         message: 'Commit from GitHub Actions'
-        add: '["./static/index.html", "./static/assets/*.*"]'
+        add: '["./docs/index.html", "./docs/assets/*.*"]'
