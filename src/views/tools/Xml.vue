@@ -20,10 +20,10 @@
         </el-row>
         <el-row :gutter="10">
             <el-col :span="8">
-                <el-input v-model="source" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
+                <el-input v-model="source" type="textarea" placeholder="请输入内容"></el-input>
             </el-col>
             <el-col v-if="plainText" :span="8">
-                <el-input v-model="format[0]" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
+                <el-input v-model="format[0]" type="textarea" placeholder="请输入内容"></el-input>
             </el-col>
             <el-col :span="plainText ? 8 : 16">
                 <div class="result" v-html="format[1]"></div>
@@ -50,12 +50,7 @@
                 if (this.isMounted) {
                     this.save();
                 }
-                this.source = this.source
-                    .replace(/\n/g, '')
-                    .replace(/\t/g, ' ')
-                    .replace(/>[ ]+/g, '>')
-                    .replace(/[ ]+</g, '<')
-                    .replace(/ +/g, ' ');
+                this.source = this.source.replace(/\n/g, '').replace(/\t/g, ' ').replace(/>[ ]+/g, '>').replace(/[ ]+</g, '<').replace(/ +/g, ' ');
                 if (this.splitMode) {
                     return this.formatXmlBySplit(this.source);
                 } else {
@@ -77,7 +72,7 @@
             }
         },
         mounted() {
-            console.log('get');
+            console.log('mounted');
             this.get();
             this.isMounted = true;
         },
@@ -340,14 +335,21 @@
             }
         }
         .el-col {
-            height: 95vh;
+            height: 91vh;
             overflow-y: auto;
             overflow-x: hidden;
+            .el-textarea {
+                height: 97%;
+                :deep(textarea) {
+                    height: 100%;
+                    overflow-y: auto;
+                }
+            }
         }
         :deep(.result) {
+            height: 97%;
             border: #dbdbdb solid 1px;
             border-radius: 3px;
-            padding: 10px;
             overflow-y: auto;
             .inline {
                 display: inline !important;

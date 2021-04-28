@@ -20,7 +20,7 @@
         </el-row>
         <el-row :gutter="10">
             <el-col :span="8">
-                <el-input v-model="source" :autosize="{ minRows: 30 }" type="textarea" placeholder="请输入内容"></el-input>
+                <el-input v-model="source" type="textarea" placeholder="请输入内容"></el-input>
             </el-col>
             <el-col :span="16">
                 <div class="json-text">
@@ -142,10 +142,18 @@
             }
         }
         .el-col {
-            height: 95vh;
+            height: 91vh;
             overflow-y: auto;
             overflow-x: hidden;
+            .el-textarea {
+                height: 97%;
+                :deep(textarea) {
+                    height: 100%;
+                    overflow-y: auto;
+                }
+            }
             .json-text {
+                height: 97%;
                 overflow-y: auto;
                 border: 1px solid #dcdfe6;
                 border-radius: 4px;
