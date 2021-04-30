@@ -17,6 +17,7 @@
 <script>
     import MD5 from 'js-md5';
     import { Base64 } from 'js-base64';
+    import moment from 'moment';
 
     export default {
         name: 'Encode',
@@ -26,9 +27,19 @@
                     { name: 'UrlEncode', src: '', result: '' },
                     { name: 'Base64', src: '', result: '' },
                     { name: 'MD5', src: '', result: '' },
-                    { name: 'Unicode', src: '', result: '' }
+                    { name: 'Unicode', src: '', result: '' },
+                    { name: 'Time', src: '', result: '' }
                 ]
             };
+        },
+        mounted() {
+            let now = new Date();
+            for (const func of this.funcs) {
+                if (func.name === 'Time') {
+                    func.src = moment.unix(now.getTime() / 1000).format('YYYY-MM-DD HH:mm:ss');
+                    func.result = now.getTime() + '\nyyyy-MM-dd HH:mm:ss';
+                }
+            }
         },
         methods: {
             exec(index, func, leftToRight) {
@@ -53,6 +64,16 @@
                             }
                             break;
                         }
+                        case 'Time':
+                            let timestamp = moment(('' + func.src).split('\n')[0]).unix() * 1000;
+                            console.log(timestamp);
+                            if (!isNaN(timestamp)) {
+                                console.log(typeof timestamp);
+                                temp = timestamp + '\n' + ('' + func.result).split('\n')[1];
+                            } else {
+                                temp = func.result;
+                            }
+                            break;
                         default:
                             temp = func.result;
                     }
@@ -83,6 +104,18 @@
                             temp = str;
                             break;
                         }
+                        case 'Time':
+                            let split = ('' + func.result).split('\n');
+                            let timestamp = parseInt(split[0]);
+                            if (timestamp > 10000000000) {
+                                timestamp = timestamp / 1000;
+                            }
+                            if (split[1]) {
+                                temp = moment.unix(timestamp).format(split[1].replace(/dd/g, 'DD'));
+                            } else {
+                                temp = moment.unix(timestamp).format('YYYY-MM-DD HH:mm:ss');
+                            }
+                            break;
                         default:
                             temp = func.src;
                     }

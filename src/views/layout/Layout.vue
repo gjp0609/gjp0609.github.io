@@ -52,7 +52,7 @@
         <div class="main">
             <header>
                 <span>OnySakura.fun</span>
-                <code class="time">{{ time }}</code>
+                <code class="time" @click="copy">{{ time }}</code>
             </header>
             <section>
                 <router-view></router-view>
@@ -63,7 +63,7 @@
 
 <script>
     import { constantMenuRouterMap } from '../../router/index';
-
+    import moment from 'moment';
     export default {
         name: 'Layout',
         data() {
@@ -107,24 +107,8 @@
                 next();
             });
             setInterval(() => {
-                let now = new Date();
-                _this.time =
-                    now.getFullYear() +
-                    '-' +
-                    ('0' + (now.getMonth() + 1)).substring(-1) +
-                    '-' +
-                    (now.getDate() < 10 ? '0' : '') +
-                    now.getDate() +
-                    ' ' +
-                    (now.getHours() < 10 ? '0' : '') +
-                    now.getHours() +
-                    ':' +
-                    (now.getMinutes() < 10 ? '0' : '') +
-                    now.getMinutes() +
-                    ':' +
-                    (now.getSeconds() < 10 ? '0' : '') +
-                    now.getSeconds();
-            }, 1000);
+                _this.time = moment().format('YYYY-MM-DD HH:mm:ss');
+            }, 500);
         },
         methods: {
             menuCollapseChange() {
@@ -134,6 +118,11 @@
             handleThemeChange() {
                 this.isDark = !this.isDark;
                 localStorage.setItem('themeIsDark', this.isDark ? '1' : '0');
+            },
+            async copy() {
+                let blob = new Blob([this.time], { type: 'text/plain' });
+                let item = new ClipboardItem({ 'text/plain': blob });
+                navigator.clipboard.write([item]);
             }
         }
     };
