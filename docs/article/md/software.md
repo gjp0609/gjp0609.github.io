@@ -21,13 +21,25 @@
   空格预览文件
 
 - ### [Rufus](https://github.com/pbatard/rufus/)
+
+  启动盘制作
+
 - ### [Snipaste(v1.16.2)](https://zh.snipaste.com/)
 
   截图/贴图工具
 
 - ### [SpaceSniffer](http://www.uderzo.it/main_products/space_sniffer/)
+
+  磁盘空间占用分析
+
 - ### [Sumatra PDF](https://github.com/sumatrapdfreader/sumatrapdf/)
+
+  PDF阅读器
+
 - ### [Windows Terminal](https://github.com/microsoft/terminal/)
+
+  终端
+
 - ### [WinSCP](https://winscp.net/eng/download.php/)
 - ### [wxMEdit](https://github.com/wxMEdit/wxMEdit/)
 

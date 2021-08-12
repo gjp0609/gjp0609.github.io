@@ -17,6 +17,10 @@
 <br/>
 <br/>
 
+### Home Page
+- [Github](https://github.com/gjp0609/gjp0609.github.io)
+- [Gitee](https://gitee.com/gjp0609/gjp0609.github.io)
+
 ### Dependencies
 - [jQuery](https://github.com/jquery/jquery/)
 - [Marked](https://github.com/markedjs/marked/)
