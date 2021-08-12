@@ -32,6 +32,7 @@
             line-height: 4vh;
             padding-left: 30px;
             font-weight: bold;
+            z-index: 2; /* 防止阴影被覆盖 */
         }
 
         #main {
@@ -43,6 +44,7 @@
         #list {
             width: 300px;
             border-right: 1px #acacac solid;
+            overflow-x: hidden;
             overflow-y: auto;
             padding-bottom: 10px;
         }
@@ -77,7 +79,7 @@
 
         #marked-wrapper {
             overflow-y: auto;
-            width: 100%;
+            flex: 1;
         }
 
         #marked {
@@ -111,6 +113,7 @@
 
         #marked pre {
             background-color: #f4f7f9;
+            overflow-x: auto;
         }
 
         @-webkit-keyframes wordsLoop {
@@ -126,22 +129,13 @@
         }
 
         #loading {
-            user-select: none;
-            position: fixed;
-            background-color: rgba(200, 200, 200, 0.1);
-            padding: 100%;
-            z-index: 10000;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #loading > div {
             width: 20px;
             height: 20px;
-            line-height: 100px;
-            text-align: center;
-            font-size: 30px;
+            position: fixed;
+            user-select: none;
+            z-index: 10;
+            top: 50%;
+            left: 50%;
             border-top: #ff6d00 solid 1px;
             border-left: white solid 1px;
             border-bottom: #ff6d00 solid 1px;
@@ -149,13 +143,12 @@
             border-radius: 100%;
             animation: 0.8s loading linear infinite normal;
         }
-
         @-webkit-keyframes loading {
             0% {
-                transform: rotate(0);
+                transform: translate(calc(-50% + 150px), -50%) rotate(0);
             }
             100% {
-                transform: rotate(360deg);
+                transform: translate(calc(-50% + 150px), -50%) rotate(360deg);
             }
         }
     </style>
@@ -168,14 +161,10 @@
         <div id="marked"></div>
     </div>
 </div>
-<div id="loading">
-    <div></div>
-</div>
+<div id="loading"></div>
 </body>
 <script>
     loading(true)
-
-    document.addEventListener('DOMContentLoaded', () => pangu.autoSpacingPage())
 
     marked.setOptions({
         baseUrl: '/pages/docs/article/md/'
@@ -213,23 +202,26 @@
     function render(key) {
         loading(true)
         if (lastKey === key) {
+            loading(false)
             return
         }
         window.location.href = '#' + key
         $('#list .menu .item').removeClass('active')
         $('#file-' + key).addClass('active')
+        document.title = 'Article > ' + articles[key]
+        lastKey = key
         fetch('./md/' + key + '.md')
             .then((response) => response.text())
             .then((text) => {
                 $('#marked').html(marked(text))
                 linkOpenInNewTab()
-                loading(false)
+                pangu.spacingElementById('marked-wrapper')
+                setTimeout(() => loading(false), 200)
             })
-        document.title = 'Article > ' + articles[key]
-        lastKey = key
     }
 
     function loading(on) {
+        $('#marked-wrapper').css('display', on ? 'none' : 'block')
         $('#loading').css('display', on ? 'block' : 'none')
     }
 
