@@ -208,10 +208,10 @@
             currentKey = Object.keys(articles)[0]
         }
         render(currentKey)
-        loading(false)
     })
 
     function render(key) {
+        loading(true)
         if (lastKey === key) {
             return
         }
@@ -223,6 +223,7 @@
             .then((text) => {
                 $('#marked').html(marked(text))
                 linkOpenInNewTab()
+                loading(false)
             })
         document.title = 'Article > ' + articles[key]
         lastKey = key

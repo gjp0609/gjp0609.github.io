@@ -7,7 +7,7 @@
 
 <code>0O</code>
 
-[链接](../index.html)
+[链接](https://pages.onysakura.fun/article/index.html)
 
 Flex是Flexible Box 的缩写，意为"弹性布局"，用来为盒状模型提供最大的灵活性。
 ```
