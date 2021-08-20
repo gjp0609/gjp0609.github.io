@@ -1,1 +1,0 @@
-import{p as a,a as e,o as s,b as o,w as c,d}from"./vendor.82301a5a.js";const t={name:"Page404"},n=c();a("data-v-59eecb7c");const r={class:"page-404"},p=d("code",null,"404 - Page Not Found!!",-1);e();const l=n(((a,e,c,d,t,n)=>(s(),o("div",r,[p]))));t.render=l,t.__scopeId="data-v-59eecb7c";export default t;
