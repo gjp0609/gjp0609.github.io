@@ -114,6 +114,17 @@ export const constantMenuRouterMap = [
                         name: 'el-icon-camera-solid'
                     }
                 }
+            },
+            {
+                path: 'ECharts',
+                component: () => import('../views/tools/ECharts.vue'),
+                meta: {
+                    name: 'ECharts',
+                    icon: {
+                        type: 'element-ui',
+                        name: 'el-icon-pie-chart'
+                    }
+                }
             }
         ]
     }

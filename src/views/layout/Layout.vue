@@ -250,6 +250,8 @@
         }
         .main {
             width: 100%;
+            display: flex;
+            flex-direction: column;
             header {
                 $headerHeight: 40px;
                 height: $headerHeight;
@@ -261,6 +263,9 @@
             }
             section {
                 padding: 20px;
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
             }
         }
     }
