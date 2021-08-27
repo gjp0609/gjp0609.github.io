@@ -1,8 +1,5 @@
 <template>
     <div class="echarts">
-        <el-row class="options">
-
-        </el-row>
         <el-row class="chart">
             <div id="main" :style="'height: '+height+'px'"></div>
         </el-row>
@@ -15,18 +12,17 @@
 <script>
 import * as echarts from 'echarts'
 
+let myChart
 export default {
     name: 'ECharts',
     data() {
         return {
-            listText: '',
-            type: 1,
-            myChart: undefined
+            listText: ''
         }
     },
     mounted() {
         let chartDom = document.getElementById('main')
-        this.myChart = echarts.init(chartDom)
+        myChart = echarts.init(chartDom)
         this.listText = localStorage.getItem('ECharts_listText')
         if (this.listText) {
             this.exec()
@@ -34,37 +30,82 @@ export default {
     },
     methods: {
         exec() {
-            let option
-            switch (this.type) {
-                case 1:
-                    let json
-                    try {
-                        json = JSON.parse(this.listText)
-                    } catch (e) {
-                        json = []
-                    }
-                    let xAxisData = [], seriesData = []
+            let json
+            try {
+                json = JSON.parse(this.listText)
+            } catch (e) {
+                json = []
+            }
+            let xAxisData = []
+            let series = []
+            if (typeof json === 'number') {
+                if (typeof json[0] === 'number') {
+                    let seriesData = []
                     for (let i = 0; i < json.length; i++) {
                         xAxisData.push(i)
                         seriesData.push(json[i])
                     }
-                    option = {
-                        xAxis: {
-                            type: 'category',
-                            data: xAxisData
-                        },
-                        yAxis: {
-                            type: 'value'
-                        },
-                        series: [{
+                    series.push({
+                        data: seriesData,
+                        type: 'line',
+                        smooth: true
+                    })
+                } else if (typeof json[0] === 'object' && Array.isArray(json[0])) {
+                    let maxLength = 0
+                    for (let i = 0; i < json.length; i++) {
+                        let seriesData = []
+                        for (let j = 0; j < json[i].length; j++) {
+                            seriesData.push(json[i][j])
+                            maxLength = maxLength < j ? j : maxLength
+                        }
+                        series.push({
+                            name: 'list' + i,
                             data: seriesData,
                             type: 'line',
                             smooth: true
-                        }]
+                        })
                     }
-                    break
+                    for (let i = 0; i < maxLength; i++) {
+                        xAxisData.push(i)
+                    }
+                }
+            } else {
+                let maxLength = 0
+                for (const key in json) {
+                    series.push({
+                        name: key,
+                        type: 'line',
+                        data: json[key],
+                        smooth: true
+                    })
+                    let length = json[key].length || 0
+                    maxLength = maxLength < length ? length : maxLength
+                }
+                for (let i = 0; i < maxLength; i++) {
+                    xAxisData.push(i)
+                }
             }
-            this.myChart.setOption(option)
+            let legendData = []
+            for (const item of series) {
+                legendData.push(item.name)
+            }
+            let option = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: legendData
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: series
+            }
+            myChart.setOption(option)
             localStorage.setItem('ECharts_listText', this.listText)
         }
     }
