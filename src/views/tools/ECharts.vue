@@ -38,7 +38,7 @@ export default {
             }
             let xAxisData = []
             let series = []
-            if (typeof json === 'number') {
+            if (Array.isArray(json)) {
                 if (typeof json[0] === 'number') {
                     let seriesData = []
                     for (let i = 0; i < json.length; i++) {
@@ -47,8 +47,7 @@ export default {
                     }
                     series.push({
                         data: seriesData,
-                        type: 'line',
-                        smooth: true
+                        type: 'line'
                     })
                 } else if (typeof json[0] === 'object' && Array.isArray(json[0])) {
                     let maxLength = 0
@@ -61,8 +60,7 @@ export default {
                         series.push({
                             name: 'list' + i,
                             data: seriesData,
-                            type: 'line',
-                            smooth: true
+                            type: 'line'
                         })
                     }
                     for (let i = 0; i < maxLength; i++) {
@@ -71,18 +69,23 @@ export default {
                 }
             } else {
                 let maxLength = 0
-                for (const key in json) {
+                let data = json.data
+                let tags = json.tags
+                for (const key in data) {
                     series.push({
                         name: key,
                         type: 'line',
-                        data: json[key],
-                        smooth: true
+                        data: data[key]
                     })
-                    let length = json[key].length || 0
+                    let length = data[key].length || 0
                     maxLength = maxLength < length ? length : maxLength
                 }
-                for (let i = 0; i < maxLength; i++) {
-                    xAxisData.push(i)
+                if (!tags) {
+                    for (let i = 0; i < maxLength; i++) {
+                        xAxisData.push(i)
+                    }
+                } else {
+                    xAxisData = tags
                 }
             }
             let legendData = []
