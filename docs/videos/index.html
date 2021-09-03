@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="./libs/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Videos</title>
+    <link href="./libs/video-js.min.css" rel="stylesheet">
+    <!--    <link href="./libs/vjs-theme-city.css" rel="stylesheet">-->
+    <!--    <link href="./libs/vjs-theme-fantasy.css" rel="stylesheet">-->
+    <!--    <link href="./libs/vjs-theme-forest.css" rel="stylesheet">-->
+    <link href="./libs/vjs-theme-sea.css" rel="stylesheet">
+    <script src="./libs/vue.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #app {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+        }
+
+        aside {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media screen and (max-width: 1024px) {
+            #app {
+                flex-direction: column-reverse;
+            }
+
+            .video {
+                min-height: 10vh;
+            }
+
+            .video-js {
+                width: 100%;
+            }
+
+            #my-player_html5_api {
+                height: auto !important;
+            }
+
+            aside {
+                flex: 1;
+                border-right: none;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            aside {
+                width: 400px;
+                flex-shrink: 0;
+                border-right: #808080 solid 1px;
+                cursor: default;
+            }
+
+            .video {
+                flex: 1;
+            }
+
+            .video-js {
+                width: 100%;
+            }
+        }
+
+
+        .category {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: 3rem;
+            line-height: 3rem;
+            border-bottom: #808080 solid 1px;
+        }
+
+        .category div {
+            width: 4rem;
+            text-align: center;
+            flex: 1;
+        }
+
+        .category div.active {
+            background-color: lightgray;
+        }
+
+        .list {
+            display: block;
+            flex: 1;
+            list-style: none;
+            padding-left: 0;
+            overflow-y: auto;
+        }
+
+        .list .select {
+            background-color: #efefef;
+        }
+
+        .item {
+            padding: 0.5rem;
+        }
+
+        .item .title {
+            min-height: 2rem;
+            line-height: 2rem;
+            padding-left: 1rem;
+        }
+
+        @media screen and (min-width: 1024px) {
+            .item .title {
+                word-break: keep-all;
+                white-space: nowrap;
+                width: fit-content;
+                min-width: 100%;
+            }
+
+            .item .title:hover {
+                animation: 5s wordsLoop linear infinite normal;
+            }
+
+            @-webkit-keyframes wordsLoop {
+                0%, 20% {
+                    transform: translateX(0px);
+                }
+                45%, 55% {
+                    transform: translateX(calc(-100% + 383px));
+                }
+                80%, 100% {
+                    transform: translateX(0px);
+                }
+            }
+        }
+
+        .part-wrapper {
+            display: grid;
+            justify-content: space-around;
+            grid-template-columns: repeat(auto-fill, 3rem);
+        }
+
+        .part {
+            width: 3rem;
+            display: inline-block;
+            background-color: #f2fcfc;
+            text-align: center;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            margin: 0.2rem;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .no-data {
+            color: gray;
+            text-align: center;
+            margin-top: 10rem;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <aside>
+        <div class="category">
+            <div v-for="(category, key) in categories" :class="currentCategory === key ? 'active' : ''" @click="currentCategory = key">
+                {{ category.title }}
+            </div>
+        </div>
+        <template v-for="(category, key) in categories" v-if="currentCategory === key">
+            <ul class="list" v-if="category.list.length > 0">
+                <template v-for="item in category.list" v-key="item.dir">
+                    <li class="item" :class="item.show ? 'select' : ''">
+                        <template v-if="item.num !== 0">
+                            <div class="title" @click="showPart(item)">{{ item.title }}</div>
+                            <div class="part-wrapper" v-if="item.show">
+                                <template v-for="num in item.num" v-key="num">
+                                    <div class="part"
+                                         @click="play(key, item, getFileName(item.nameReg, num))"
+                                         @dblclick="copyUrl(key, item, getFileName(item.nameReg, num))"
+                                    >{{ padNumber(num) }}
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="title"
+                                 @click="play(key, item, item.nameReg)"
+                                 @dblclick="copyUrl(key, item, item.nameReg)"
+                            >{{ item.title }}
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+            <div class="no-data" v-else>no data</div>
+        </template>
+    </aside>
+    <div class="video">
+        <video
+                v-if="current"
+                id="my-player"
+                class="video-js"
+                :class="theme"
+                controls
+                preload="auto"
+                data-setup='{}'>
+        </video>
+    </div>
+</div>
+</body>
+<script src="./libs/video.min.js"></script>
+<script>
+    let isWindows = navigator.appVersion.indexOf('Windows') > 0
+    let domain = 'http://192.168.1.40:4321/share/videos/'
+    let appDom = document.getElementById('app')
+    let vm = new Vue({
+        el: appDom,
+        data() {
+            return {
+                theme: 'vjs-theme-sea',
+                current: '',
+                lastUpdate: '',
+                currentCategory: 'anime',
+                categories: {
+                    anime: {
+                        title: 'Anime',
+                        show: false,
+                        list: []
+                    },
+                    film: {
+                        title: 'Film',
+                        show: false,
+                        list: []
+                    },
+                    ep: {
+                        title: 'EP',
+                        show: false,
+                        list: []
+                    },
+                    mv: {
+                        title: 'MV',
+                        show: false,
+                        list: []
+                    }
+                }
+            }
+        },
+        mounted() {
+            let href = location.href
+            let index = href.indexOf('#')
+            let hash
+            if (index > 0) {
+                hash = href.substr(index + 1)
+                console.log(hash)
+            }
+            if (hash && this.categories[hash]) {
+                this.currentCategory = hash
+            } else {
+                this.currentCategory = Object.keys(this.categories)[0]
+                window.location.hash = '#' + this.currentCategory
+            }
+        },
+        watch: {
+            currentCategory(current, last) {
+                window.location.hash = '#' + this.currentCategory
+            }
+        },
+        methods: {
+            play(category, item, part) {
+                let url = domain + encodeURIComponent(category) + '/' + encodeURIComponent(item.dir) + '/' + encodeURIComponent(part)
+                if (item.dir.indexOf('/') !== -1) {
+                    url = url.replace(/%2F/g, '/')
+                }
+                if (this.current === part) {
+                    return
+                }
+                this.current = part
+                setTimeout(() => {
+                    let options = {}
+                    if (item.srt) {
+                        let suffix = url.substr(url.lastIndexOf('.'))
+                        let srtSource = url.replace(new RegExp(suffix, 'g'), '.h5.vtt')
+                        console.log(srtSource)
+                        options = {
+                            tracks: [{
+                                src: srtSource,
+                                kind: 'captions',
+                                srclang: 'zh',
+                                label: 'Chinese'
+                            }]
+                        }
+                    }
+                    vm.$nextTick(() => {
+                        let player = videojs('my-player', options)
+                        player.pause()
+                        player.src(url)
+                        player.load(url)
+                        player.ready(() => {
+                            setTimeout(() => {
+                                let aaa = document.getElementById('my-player_html5_api')
+                                console.log(aaa.offsetHeight)
+                                let videoJs = document.getElementsByClassName('video-js')[0]
+                                videoJs.style.height = aaa.offsetHeight + 'px'
+                            }, 500)
+                        })
+                        player.on('error', function(e) {
+                            console.log(e)
+                            console.log(player.error().message)
+                            // if (player.error().message.indexOf('No compatible source was found for this media') >= 0) {
+                            // }
+                            try {
+                                if (isWindows) {
+                                    location.href = `vlc:${url}`
+                                } else {
+                                    location.href = `intent:${url}#Intent;package=com.mxtech.videoplayer.pro;S.title=test123;end`
+                                }
+                            } catch (e) {
+                                this.writeClipboard(url)
+                                if (isWindows) {
+                                    alert('拉起vlc播放器失败，已复制地址到剪切板')
+                                } else {
+                                    alert('拉起mx播放器失败，已复制地址到剪切板')
+                                }
+                            }
+                        })
+                    }, 500)
+                })
+            },
+            copyUrl(category, item, part) {
+                let path = domain + encodeURIComponent(category) + '/' + encodeURIComponent(item.dir) + '/' + encodeURIComponent(part)
+                if (item.dir.indexOf('/') !== -1) {
+                    path = path.replace(/%2F/g, '/')
+                }
+                console.log('path', path)
+                this.writeClipboard(path)
+                alert('已复制地址到剪切板')
+            },
+            showPart(item) {
+                let temp = item.show
+                for (const key in this.categories) {
+                    for (const item of this.categories[key].list) {
+                        this.$set(item, 'show', false)
+                    }
+                }
+                this.$set(item, 'show', !(temp || false))
+                console.log(item)
+            },
+            padNumber(num) {
+                let len = num.toString().length
+                while (len < 2) {
+                    num = '0' + num
+                    len++
+                }
+                return num
+            },
+            getFileName(nameReg, num) {
+                return nameReg.replace(/\${num}/g, this.padNumber(num))
+            },
+            writeClipboard(text) {
+                let input = document.createElement('input')
+                input.value = text
+                input.style.display = 'block'
+                input.style.position = 'fixed'
+                input.style.top = '0'
+                input.style.marginTop = '-100px'
+                input.style.zIndex = '-1'
+                document.body.appendChild(input)
+                input.select()
+                input.setSelectionRange(0, input.value.length)
+                document.execCommand('Copy')
+                document.body.removeChild(input)
+            }
+        }
+    })
+
+
+    fetch('./libs/data.csv')
+        .then((response) => response.text())
+        .then((text) => {
+            let sp = text.split('\n')
+            for (let i = 1; i < sp.length; i++) {
+                let info = sp[i].split('|')
+                console.log(info[0].trim())
+                let list = vm.categories[info[0].trim()].list
+                list.push({
+                    'dir': info[1].trim(),
+                    'title': info[2].trim(),
+                    'nameReg': info[3].trim(),
+                    'srt': info[4].trim() === 'Y',
+                    'num': parseInt(info[5].trim())
+                })
+            }
+        })
+    // document.body.addEventListener('touchmove', event => event.preventDefault(), false)
+
+</script>
+</html>
