@@ -1,12 +1,14 @@
 <template>
     <div class="index">
         <el-button @click="index">to index</el-button>
-        <el-button @click="minusCount">Minus</el-button>
+        <el-button @click="decreaseCount">decrease</el-button>
         <span>{{ count }}</span>
     </div>
 </template>
 
 <script>
+    import { DECREASE_COUNT, store } from '../../store';
+
     export default {
         name: 'Test',
         data() {
@@ -16,15 +18,15 @@
         },
         computed: {
             count() {
-                return this.$store.state.count;
+                return store.state.count;
             }
         },
         mounted() {
-            this.test = this.$store.state.count;
+            this.test = store.state.count;
         },
         methods: {
-            minusCount() {
-                this.$store.state.count = this.$store.state.count - 1;
+            decreaseCount() {
+                store.commit(DECREASE_COUNT);
             },
             index() {
                 console.log('test action');

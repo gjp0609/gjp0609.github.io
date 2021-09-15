@@ -94,13 +94,13 @@ export const constantMenuRouterMap = [
                 }
             },
             {
-                path: 'api',
-                component: () => import('../views/tools/Api.vue'),
+                path: 'pasteBin',
+                component: () => import('../views/tools/PasteBin.vue'),
                 meta: {
-                    name: 'Api',
+                    name: 'PasteBin',
                     icon: {
-                        type: 'material-icons',
-                        name: 'create'
+                        type: 'element-ui',
+                        name: 'el-icon-document-copy'
                     }
                 }
             },

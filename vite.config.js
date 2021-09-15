@@ -9,5 +9,8 @@ export default defineConfig({
         emptyOutDir: false,
         chunkSizeWarningLimit: 1000
     },
-    plugins: [vue()]
+    plugins: [vue()],
+    server: {
+        port: 32000
+    }
 });

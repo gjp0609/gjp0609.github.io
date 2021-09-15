@@ -1,12 +1,14 @@
 <template>
     <div class="index">
         <el-button @click="index">to index</el-button>
-        <el-button @click="addCount">Add</el-button>
+        <el-button @click="incrementCount">increment</el-button>
         <span>{{ count }}</span>
     </div>
 </template>
 
 <script>
+import { INCREMENT_COUNT, store } from '../../store'
+
     export default {
         name: 'Test',
         data() {
@@ -16,15 +18,15 @@
         },
         computed: {
             count() {
-                return this.$store.state.count;
+                return store.state.count;
             }
         },
         mounted() {
-            this.test = this.$store.state.count;
+            this.test = store.state.count;
         },
         methods: {
-            addCount() {
-                this.$store.state.count = this.$store.state.count + 1;
+            incrementCount() {
+                store.commit(INCREMENT_COUNT);
             },
             index() {
                 console.log('test action');
