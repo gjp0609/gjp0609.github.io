@@ -14,7 +14,7 @@
         <div class="note-wrapper">
             <div class="note" v-html="noteContent"></div>
         </div>
-        <el-dialog v-model="auth.loginDialogVisible" title="Login" width="30%" center>
+        <el-dialog v-model="auth.loginDialogVisible" title="Login" :width="isMobile ? '20rem' : '30rem'" center>
             <el-form label-width="200">
                 <el-form-item label="Username">
                     <el-input type="text" v-model="auth.username"></el-input>
@@ -25,8 +25,8 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="auth.loginDialogVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="getNotes">Confirm</el-button>
+                    <el-button :size="isMobile ? 'small' : ''" @click="auth.loginDialogVisible = false">Cancel</el-button>
+                    <el-button type="primary" :size="isMobile ? 'small' : ''" @click="getNotes">Confirm</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -43,7 +43,7 @@
         name: 'Notes',
         data() {
             return {
-                test: 1,
+                screenWidth: document.body.clientWidth,
                 list: [],
                 routePath: '/test/notes/',
                 url: import.meta.env.VITE_NOTES_URL,
@@ -78,6 +78,9 @@
                     ele.attribs['data-url'] = url;
                 }
                 return $.html();
+            },
+            isMobile() {
+                return this.screenWidth < 1024;
             }
         },
         watch: {
@@ -112,6 +115,13 @@
             }
         },
         mounted() {
+            window.onresize = () => {
+                return (() => {
+                    window.screenWidth = document.body.clientWidth;
+                    this.screenWidth = window.screenWidth;
+                    console.log(this.screenWidth);
+                })();
+            };
             let currentPath = this.$router.currentRoute.value.fullPath;
             currentPath = currentPath.replace(this.routePath, '');
             if (!currentPath) {
@@ -210,8 +220,17 @@
     .notes {
         display: flex;
         height: 100%;
-        .list {
-            flex: 0 0 200px;
+        @media screen and (min-width: 1024px) {
+            .list {
+                flex: 0 0 20rem;
+            }
+        }
+        @media screen and (max-width: 1024px) {
+            flex-direction: column;
+            .list {
+                flex: 0 0 8rem;
+                overflow-y: auto;
+            }
         }
         .note-wrapper {
             flex: 1;

@@ -2,6 +2,7 @@
     <div :class="isDark ? 'dark' : 'light'" class="layout">
         <aside :class="isCollapse ? 'is-collapse' : 'not-collapse'" class="menu">
             <el-menu
+                :mode="isMobile ? 'horizontal' : 'vertical'"
                 :collapse="isCollapse"
                 :collapse-transition="true"
                 :default-active="defaultActive"
@@ -50,13 +51,13 @@
                     </template>
                 </template>
             </el-menu>
-            <div class="operations">
+            <div v-if="!isMobile" class="operations">
                 <i class="material-icons" @click="menuCollapseChange">{{ isCollapse ? 'last_page' : 'first_page' }}</i>
                 <i class="material-icons" @click="handleThemeChange">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
             </div>
         </aside>
         <div class="main">
-            <header>
+            <header v-if="!isMobile">
                 <span>OnySakura.fun</span>
                 <pre class="time" @click="copy">{{ time }}</pre>
             </header>
@@ -74,6 +75,7 @@
         name: 'Layout',
         data() {
             return {
+                screenWidth: document.body.clientWidth,
                 isCollapse: localStorage.getItem('menuIsCollapse') === '1' || false,
                 routerMap: constantMenuRouterMap,
                 defaultActive: '/',
@@ -96,6 +98,9 @@
                         textColor: '#000000'
                     };
                 }
+            },
+            isMobile() {
+                return this.screenWidth < 1024;
             }
         },
         mounted() {
@@ -115,6 +120,13 @@
             setInterval(() => {
                 _this.time = moment().format('YYYY-MM-DD HH:mm:ss');
             }, 500);
+            window.onresize = () => {
+                return (() => {
+                    window.screenWidth = document.body.clientWidth;
+                    _this.screenWidth = window.screenWidth;
+                    console.log(_this.screenWidth);
+                })();
+            };
         },
         methods: {
             menuCollapseChange() {
@@ -190,11 +202,29 @@
             }
         }
     }
+    .el-menu {
+        .el-menu-item,
+        .el-submenu,
+        .el-menu--popup {
+            i,
+            svg {
+                color: #909399;
+                vertical-align: middle;
+                width: 1.2rem;
+                font-size: 1.2rem;
+                text-align: center;
+                margin-right: 5px;
+            }
+        }
+    }
     .layout {
         height: 100vh;
         display: flex;
         flex-direction: row;
         overflow: hidden;
+        @media screen and (max-width: 1024px) {
+            flex-direction: column;
+        }
         &.light {
             @include layout('light');
         }
@@ -202,44 +232,45 @@
             @include layout('dark');
         }
         .menu {
-            $menuCollapseWidth: 65px;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            .el-menu {
-                border: none;
-                i,
-                svg {
-                    color: #909399;
-                    vertical-align: middle;
-                    width: 1.2rem;
-                    font-size: 1.2rem;
-                    text-align: center;
-                    margin-right: 5px;
-                }
-            }
-            &.is-collapse {
-                width: $menuCollapseWidth;
-                transition-duration: 300ms;
-            }
-            &.not-collapse {
-                width: 300px;
-                transition-duration: 300ms;
-            }
-            .operations {
-                display: flex;
-                flex-direction: row;
+            @media screen and (min-width: 1024px) {
+                $menuCollapseWidth: 65px;
+                flex-direction: column;
                 justify-content: space-between;
-                flex-wrap: wrap;
-                $height: 50px;
-                height: $height;
-                line-height: $height;
-                i {
+                .el-menu {
+                    border: none;
+                }
+                &.is-collapse {
+                    width: $menuCollapseWidth;
+                    transition-duration: 300ms;
+                }
+                &.not-collapse {
+                    width: 300px;
+                    transition-duration: 300ms;
+                }
+                .operations {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    $height: 50px;
                     height: $height;
                     line-height: $height;
-                    vertical-align: middle;
-                    text-align: center;
-                    width: $menuCollapseWidth - 1px;
+                    i {
+                        height: $height;
+                        line-height: $height;
+                        vertical-align: middle;
+                        text-align: center;
+                        width: $menuCollapseWidth - 1px;
+                    }
+                }
+            }
+            @media screen and (max-width: 1024px) {
+                .el-menu {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
                 }
             }
         }
