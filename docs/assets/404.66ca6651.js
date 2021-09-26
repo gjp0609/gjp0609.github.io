@@ -1,0 +1,1 @@
+import{p as a,a as e,o,b as s,d}from"./vendor.66d56728.js";const c={name:"Page404"};a("data-v-59eecb7c");const n={class:"page-404"},t=[d("code",null,"404 - Page Not Found!!",-1)];e(),c.render=function(a,e,d,c,r,p){return o(),s("div",n,t)},c.__scopeId="data-v-59eecb7c";export{c as default};
