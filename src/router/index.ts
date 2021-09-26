@@ -4,6 +4,7 @@ import Layout from '../views/layout/Layout.vue';
 export const constantMenuRouterMap = [
     {
         path: '/',
+        realPath: '/',
         component: Layout,
         redirect: '/index/home',
         meta: {
@@ -16,6 +17,7 @@ export const constantMenuRouterMap = [
     },
     {
         path: '/test',
+        realPath: '/test',
         component: Layout,
         meta: {
             name: 'Test',
@@ -26,7 +28,20 @@ export const constantMenuRouterMap = [
         },
         children: [
             {
+                path: 'notes/:pathMatch(.*)*',
+                realPath: 'notes/',
+                component: () => import('../views/test/Notes.vue'),
+                meta: {
+                    name: 'Notes',
+                    icon: {
+                        type: 'element-plus',
+                        name: 'Notebook'
+                    }
+                }
+            },
+            {
                 path: 'test',
+                realPath: 'test/',
                 component: () => import('../views/test/Test.vue'),
                 meta: {
                     name: 'TestPage',
@@ -38,6 +53,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'test2',
+                realPath: 'test2/',
                 component: () => import('../views/test/Test2.vue'),
                 meta: {
                     name: 'TestPage2',
@@ -51,6 +67,7 @@ export const constantMenuRouterMap = [
     },
     {
         path: '/tools',
+        realPath: '/tools',
         component: Layout,
         meta: {
             name: 'Tools',
@@ -62,6 +79,7 @@ export const constantMenuRouterMap = [
         children: [
             {
                 path: 'encode',
+                realPath: 'encode/',
                 component: () => import('../views/tools/Encode.vue'),
                 meta: {
                     name: 'Encode',
@@ -73,6 +91,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'xml',
+                realPath: 'xml/',
                 component: () => import('../views/tools/Xml.vue'),
                 meta: {
                     name: 'Xml',
@@ -84,6 +103,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'json',
+                realPath: 'json/',
                 component: () => import('../views/tools/Json.vue'),
                 meta: {
                     name: 'Json',
@@ -95,6 +115,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'pasteBin',
+                realPath: 'pasteBin/',
                 component: () => import('../views/tools/PasteBin.vue'),
                 meta: {
                     name: 'PasteBin',
@@ -106,6 +127,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'QrCode',
+                realPath: 'QrCode/',
                 component: () => import('../views/tools/QrCode.vue'),
                 meta: {
                     name: 'QrCode',
@@ -117,6 +139,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'ECharts',
+                realPath: 'ECharts/',
                 component: () => import('../views/tools/ECharts.vue'),
                 meta: {
                     name: 'ECharts',

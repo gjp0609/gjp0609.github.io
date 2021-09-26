@@ -302,7 +302,8 @@
                 let xmlData;
                 try {
                     xmlData = JSON.parse(localStorage.getItem('xmlData'));
-                } catch (e) {
+                } catch (e) {}
+                if (!xmlData) {
                     xmlData = {
                         source: '',
                         plainText: true,

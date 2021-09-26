@@ -17,11 +17,15 @@
         "serve": "vite preview"
     },
     "dependencies": {
+        "@element-plus/icons": "0.0.11",
         "axios": "^0.21.4",
+        "cheerio": "^1.0.0-rc.10",
         "echarts": "^5.1.2",
         "element-plus": "^1.0.2-beta.71",
+        "highlight.js": "^11.2.0",
         "js-base64": "^3.6.1",
         "js-md5": "^0.7.3",
+        "marked": "^3.0.4",
         "moment": "^2.29.1",
         "qrcode": "^1.4.4",
         "vite-plugin-style-import": "^1.1.1",

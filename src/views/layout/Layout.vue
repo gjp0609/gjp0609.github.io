@@ -13,31 +13,37 @@
             >
                 <template v-for="router in routerMap">
                     <template v-if="!router.meta.hidden">
-                        <el-submenu v-if="router.children" :index="router.path">
+                        <el-submenu v-if="router.children" :index="router.realPath">
                             <template #title>
                                 <template v-if="router.meta.icon">
                                     <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
                                     <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
+                                    <component :is="router.meta.icon.name" v-if="router.meta.icon.type === 'element-plus'" />
                                 </template>
                                 <span>{{ router.meta.name }}</span>
                             </template>
-                            <el-menu-item v-for="subRouter in router.children" :key="subRouter.path" :index="router.path + '/' + subRouter.path">
+                            <el-menu-item
+                                v-for="subRouter in router.children"
+                                :key="subRouter.realPath"
+                                :index="router.realPath + '/' + subRouter.realPath"
+                            >
                                 <template v-if="!subRouter.meta.hidden">
                                     <template v-if="subRouter.meta.icon">
                                         <i v-if="subRouter.meta.icon.type === 'material-icons'" class="material-icons">
                                             {{ subRouter.meta.icon.name }}
                                         </i>
                                         <i v-if="subRouter.meta.icon.type === 'element-ui'" :class="subRouter.meta.icon.name"></i>
+                                        <component :is="subRouter.meta.icon.name" v-if="subRouter.meta.icon.type === 'element-plus'" />
                                     </template>
                                     <span> {{ subRouter.meta.name }}</span>
                                 </template>
                             </el-menu-item>
                         </el-submenu>
-                        <el-menu-item v-else :index="router.path">
+                        <el-menu-item v-else :index="router.realPath">
                             <template v-if="router.meta.icon">
                                 <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
                                 <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
-                                <!-- <i v-if="router.meta.icon.type === 'font-awesome-icons'" :class="router.meta.icon.name" class="fas"></i>-->
+                                <component :is="router.meta.icon.name" v-if="router.meta.icon.type === 'element-plus'" />
                             </template>
                             <span>{{ router.meta.name }}</span>
                         </el-menu-item>
@@ -52,7 +58,7 @@
         <div class="main">
             <header>
                 <span>OnySakura.fun</span>
-                <code class="time" @click="copy">{{ time }}</code>
+                <pre class="time" @click="copy">{{ time }}</pre>
             </header>
             <section>
                 <router-view></router-view>
@@ -99,7 +105,7 @@
             if (this.$router.currentRoute.value.fullPath !== indexPath) {
                 _this.defaultActive = this.$router.currentRoute.value.fullPath;
             }
-            this.$router.beforeEach(function (to, from, next) {
+            this.$router.beforeEach((to, from, next) => {
                 _this.defaultActive = to.path;
                 if (to.path === indexPath) {
                     _this.defaultActive = '/';
@@ -202,26 +208,15 @@
             justify-content: space-between;
             .el-menu {
                 border: none;
-                i {
-                    &.material-icons {
-                        /* 与 el-icon 保持一致 */
-                        vertical-align: middle;
-                        margin-right: 5px;
-                        width: 24px;
-                        text-align: center;
-                        font-size: 18px;
-                    }
+                i,
+                svg {
+                    color: #909399;
+                    vertical-align: middle;
+                    width: 1.2rem;
+                    font-size: 1.2rem;
+                    text-align: center;
+                    margin-right: 5px;
                 }
-                //svg {
-                //    &.svg-inline--fa {
-                //        color: #909399;
-                //        vertical-align: middle;
-                //        margin-right: 5px;
-                //        width: 24px;
-                //        text-align: center;
-                //        font-size: 14px;
-                //    }
-                //}
             }
             &.is-collapse {
                 width: $menuCollapseWidth;
@@ -260,6 +255,9 @@
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 0 10px;
+                .time {
+                    margin: 0;
+                }
             }
             section {
                 padding: 20px;
