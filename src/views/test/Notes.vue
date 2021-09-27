@@ -218,8 +218,13 @@
 
 <style lang="scss" scoped>
     .notes {
+        flex: 1;
         display: flex;
-        height: 100%;
+        .list {
+            overflow-y: auto;
+            margin-bottom: 0.5rem;
+            border-bottom: 0.01rem solid lightgray;
+        }
         @media screen and (min-width: 1024px) {
             .list {
                 flex: 0 0 20rem;
@@ -228,17 +233,28 @@
         @media screen and (max-width: 1024px) {
             flex-direction: column;
             .list {
-                flex: 0 0 8rem;
-                overflow-y: auto;
+                flex: 0 0 6rem;
             }
         }
         .note-wrapper {
             flex: 1;
-            overflow-y: auto;
-            height: 95vh;
-            .note {
-                margin: 30px auto;
-                width: 800px;
+            display: flex;
+            flex-direction: column;
+            @media screen and (min-width: 1024px) {
+                align-items: center;
+                .note {
+                    flex: 1 1 0;
+                    overflow-y: auto;
+                    width: 50rem;
+                    padding: 1rem 100%;
+                }
+            }
+            @media screen and (max-width: 1024px) {
+                .note {
+                    flex: 1 1 0;
+                    overflow-x: auto;
+                    overflow-y: auto;
+                }
             }
             :deep(.note) {
                 $prime-color: #ecf5ff;
@@ -255,9 +271,9 @@
                     background-color: $background-color;
                     mix-blend-mode: multiply;
                     margin-right: 0;
-                    border-left: $background-color-darker solid 0.3rem;
+                    border-left: $background-color-darker solid 0.2rem;
                     padding-left: 0.5rem;
-                    margin-inline-start: 2rem;
+                    margin-inline-start: 1rem;
                 }
 
                 h1 {
@@ -297,9 +313,14 @@
                 }
 
                 img {
-                    max-width: 600px;
                     display: block;
-                    margin-left: 2rem;
+                    margin-left: 1rem;
+                    @media screen and (min-width: 1024px) {
+                        max-width: 40rem;
+                    }
+                    @media screen and (max-width: 1024px) {
+                        max-width: 20rem;
+                    }
                 }
 
                 p {

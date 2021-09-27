@@ -4,18 +4,8 @@
     </div>
 </template>
 
-<script setup>
-    // export default { name: 'Index' };
-</script>
-
 <style lang="scss" scoped>
     .index {
-        height: 100%;
-        .invalid-route {
-            text-align: center;
-            a {
-                text-decoration: none;
-            }
-        }
+        height: 100vh;
     }
 </style>

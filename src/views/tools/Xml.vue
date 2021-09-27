@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <el-row>
+    <div class="xml">
+        <el-row class="options">
             <el-card>
                 <div class="buttons">
                     <div>
@@ -18,7 +18,7 @@
                 </div>
             </el-card>
         </el-row>
-        <el-row :gutter="10">
+        <el-row :gutter="10" class="content">
             <el-col :span="8">
                 <el-input v-model="source" type="textarea" placeholder="请输入内容"></el-input>
             </el-col>
@@ -322,119 +322,130 @@
 </script>
 
 <style lang="scss" scoped>
-    .el-row {
-        margin-bottom: 20px;
-        &:last-child {
-            margin-bottom: 0;
-        }
-        .buttons {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            & > div {
-                margin-right: 30px;
-            }
-        }
-        .el-col {
-            height: 91vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            .el-textarea {
-                height: 97%;
-                :deep(textarea) {
-                    height: 100%;
-                    overflow-y: auto;
+    .xml {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        .options {
+            margin-bottom: 20px;
+            .buttons {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                & > div {
+                    margin-right: 30px;
                 }
             }
         }
-        :deep(.result) {
-            height: 97%;
-            border: #dbdbdb solid 1px;
-            border-radius: 3px;
-            overflow-y: auto;
-            .inline {
-                display: inline !important;
-            }
-            .xml_item_text,
-            .xml_item_0,
-            .xml_item_1,
-            .xml_item_2,
-            .xml_item_3,
-            .xml_item_4 {
+        .content {
+            flex: 1;
+            margin-bottom: 0;
+            display: flex;
+            .el-col {
+                flex: 1;
                 display: flex;
-                justify-content: left;
-            }
-            .xml_item_0 {
-                color: #f33;
-            }
-            .xml_item_1 {
-                color: #f39;
-            }
-            .xml_item_2 {
-                color: #f5f;
-            }
-            .xml_item_3 {
-                color: #a3c;
-            }
-            .xml_item_4 {
-                color: #a25;
-            }
-            .xml_item_5 {
-                color: #ea3;
-            }
-            .xml_item_6 {
-                color: #fd3;
-            }
-            .xml_item_7 {
-                color: #39f;
-            }
-            .xml_item_8 {
-                color: #3f9;
-            }
-            .xml_item_9 {
-                color: #993;
-            }
-            .xml_item_10 {
-                color: #f39;
-            }
-            .xml_item_11 {
-                color: #39f;
-            }
-            .xml_item_12 {
-                color: #3f9;
-            }
-            .xml_item_13 {
-                color: #f33;
-            }
-            .xml_item_14 {
-                color: #a3c;
-            }
-            .xml_item_15 {
-                color: #f5f;
-            }
-            .xml_item_16 {
-                color: #a25;
-            }
-            .xml_item_17 {
-                color: #fd3;
-            }
-            .xml_item_18 {
-                color: #ea3;
-            }
-            .xml_item_19 {
-                color: #993;
-            }
-            .xml_item_cdata {
-                color: #6cc;
-            }
-            .xml_item_comment {
-                color: grey;
-            }
-            .xml_item_text {
-                color: forestgreen;
-            }
-            .xml_space {
-                margin-left: 20px;
+                flex-direction: column;
+                .el-textarea {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    :deep(textarea) {
+                        flex: 1;
+                        overflow-y: auto;
+                    }
+                }
+                .result {
+                    border: #dbdbdb solid 1px;
+                    border-radius: 3px;
+                    flex: 1 1 0;
+                    overflow-y: auto;
+                }
+                :deep(.result) {
+                    .inline {
+                        display: inline !important;
+                    }
+                    .xml_item_text,
+                    .xml_item_0,
+                    .xml_item_1,
+                    .xml_item_2,
+                    .xml_item_3,
+                    .xml_item_4 {
+                        display: flex;
+                        justify-content: left;
+                    }
+                    .xml_item_0 {
+                        color: #f33;
+                    }
+                    .xml_item_1 {
+                        color: #f39;
+                    }
+                    .xml_item_2 {
+                        color: #f5f;
+                    }
+                    .xml_item_3 {
+                        color: #a3c;
+                    }
+                    .xml_item_4 {
+                        color: #a25;
+                    }
+                    .xml_item_5 {
+                        color: #ea3;
+                    }
+                    .xml_item_6 {
+                        color: #fd3;
+                    }
+                    .xml_item_7 {
+                        color: #39f;
+                    }
+                    .xml_item_8 {
+                        color: #3f9;
+                    }
+                    .xml_item_9 {
+                        color: #993;
+                    }
+                    .xml_item_10 {
+                        color: #f39;
+                    }
+                    .xml_item_11 {
+                        color: #39f;
+                    }
+                    .xml_item_12 {
+                        color: #3f9;
+                    }
+                    .xml_item_13 {
+                        color: #f33;
+                    }
+                    .xml_item_14 {
+                        color: #a3c;
+                    }
+                    .xml_item_15 {
+                        color: #f5f;
+                    }
+                    .xml_item_16 {
+                        color: #a25;
+                    }
+                    .xml_item_17 {
+                        color: #fd3;
+                    }
+                    .xml_item_18 {
+                        color: #ea3;
+                    }
+                    .xml_item_19 {
+                        color: #993;
+                    }
+                    .xml_item_cdata {
+                        color: #6cc;
+                    }
+                    .xml_item_comment {
+                        color: grey;
+                    }
+                    .xml_item_text {
+                        color: forestgreen;
+                    }
+                    .xml_space {
+                        margin-left: 20px;
+                    }
+                }
             }
         }
     }

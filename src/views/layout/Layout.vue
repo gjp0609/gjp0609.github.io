@@ -71,6 +71,7 @@
 <script>
     import { constantMenuRouterMap } from '../../router/index';
     import moment from 'moment';
+
     export default {
         name: 'Layout',
         data() {
@@ -220,8 +221,10 @@
     .layout {
         height: 100vh;
         display: flex;
-        flex-direction: row;
         overflow: hidden;
+        @media screen and (min-width: 1024px) {
+            flex-direction: row;
+        }
         @media screen and (max-width: 1024px) {
             flex-direction: column;
         }
@@ -266,35 +269,49 @@
                 }
             }
             @media screen and (max-width: 1024px) {
+                $menuHeight: 2.5rem;
                 .el-menu {
-                    width: 100%;
+                    width: 100vh;
                     display: flex;
                     flex-direction: row;
                     justify-content: space-around;
+                    height: $menuHeight;
+                }
+                :deep(.el-menu) {
+                    &.el-menu--horizontal > .el-menu-item,
+                    &.el-menu--horizontal > .el-submenu .el-submenu__title {
+                        height: $menuHeight;
+                        line-height: $menuHeight;
+                    }
                 }
             }
         }
         .main {
-            width: 100%;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            header {
-                $headerHeight: 40px;
-                height: $headerHeight;
-                line-height: $headerHeight;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 0 10px;
-                .time {
-                    margin: 0;
-                }
-            }
             section {
-                padding: 20px;
-                flex: 1 1 auto;
+                flex: 1;
                 display: flex;
                 flex-direction: column;
+                padding: 1rem;
+                @media screen and (max-width: 1024px) {
+                    padding: 0.5rem;
+                }
+            }
+            @media screen and (min-width: 1024px) {
+                header {
+                    $headerHeight: 2.4rem;
+                    height: $headerHeight;
+                    line-height: $headerHeight;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    padding: 0 0.5rem;
+                    .time {
+                        margin: 0;
+                    }
+                }
             }
         }
     }
