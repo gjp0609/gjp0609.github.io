@@ -223,7 +223,6 @@
         .list {
             overflow-y: auto;
             margin-bottom: 0.5rem;
-            border-bottom: 0.01rem solid lightgray;
         }
         @media screen and (min-width: 1024px) {
             .list {
@@ -234,6 +233,7 @@
             flex-direction: column;
             .list {
                 flex: 0 0 6rem;
+                border-bottom: 0.01rem solid lightgray;
             }
         }
         .note-wrapper {
