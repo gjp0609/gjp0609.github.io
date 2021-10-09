@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import ElementPlus from 'element-plus';
-import 'element-plus/lib/theme-chalk/index.css';
+import 'element-plus/theme-chalk/index.css';
 const iconListPromise = import('@element-plus/icons');
 import { store, key } from './store';
 import router from './router/index';

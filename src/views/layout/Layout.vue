@@ -14,7 +14,7 @@
             >
                 <template v-for="router in routerMap">
                     <template v-if="!router.meta.hidden">
-                        <el-submenu v-if="router.children" :index="router.realPath">
+                        <el-sub-menu v-if="router.children" :index="router.realPath">
                             <template #title>
                                 <template v-if="router.meta.icon">
                                     <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
@@ -39,7 +39,7 @@
                                     <span> {{ subRouter.meta.name }}</span>
                                 </template>
                             </el-menu-item>
-                        </el-submenu>
+                        </el-sub-menu>
                         <el-menu-item v-else :index="router.realPath">
                             <template v-if="router.meta.icon">
                                 <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
@@ -205,7 +205,7 @@
     }
     .el-menu {
         .el-menu-item,
-        .el-submenu,
+        .el-sub-menu,
         .el-menu--popup {
             i,
             svg {
@@ -279,7 +279,7 @@
                 }
                 :deep(.el-menu) {
                     &.el-menu--horizontal > .el-menu-item,
-                    &.el-menu--horizontal > .el-submenu .el-submenu__title {
+                    &.el-menu--horizontal > .el-sub-menu .el-sub-menu__title {
                         height: $menuHeight;
                         line-height: $menuHeight;
                     }
