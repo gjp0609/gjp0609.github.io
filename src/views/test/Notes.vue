@@ -363,14 +363,17 @@
                 code.hljs,
                 code.hljs * {
                     font-family: 'MonacoWoff2', monospace;
+                    font-size: 0.9rem;
                 }
                 code.hljs * {
-                    line-height: 1.9rem;
+                    line-height: 1.7rem;
                 }
                 code .hljs-comment {
                     font-style: oblique;
                 }
+                code .hljs-section,
                 code .hljs-keyword {
+                    font-size: 0.85rem;
                     font-weight: bold;
                 }
                 table {
