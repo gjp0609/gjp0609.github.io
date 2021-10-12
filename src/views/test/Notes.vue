@@ -38,7 +38,6 @@
     import hljs from 'highlight.js';
     import 'highlight.js/styles/github.css';
     import * as cheerio from 'cheerio';
-    import { Base64 } from 'js-base64';
     import MD5 from 'js-md5';
 
     export default {
@@ -203,8 +202,8 @@
             login() {
                 fetch(this.loginUrl, {
                     body: JSON.stringify({
-                        Username: 'me',
-                        Password: String(MD5('123456'))
+                        Username: this.auth.username,
+                        Password: String(MD5(this.auth.password))
                     }),
                     method: 'POST'
                 }).then((response) => {
