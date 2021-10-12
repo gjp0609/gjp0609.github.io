@@ -39,6 +39,7 @@
     import 'highlight.js/styles/github.css';
     import * as cheerio from 'cheerio';
     import MD5 from 'js-md5';
+    import pangu from 'pangu';
 
     export default {
         name: 'Notes',
@@ -60,8 +61,9 @@
                     }
                 },
                 defaultProps: {
+                    id: 'id',
                     children: 'children',
-                    label: 'name'
+                    label: 'label'
                 },
                 notePath: {
                     content: '',
@@ -89,6 +91,7 @@
             noteContent: function () {
                 this.$nextTick(() => {
                     this.highlight();
+                    pangu.spacingElementByTagName('p');
                     for (let ele of document.getElementsByTagName('img')) {
                         fetch(ele.getAttribute('data-url'), {
                             headers: { Authorization: this.auth.getAuth() }
@@ -233,14 +236,15 @@
             },
             handleNodeClick(e) {
                 console.log(e);
-                if (e.path.indexOf('.md') > 0) {
-                    let name = e.name.replace(/ /g, '_') + '.md';
-                    let path = e.path.substr(0, e.path.length - name.length);
+                if (e.id.indexOf('.md') > 0) {
+                    let name = e.label + '.md';
+                    let path = e.id.substr(0, e.id.length - name.length);
                     this.getNote(path, name);
                 }
+                return true;
             },
             highlight() {
-                document.querySelectorAll('code').forEach((node) => {
+                document.querySelectorAll('pre code').forEach((node) => {
                     hljs.highlightElement(node);
                 });
             }
@@ -260,6 +264,20 @@
         .list {
             overflow-y: auto;
             margin-bottom: 0.5rem;
+        }
+        :deep(.list) {
+            .el-tree-node .el-tree-node__expand-icon {
+                color: var(--el-color-info);
+            }
+            .el-tree-node .el-tree-node__expand-icon.expanded {
+                color: var(--el-color-success);
+            }
+            .el-tree-node > * > .is-leaf {
+                color: var(--el-color-info-light);
+            }
+            .el-tree-node.is-current > * > .is-leaf {
+                color: var(--el-color-primary);
+            }
         }
         @media screen and (min-width: 1024px) {
             .list {
@@ -355,14 +373,26 @@
                     margin-block-start: 0.7em;
                     margin-block-end: 0.7em;
                 }
+                p code {
+                    $shadow-offset: 0.3rem;
+                    $shadow-offset-negative: -0.3rem;
+                    $shadow-blur: 0.3rem;
+                    $shadow-spread: 0rem;
+                    $shadow-color: #fdecec;
+                    background-color: $shadow-color;
+                    box-shadow: $shadow-offset $shadow-offset $shadow-blur $shadow-spread $shadow-color,
+                        $shadow-offset $shadow-offset-negative $shadow-blur $shadow-spread $shadow-color,
+                        $shadow-offset-negative $shadow-offset $shadow-blur $shadow-spread $shadow-color,
+                        $shadow-offset-negative $shadow-offset-negative $shadow-blur $shadow-spread $shadow-color;
+                }
+                code,
+                code * {
+                    font-family: 'MonacoWoff2', monospace;
+                    font-size: 0.9rem;
+                }
                 code.hljs {
                     background-color: $background-color;
                     overflow-x: auto;
-                }
-                code.hljs,
-                code.hljs * {
-                    font-family: 'MonacoWoff2', monospace;
-                    font-size: 0.9rem;
                 }
                 code.hljs * {
                     line-height: 1.7rem;
