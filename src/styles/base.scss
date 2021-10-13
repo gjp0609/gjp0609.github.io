@@ -1,3 +1,28 @@
+@font-face {
+    font-family: MononokiWoff2;
+    font-style: normal;
+    font-weight: normal;
+    src: url('./fonts/mononoki-Regular.woff2') format('woff2');
+}
+@font-face {
+    font-family: MononokiWoff2;
+    font-style: italic;
+    font-weight: normal;
+    src: url('./fonts/mononoki-Italic.woff2') format('woff2');
+}
+@font-face {
+    font-family: MononokiWoff2;
+    font-style: normal;
+    font-weight: bold;
+    src: url('./fonts/mononoki-Bold.woff2') format('woff2');
+}
+@font-face {
+    font-family: MononokiWoff2;
+    font-style: italic;
+    font-weight: bold;
+    src: url('./fonts/mononoki-BoldItalic.woff2') format('woff2');
+}
+
 i {
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -5,7 +30,7 @@ i {
     user-select: none;
 }
 * {
-    font-family: '等距更纱黑体 SC', 'mononoki', 'Ubuntu Mono', 'JetBrains Mono', 'M+ 1mn', 'IBM Plex Mono', 'Consolas', monospace;
+    font-family: 'Sarasa Mono SC', 'MononokiWoff2', monospace;
 }
 *::-webkit-scrollbar {
     width: 6px;
