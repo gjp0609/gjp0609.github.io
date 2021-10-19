@@ -1,0 +1,60 @@
+{
+    "Search": [
+        {
+            "title": "Google",
+            "desc": "google search",
+            "url": "https://www.google.com/search?q=${keyword}",
+            "tags": ["google"]
+        },
+        {
+            "title": "Github",
+            "desc": "github search",
+            "url": "https://www.github.com/search?q=${keyword}",
+            "tags": ["github"]
+        },
+        {
+            "title": "Bing",
+            "desc": "microsoft bing",
+            "url": "https://cn.bing.com/search?q=${keyword}",
+            "tags": ["microsoft", "bing"]
+        },
+        {
+            "title": "Duckduckgo",
+            "desc": "duckduckgo",
+            "url": "https://duckduckgo.com/?q=${keyword}",
+            "tags": ["duckduckgo"]
+        },
+        {
+            "title": "V2EX",
+            "desc": "v2ex by google",
+            "url": "https://www.google.com/search?q=site%3av2ex.com+${keyword}",
+            "tags": ["v2ex", "google"]
+        },
+        {
+            "title": "MDN",
+            "desc": "mdn web docs",
+            "url": "https://developer.mozilla.org/zh-CN/search?q=${keyword}",
+            "tags": ["mdn", "mozilla", "html", "css", "javascript"]
+        },
+        {
+            "title": "Favicon Google",
+            "desc": "获取网站图标 by google",
+            "url": "https://s2.googleusercontent.com/s2/favicons?sz=64&domain_url=${keyword}",
+            "tags": ["图标", "icon", "google"]
+        },
+        {
+            "title": "Favicon Duckduckgo",
+            "desc": "获取网站图标 by duckduckgo",
+            "url": "https://icons.duckduckgo.com/ip2/${keyword}.ico",
+            "tags": ["图标", "icon", "duckduckgo"]
+        }
+    ],
+    "Work": [
+        {
+            "title": "Tydic OA",
+            "desc": "Tydic OA",
+            "url": "https://oa.tydic.com/",
+            "tags": ["tydic", "oa"]
+        }
+    ]
+}

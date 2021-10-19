@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Works</title>
+        <style>
+            :root {
+                --add-type-prime-color: white;
+                --add-type-add-color: #ecb1b1;
+                --search-prime-color: #dddddd;
+                --page-width: 25rem;
+            }
+            * {
+                box-sizing: border-box;
+            }
+
+            *::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+                background-color: white;
+            }
+            *::-webkit-scrollbar-thumb {
+                background-color: #c5e3f6;
+                border-radius: 6px;
+                transition: background-color 0.3s;
+            }
+            *::-webkit-scrollbar-thumb:hover {
+                background-color: #a0d9fd;
+            }
+            *::-webkit-scrollbar-thumb:active {
+                background-color: #7eccfc;
+            }
+            html,
+            body {
+                margin: 0;
+                height: 100%;
+                overflow-y: hidden;
+            }
+
+            .parent {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+
+            .search-wrapper {
+                flex: 0 0 auto;
+                padding: 2rem 0 1rem 0;
+                margin-bottom: 2rem;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-content: flex-end;
+                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--search-prime-color);
+            }
+            .search-wrapper .search {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-content: center;
+            }
+            .search-wrapper .search .engines {
+                appearance: none;
+                -webkit-appearance: none;
+            }
+            .search-wrapper .search .engines .engine {
+                display: flex;
+                align-items: center;
+                height: 3rem;
+                font-size: 1.1rem;
+                background-color: white;
+                user-select: none;
+            }
+            .search-wrapper .search .engines .engine .image {
+                width: 4rem;
+                padding-left: 2.2rem;
+                display: flex;
+                align-items: center;
+            }
+            .search-wrapper .search .engines .engine .image img {
+                width: 1.3rem;
+            }
+            .search-wrapper .search .engines .engine-list .engine .title {
+                padding-right: 1.5rem;
+            }
+            .search-wrapper .search .engines .engine-list {
+                position: fixed;
+                display: none;
+            }
+            .search-wrapper .search .engines .engine-list .engine:hover {
+                background-color: var(--search-prime-color);
+            }
+            .search-wrapper .search .engines .engine-list .engine.current {
+                background-color: var(--search-prime-color);
+            }
+            .search-wrapper .search .engines:hover > .engine-list {
+                display: block;
+                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--search-prime-color);
+            }
+
+            .search-wrapper .search input {
+                box-sizing: border-box;
+                height: 3rem;
+                line-height: 2rem;
+                width: 30rem;
+                font-size: 1.2rem;
+                margin-left: 1rem;
+                padding-left: 1.5rem;
+                border: 0.01rem solid var(--search-prime-color);
+                outline: 0.01rem solid white;
+                border-radius: 2rem;
+            }
+            .search-wrapper .search input:focus {
+                border: 0.01rem solid var(--search-prime-color);
+                outline: 0.01rem solid var(--search-prime-color);
+            }
+            .search-wrapper .search .auto-complete {
+                position: fixed;
+                margin-top: 0.5rem;
+                margin-left: 1rem;
+                width: 30rem;
+                max-height: 50rem;
+                background-color: white;
+                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--search-prime-color);
+                border-radius: 0.5rem;
+                overflow: hidden;
+                overflow-y: auto;
+            }
+            .search-wrapper .search .auto-complete .result {
+                padding: 0.5rem 0 0.5rem 1.5rem;
+            }
+            .search-wrapper .search .auto-complete .result .url {
+                font-size: 0.7rem;
+                width: 20rem;
+                color: #666;
+                white-space: nowrap;
+                overflow-wrap: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .search-wrapper .search .auto-complete .result.current {
+                background-color: var(--search-prime-color);
+            }
+
+            .types-wrapper {
+                flex: 1;
+                overflow-y: scroll;
+            }
+
+            .types {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                margin: 0 10%;
+            }
+            .types .type {
+                flex: 0 1 var(--page-width);
+                min-width: var(--page-width);
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 2rem;
+                border: 0.01rem solid var(--search-prime-color);
+                border-radius: 1rem;
+            }
+            .types .type > .title {
+                text-align: center;
+                font-size: 1.1rem;
+                padding: 0.4rem;
+                border-bottom: 0.01rem solid var(--search-prime-color);
+                margin-bottom: 0.8rem;
+            }
+            .types .type .page {
+                height: 3rem;
+                width: calc(var(--page-width) - 4rem);
+                cursor: pointer;
+                margin: 0 auto;
+            }
+            .types .type .page .title {
+                display: flex;
+                align-items: center;
+            }
+            .types .type .page .title span {
+                font-size: 1rem;
+                margin-left: 0.38rem;
+            }
+            .types .type .page .title img {
+                width: 1rem;
+                height: 1rem;
+            }
+            .types .type .page .url {
+                font-size: 0.62rem;
+                width: calc(var(--page-width) - 4rem);
+                overflow: hidden;
+                white-space: nowrap;
+                overflow-wrap: normal;
+                text-overflow: ellipsis;
+            }
+
+            .add-type {
+                height: 2rem;
+                width: 2rem;
+                border-radius: 2rem;
+                background-color: var(--add-type-add-color);
+                outline: 0.1rem solid var(--add-type-add-color);
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+            }
+            .add-type::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                height: 0.2rem;
+                width: 1rem;
+                margin-left: -0.5rem;
+                margin-top: -0.1rem;
+                background-color: var(--add-type-prime-color);
+                outline: 0.1rem solid var(--add-type-prime-color);
+            }
+            .add-type::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                height: 1rem;
+                width: 0.2rem;
+                margin-left: -0.1rem;
+                margin-top: -0.5rem;
+                background-color: var(--add-type-prime-color);
+                outline: 0.1rem solid var(--add-type-prime-color);
+            }
+        </style>
+        <script src="./libs/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <div class="parent">
+                <div class="search-wrapper">
+                    <div class="search">
+                        <div class="engines">
+                            <div class="engine">
+                                <span class="image">
+                                    <img :src="getIcon(search.engine.url)" :alt="search.engine.title" />
+                                </span>
+                                <span class="title">{{ search.engine.title }}</span>
+                            </div>
+                            <div class="engine-list">
+                                <div
+                                    class="engine"
+                                    v-for="engine in search.engines"
+                                    :class="engine.title === search.engine.title ? 'current' : ''"
+                                    @click="search.engine=engine;focus();"
+                                >
+                                    <span class="image">
+                                        <img :src="getIcon(engine.url)" :alt="engine.title" />
+                                    </span>
+                                    <span class="title"> {{ engine.title }} </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <input
+                                ref="search"
+                                type="text"
+                                value=""
+                                v-model="search.text"
+                                :placeholder="search.placeholder"
+                                @keyup.enter="doSearch"
+                                @keyup.down="chooseResult(undefined,true)"
+                                @keyup.up="chooseResult(undefined,false)"
+                                @keyup="autoComplete"
+                            />
+                            <div class="auto-complete" v-if="Object.keys(search.autoCompleteResult).length">
+                                <div
+                                    class="result"
+                                    v-for="result in search.autoCompleteResult"
+                                    :class="search.autoCompleteResultCurrent.url===result.url?'current':''"
+                                    @mouseenter="chooseResult(result,true)"
+                                    @mouseleave="chooseResult(result,false)"
+                                    @click="doSearch"
+                                >
+                                    <div class="title">{{result.title}}</div>
+                                    <div class="url">{{result.url}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="types-wrapper">
+                    <div class="types">
+                        <div class="type" v-for="(items,type) in favorites">
+                            <div class="title">{{type}}</div>
+                            <div class="page" v-for="item in items" @click="jump(item.url)">
+                                <div class="title">
+                                    <img :src="getIcon(item.url)" :alt="item.title" />
+                                    <span>{{item.title}}</span>
+                                </div>
+                                <div class="url">{{item.url}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-type" @click="add"></div>
+            <div></div>
+        </div>
+    </body>
+    <script>
+        let app = document.getElementById('app');
+        let vm = new Vue({
+            el: app,
+            data: () => {
+                return {
+                    search: {
+                        placeholder: 'search here',
+                        text: '',
+                        engine: { title: 'Google', desc: 'Google Search', url: 'https://www.google.com/search?q=${keyword}', tags: ['Google'] },
+                        engines: [],
+                        autoCompleteResult: {},
+                        autoCompleteResultCurrent: {}
+                    },
+                    favorites: {}
+                };
+            },
+            mounted() {
+                this.focus();
+                document.body.addEventListener('click', (e) => {
+                    this.search.autoCompleteResult = {};
+                    this.search.autoCompleteResultCurrent = {};
+                });
+                fetch('./libs/bookmarks.json')
+                    .then((response) => response.text())
+                    .then((text) => {
+                        this.favorites = JSON.parse(text);
+                        this.search.engines = this.favorites.Search;
+                    });
+            },
+            methods: {
+                doSearch() {
+                    if (this.search.text) {
+                        if (Object.keys(this.search.autoCompleteResultCurrent).length === 0) {
+                            this.jump(this.search.engine.url.replace('${keyword}', encodeURIComponent(this.search.text)));
+                        } else {
+                            this.jump(this.search.autoCompleteResultCurrent.url.replace('${keyword}', ''));
+                        }
+                    }
+                },
+                autoComplete(e) {
+                    console.log(e);
+                    if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
+                        return;
+                    }
+                    let resultMap = {};
+                    if (this.search.text) {
+                        for (let favoritesKey in this.favorites) {
+                            for (let page of this.favorites[favoritesKey]) {
+                                if (page.title && page.title.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                    resultMap[page.url] = page;
+                                }
+                                if (page.desc && page.desc.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                    resultMap[page.url] = page;
+                                }
+                                if (page.url.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                    resultMap[page.url] = page;
+                                }
+                                if (page.tags) {
+                                    for (let tag of page.tags) {
+                                        if (tag.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                            resultMap[page.url] = page;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    this.search.autoCompleteResult = resultMap;
+                    this.search.autoCompleteResultCurrent = {};
+                },
+                chooseResult(result, down) {
+                    if (result) {
+                        if (down) {
+                            this.search.autoCompleteResultCurrent = result;
+                        } else {
+                            this.search.autoCompleteResultCurrent = {};
+                        }
+                    } else {
+                        const keys = Object.keys(this.search.autoCompleteResult);
+                        if (keys.length > 0) {
+                            if (Object.keys(this.search.autoCompleteResultCurrent).length === 0) {
+                                if (down) {
+                                    this.search.autoCompleteResultCurrent = this.search.autoCompleteResult[keys[0]];
+                                } else {
+                                    this.search.autoCompleteResultCurrent = this.search.autoCompleteResult[keys[keys.length - 1]];
+                                }
+                            } else {
+                                for (let i = 0; i < keys.length; i++) {
+                                    if (this.search.autoCompleteResultCurrent.url === keys[i]) {
+                                        if (down) {
+                                            if (i + 1 === keys.length) {
+                                                i = -1;
+                                            }
+                                            this.search.autoCompleteResultCurrent = this.search.autoCompleteResult[keys[i + 1]];
+                                        } else {
+                                            if (i === 0) {
+                                                i = keys.length;
+                                            }
+                                            this.search.autoCompleteResultCurrent = this.search.autoCompleteResult[keys[i - 1]];
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                focus() {
+                    this.$refs.search.focus();
+                },
+                add() {
+                    console.log(JSON.stringify(this.favorites));
+                    let a = document.createElement('a');
+                },
+                getIcon(url) {
+                    return 'https://icons.duckduckgo.com/ip2/' + this.getHostname(url) + '.ico';
+                },
+                getHostname(url) {
+                    const { hostname } = new URL(url);
+                    return hostname;
+                },
+                jump(url) {
+                    if (url.indexOf('${keyword}') > 0) {
+                        url = url.replace('${keyword}', '');
+                    }
+                    window.open(url, '_blank').focus();
+                }
+            }
+        });
+    </script>
+</html>
