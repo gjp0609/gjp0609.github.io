@@ -212,6 +212,9 @@
                 cursor: pointer;
                 margin: 0 auto;
             }
+            .types .type .page.empty {
+                text-align: center;
+            }
             .types .type .page .title-wrapper {
                 display: flex;
                 align-items: center;
@@ -354,7 +357,7 @@
                 <div class="types-wrapper">
                     <div class="types" id="types">
                         <div class="type" v-for="(items,type) in favorites">
-                            <div class="title" @click="expand($event,items)">{{type}}</div>
+                            <div class="title" @click="expand(items)">{{type}}</div>
                             <div class="page" v-for="item in items" @click="jump(item.url)" v-show="item.expand">
                                 <div class="title-wrapper">
                                     <div class="image">
@@ -364,6 +367,7 @@
                                 </div>
                                 <div class="url">{{item.url}}</div>
                             </div>
+                            <div class="page empty" v-show="items && items[0] && !items[0].expand" @click="expand(items)">...</div>
                         </div>
                     </div>
                 </div>
@@ -588,8 +592,7 @@
                     }
                     return array[index].replace('${path}', path);
                 },
-                expand(e, arr) {
-                    console.log(e.target.offsetTop);
+                expand(arr) {
                     console.log(arr);
                     for (let arrElement of arr) {
                         arrElement.expand = !arrElement.expand;
