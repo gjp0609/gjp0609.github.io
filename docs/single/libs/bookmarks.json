@@ -35,26 +35,60 @@
             "desc": "mdn web docs",
             "url": "https://developer.mozilla.org/zh-CN/search?q=${keyword}",
             "tags": ["mdn", "mozilla", "html", "css", "javascript"]
+        }
+    ],
+    "Mine": [
+        {
+            "title": "Github Pages",
+            "desc": "github pages",
+            "url": "https://pages.onysakura.fun/",
+            "tags": ["github", "pages"]
+        }
+    ],
+    "Mail": [
+        {
+            "title": "Google Mail",
+            "desc": "google gmail mail",
+            "url": "https://mail.google.com/",
+            "tags": ["mail", "gmail", "google"]
         },
         {
+            "title": "QQ Mail",
+            "desc": "tencent qq mail",
+            "url": "https://mail.qq.com/",
+            "tags": ["mail", "qq", "tencent"]
+        },
+        {
+            "title": "163 Mail",
+            "desc": "netease 163 mail",
+            "url": "https://mail.163.com/",
+            "tags": ["mail", "163", "netease"]
+        },
+        {
+            "title": "126 Mail",
+            "desc": "netease 126 mail",
+            "url": "https://mail.126.com/",
+            "tags": ["mail", "126", "netease"]
+        }
+    ],
+    "Icon": [
+        {
             "title": "Favicon Google",
-            "desc": "获取网站图标 by google",
+            "desc": "get favicon by google",
             "url": "https://s2.googleusercontent.com/s2/favicons?sz=64&domain_url=${keyword}",
-            "tags": ["图标", "icon", "google"]
+            "tags": ["icon", "google"]
         },
         {
             "title": "Favicon Duckduckgo",
-            "desc": "获取网站图标 by duckduckgo",
+            "desc": "get favicon by duckduckgo",
             "url": "https://icons.duckduckgo.com/ip2/${keyword}.ico",
-            "tags": ["图标", "icon", "duckduckgo"]
-        }
-    ],
-    "Work": [
+            "tags": ["icon", "duckduckgo"]
+        },
         {
-            "title": "Tydic OA",
-            "desc": "Tydic OA",
-            "url": "https://oa.tydic.com/",
-            "tags": ["tydic", "oa"]
+            "title": "Favicon Yandex",
+            "desc": "get favicon by yandex",
+            "url": "https://favicon.yandex.net/favicon/${keyword}/",
+            "tags": ["icon", "yandex"]
         }
     ]
 }

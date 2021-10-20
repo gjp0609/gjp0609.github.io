@@ -2,7 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Works</title>
+        <link rel="stylesheet" href="../common/transform.css" />
         <style>
             :root {
                 --add-type-prime-color: white;
@@ -66,26 +68,31 @@
             .search-wrapper .search .engines .engine {
                 display: flex;
                 align-items: center;
+                justify-content: flex-start;
                 height: 3rem;
                 font-size: 1.1rem;
                 background-color: white;
                 user-select: none;
             }
             .search-wrapper .search .engines .engine .image {
-                width: 4rem;
-                padding-left: 2.2rem;
+                width: 1.1rem;
+                height: 1.1rem;
                 display: flex;
                 align-items: center;
             }
             .search-wrapper .search .engines .engine .image img {
-                width: 1.3rem;
+                width: 1.1rem;
             }
-            .search-wrapper .search .engines .engine-list .engine .title {
-                padding-right: 1.5rem;
+            .search-wrapper .search .engines .engine .title {
+                margin-left: 0.5rem;
             }
             .search-wrapper .search .engines .engine-list {
                 position: fixed;
                 display: none;
+                z-index: 2;
+            }
+            .search-wrapper .search .engines .engine-list .engine {
+                padding-left: 1rem;
             }
             .search-wrapper .search .engines .engine-list .engine:hover {
                 background-color: var(--search-prime-color);
@@ -93,9 +100,23 @@
             .search-wrapper .search .engines .engine-list .engine.current {
                 background-color: var(--search-prime-color);
             }
+            .search-wrapper .search .engines .engine-list .engine .title {
+                padding-right: 1.5rem;
+            }
             .search-wrapper .search .engines:hover > .engine-list {
                 display: block;
                 box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--search-prime-color);
+            }
+            @media screen and (max-width: 1024px) {
+                .search-wrapper {
+                    padding: 1rem 0 0.8rem 0;
+                }
+                .search-wrapper .search .engines .engine {
+                    height: 2rem;
+                }
+                .search-wrapper .search {
+                    padding-right: 1rem;
+                }
             }
 
             .search-wrapper .search input {
@@ -114,6 +135,15 @@
                 border: 0.01rem solid var(--search-prime-color);
                 outline: 0.01rem solid var(--search-prime-color);
             }
+            @media screen and (max-width: 1024px) {
+                .search-wrapper .search input {
+                    font-size: 1.1rem;
+                    height: 2.2rem;
+                    line-height: 1.8rem;
+                    width: 10rem;
+                }
+            }
+
             .search-wrapper .search .auto-complete {
                 position: fixed;
                 margin-top: 0.5rem;
@@ -125,6 +155,7 @@
                 border-radius: 0.5rem;
                 overflow: hidden;
                 overflow-y: auto;
+                z-index: 2;
             }
             .search-wrapper .search .auto-complete .result {
                 padding: 0.5rem 0 0.5rem 1.5rem;
@@ -141,26 +172,30 @@
             .search-wrapper .search .auto-complete .result.current {
                 background-color: var(--search-prime-color);
             }
+            @media screen and (max-width: 1024px) {
+                .search-wrapper .search .auto-complete {
+                    margin-left: -8rem;
+                    width: 20rem;
+                    max-height: 30rem;
+                }
+            }
 
             .types-wrapper {
                 flex: 1;
                 overflow-y: scroll;
             }
-
             .types {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
                 margin: 0 10%;
             }
             .types .type {
-                flex: 0 1 var(--page-width);
+                width: var(--page-width);
                 min-width: var(--page-width);
                 display: flex;
                 flex-direction: column;
-                margin-bottom: 2rem;
+                margin-bottom: 1rem;
                 border: 0.01rem solid var(--search-prime-color);
                 border-radius: 1rem;
+                overflow: hidden;
             }
             .types .type > .title {
                 text-align: center;
@@ -168,6 +203,8 @@
                 padding: 0.4rem;
                 border-bottom: 0.01rem solid var(--search-prime-color);
                 margin-bottom: 0.8rem;
+                background-color: #fdfcfb;
+                cursor: default;
             }
             .types .type .page {
                 height: 3rem;
@@ -175,25 +212,51 @@
                 cursor: pointer;
                 margin: 0 auto;
             }
-            .types .type .page .title {
+            .types .type .page .title-wrapper {
                 display: flex;
                 align-items: center;
             }
-            .types .type .page .title span {
+            .types .type .page .title-wrapper .title {
+                line-height: 1.05rem;
                 font-size: 1rem;
                 margin-left: 0.38rem;
+                transition-duration: 0.2s;
+                transition-timing-function: ease-in-out;
             }
-            .types .type .page .title img {
+            .types .type .page:hover > .title-wrapper .title {
+                font-size: 1.05rem;
+                transition-duration: 0.2s;
+                transition-timing-function: ease-in-out;
+            }
+            .types .type .page:hover > .title-wrapper .image {
+                animation: spin 3s linear infinite;
+            }
+            .types .type .page .title-wrapper .image {
                 width: 1rem;
                 height: 1rem;
+            }
+            .types .type .page .title-wrapper .image img {
+                width: 1rem;
+                height: 1rem;
+                background-color: white;
             }
             .types .type .page .url {
                 font-size: 0.62rem;
                 width: calc(var(--page-width) - 4rem);
+                margin-top: 0.2rem;
+                color: grey;
                 overflow: hidden;
                 white-space: nowrap;
                 overflow-wrap: normal;
                 text-overflow: ellipsis;
+            }
+            @media screen and (max-width: 1024px) {
+                .types {
+                    margin: 0 1rem;
+                }
+                :root {
+                    --page-width: 20rem;
+                }
             }
 
             .add-type {
@@ -232,6 +295,7 @@
             }
         </style>
         <script src="./libs/vue.js"></script>
+        <script src="./libs/macy.min.js"></script>
     </head>
     <body>
         <div id="app">
@@ -241,7 +305,7 @@
                         <div class="engines">
                             <div class="engine">
                                 <span class="image">
-                                    <img :src="getIcon(search.engine.url)" :alt="search.engine.title" />
+                                    <img :src="loading" :img-url="search.engine.url" :alt="search.engine.title" />
                                 </span>
                                 <span class="title">{{ search.engine.title }}</span>
                             </div>
@@ -253,7 +317,7 @@
                                     @click="search.engine=engine;focus();"
                                 >
                                     <span class="image">
-                                        <img :src="getIcon(engine.url)" :alt="engine.title" />
+                                        <img :src="loading" :img-url="engine.url" :alt="engine.title" />
                                     </span>
                                     <span class="title"> {{ engine.title }} </span>
                                 </div>
@@ -288,13 +352,15 @@
                     </div>
                 </div>
                 <div class="types-wrapper">
-                    <div class="types">
+                    <div class="types" id="types">
                         <div class="type" v-for="(items,type) in favorites">
-                            <div class="title">{{type}}</div>
-                            <div class="page" v-for="item in items" @click="jump(item.url)">
-                                <div class="title">
-                                    <img :src="getIcon(item.url)" :alt="item.title" />
-                                    <span>{{item.title}}</span>
+                            <div class="title" @click="expand($event,items)">{{type}}</div>
+                            <div class="page" v-for="item in items" @click="jump(item.url)" v-show="item.expand">
+                                <div class="title-wrapper">
+                                    <div class="image">
+                                        <img :src="loading" :img-url="item.url" :alt="item.title" />
+                                    </div>
+                                    <div class="title">{{item.title}}</div>
                                 </div>
                                 <div class="url">{{item.url}}</div>
                             </div>
@@ -312,6 +378,8 @@
             el: app,
             data: () => {
                 return {
+                    loading:
+                        'data:image/gif;base64,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',
                     search: {
                         placeholder: 'search here',
                         text: '',
@@ -320,10 +388,15 @@
                         autoCompleteResult: {},
                         autoCompleteResultCurrent: {}
                     },
-                    favorites: {}
+                    favorites: {},
+                    expandAll: true,
+                    macy: undefined,
+                    isMobile: false
                 };
             },
             mounted() {
+                this.isMobile = document.body.clientWidth < 1000;
+                console.log(document.body.clientWidth);
                 this.focus();
                 document.body.addEventListener('click', (e) => {
                     this.search.autoCompleteResult = {};
@@ -334,6 +407,41 @@
                     .then((text) => {
                         this.favorites = JSON.parse(text);
                         this.search.engines = this.favorites.Search;
+                        for (let favoritesKey in this.favorites) {
+                            for (let page of this.favorites[favoritesKey]) {
+                                this.$set(page, 'expand', true);
+                            }
+                        }
+                        this.macy = Macy({
+                            container: '#types',
+                            trueOrder: true,
+                            waitForImages: false,
+                            margin: 24,
+                            columns: 4,
+                            breakAt: {
+                                2100: 3,
+                                1570: 2,
+                                1050: 1
+                            }
+                        });
+                        fetch('https://favicon.yandex.net/favicon/google.com/')
+                            .then((resp) => resp.text())
+                            .then((text) => {
+                                console.log(text);
+                            });
+                        this.$nextTick(() => {
+                            this.macy.reInit();
+                            for (let img of document.getElementsByTagName('img')) {
+                                let src = img.getAttribute('img-url');
+                                if (src) {
+                                    this.getImageContent(src, 0, (sss) => {
+                                        if (sss) {
+                                            img.src = sss;
+                                        }
+                                    });
+                                }
+                            }
+                        });
                     });
             },
             methods: {
@@ -420,9 +528,95 @@
                 add() {
                     console.log(JSON.stringify(this.favorites));
                     let a = document.createElement('a');
+
+                    this.expandAll = !this.expandAll;
+                    for (let favoritesKey in this.favorites) {
+                        for (let page of this.favorites[favoritesKey]) {
+                            page.expand = this.expandAll;
+                        }
+                    }
+                    this.$nextTick(() => {
+                        this.macy.reInit();
+                    });
                 },
-                getIcon(url) {
-                    return 'https://icons.duckduckgo.com/ip2/' + this.getHostname(url) + '.ico';
+                getImageContent(src, index, callback) {
+                    let iconSrc = this.getIcon(src, index);
+                    if (iconSrc === null) {
+                        callback(null);
+                        return;
+                    }
+                    let image = new Image();
+                    image.src = iconSrc;
+                    image.onload = () => {
+                        let width = image.naturalWidth;
+                        if (width === 1) {
+                            index++;
+                            this.getImageContent(src, index, callback);
+                        } else {
+                            try {
+                                let canvas = document.createElement('canvas');
+                                let ctx = canvas.getContext('2d');
+                                let dataURL;
+                                canvas.height = image.naturalHeight;
+                                canvas.width = image.naturalWidth;
+                                ctx.drawImage(image, 0, 0);
+                                dataURL = canvas.toDataURL('image/ico');
+                                callback(dataURL);
+                            } catch (e) {
+                                callback(iconSrc);
+                            }
+                        }
+                    };
+                },
+                getIcon(url, index) {
+                    index = index || 0;
+                    let type = index % 2;
+                    index = index >> 1;
+                    let array = [
+                        'https://favicon.yandex.net/favicon/${path}',
+                        'https://icons.duckduckgo.com/ip2/${path}.ico',
+                        'https://www.google.com/s2/favicons?sz=64&domain_url=${path}'
+                    ];
+                    if (index >= array.length) {
+                        return null;
+                    }
+                    let path;
+                    if (type === 0) {
+                        path = this.getHostname(url);
+                    } else {
+                        path = this.getDomain(url);
+                    }
+                    return array[index].replace('${path}', path);
+                },
+                expand(e, arr) {
+                    console.log(e.target.offsetTop);
+                    console.log(arr);
+                    for (let arrElement of arr) {
+                        arrElement.expand = !arrElement.expand;
+                    }
+                    this.$nextTick(() => {
+                        this.macy.reInit();
+                    });
+                },
+                getDomain(url) {
+                    let arr = ['.com.cn'];
+                    let hostname = this.getHostname(url);
+                    let domain = hostname;
+                    for (let suffix of arr) {
+                        if (hostname.indexOf(suffix) > 0) {
+                            let sec = hostname.substr(0, hostname.lastIndexOf(suffix));
+                            if (sec.indexOf('.') > 0) {
+                                domain = sec.substr(sec.lastIndexOf('.') + 1) + suffix;
+                            }
+                            break;
+                        } else {
+                            let sec = hostname.substr(0, hostname.lastIndexOf('.'));
+                            if (sec.indexOf('.') > 0) {
+                                domain = sec.substr(sec.lastIndexOf('.') + 1) + hostname.substr(hostname.lastIndexOf('.'));
+                            }
+                        }
+                    }
+                    return domain;
                 },
                 getHostname(url) {
                     const { hostname } = new URL(url);
