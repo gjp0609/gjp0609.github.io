@@ -94,10 +94,8 @@
             .search-wrapper .search .engines .engine-list .engine {
                 padding-left: 1rem;
             }
+            .search-wrapper .search .engines .engine-list .engine.current,
             .search-wrapper .search .engines .engine-list .engine:hover {
-                background-color: var(--search-prime-color);
-            }
-            .search-wrapper .search .engines .engine-list .engine.current {
                 background-color: var(--search-prime-color);
             }
             .search-wrapper .search .engines .engine-list .engine .title {
@@ -317,7 +315,7 @@
                                     class="engine"
                                     v-for="engine in search.engines"
                                     :class="engine.title === search.engine.title ? 'current' : ''"
-                                    @click="search.engine=engine;focus();"
+                                    @click="changeSearchEngine($event, engine)"
                                 >
                                     <span class="image">
                                         <img :src="loading" :img-url="engine.url" :alt="engine.title" />
@@ -428,27 +426,36 @@
                                 1050: 1
                             }
                         });
-                        fetch('https://favicon.yandex.net/favicon/google.com/')
-                            .then((resp) => resp.text())
-                            .then((text) => {
-                                console.log(text);
-                            });
                         this.$nextTick(() => {
                             this.macy.reInit();
-                            for (let img of document.getElementsByTagName('img')) {
-                                let src = img.getAttribute('img-url');
-                                if (src) {
-                                    this.getImageContent(src, 0, (sss) => {
-                                        if (sss) {
-                                            img.src = sss;
-                                        }
-                                    });
-                                }
-                            }
+                            this.updateIcon();
                         });
                     });
             },
             methods: {
+                changeSearchEngine(e, engine) {
+                    this.search.engine = engine;
+                    this.focus();
+                    this.updateIcon(document.querySelector('.search-wrapper .search .engines > .engine .image img'), engine.url);
+                },
+                updateIcon(element, url) {
+                    let elements;
+                    if (element) {
+                        elements = [element];
+                    } else {
+                        elements = document.getElementsByTagName('img');
+                    }
+                    for (let img of elements) {
+                        let src = url || img.getAttribute('img-url');
+                        if (src) {
+                            this.getImageContent(src, 0, (imageUrl) => {
+                                if (imageUrl) {
+                                    img.src = imageUrl;
+                                }
+                            });
+                        }
+                    }
+                },
                 doSearch() {
                     if (this.search.text) {
                         if (Object.keys(this.search.autoCompleteResultCurrent).length === 0) {
