@@ -7,10 +7,10 @@
         <link rel="stylesheet" href="../common/transform.css" />
         <style>
             :root {
-                --add-type-prime-color: white;
-                --add-type-add-color: #ecb1b1;
-                --search-prime-color: #dddddd;
-                --page-width: 25rem;
+                --button-prime-color: white;
+                --button-background-color: #7c6262;
+                --prime-color: #dddddd;
+                --bookmark-width: 25rem;
             }
             * {
                 box-sizing: border-box;
@@ -53,7 +53,7 @@
                 flex-direction: row;
                 justify-content: space-around;
                 align-content: flex-end;
-                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--search-prime-color);
+                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
             }
             .search-wrapper .search {
                 display: flex;
@@ -96,14 +96,14 @@
             }
             .search-wrapper .search .engines .engine-list .engine.current,
             .search-wrapper .search .engines .engine-list .engine:hover {
-                background-color: var(--search-prime-color);
+                background-color: var(--prime-color);
             }
             .search-wrapper .search .engines .engine-list .engine .title {
                 padding-right: 1.5rem;
             }
             .search-wrapper .search .engines:hover > .engine-list {
                 display: block;
-                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--search-prime-color);
+                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
             }
             @media screen and (max-width: 1024px) {
                 .search-wrapper {
@@ -125,13 +125,13 @@
                 font-size: 1.2rem;
                 margin-left: 1rem;
                 padding-left: 1.5rem;
-                border: 0.01rem solid var(--search-prime-color);
+                border: 0.01rem solid var(--prime-color);
                 outline: 0.01rem solid white;
                 border-radius: 2rem;
             }
             .search-wrapper .search input:focus {
-                border: 0.01rem solid var(--search-prime-color);
-                outline: 0.01rem solid var(--search-prime-color);
+                border: 0.01rem solid var(--prime-color);
+                outline: 0.01rem solid var(--prime-color);
             }
             @media screen and (max-width: 1024px) {
                 .search-wrapper .search input {
@@ -149,7 +149,7 @@
                 width: 30rem;
                 max-height: 50rem;
                 background-color: white;
-                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--search-prime-color);
+                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
                 border-radius: 0.5rem;
                 overflow: hidden;
                 overflow-y: auto;
@@ -168,7 +168,7 @@
                 text-overflow: ellipsis;
             }
             .search-wrapper .search .auto-complete .result.current {
-                background-color: var(--search-prime-color);
+                background-color: var(--prime-color);
             }
             @media screen and (max-width: 1024px) {
                 .search-wrapper .search .auto-complete {
@@ -186,12 +186,12 @@
                 margin: 0 10%;
             }
             .types .type {
-                width: var(--page-width);
-                min-width: var(--page-width);
+                width: var(--bookmark-width);
+                min-width: var(--bookmark-width);
                 display: flex;
                 flex-direction: column;
                 margin-bottom: 1rem;
-                border: 0.01rem solid var(--search-prime-color);
+                border: 0.01rem solid var(--prime-color);
                 border-radius: 1rem;
                 overflow: hidden;
             }
@@ -199,51 +199,51 @@
                 text-align: center;
                 font-size: 1.1rem;
                 padding: 0.4rem;
-                border-bottom: 0.01rem solid var(--search-prime-color);
+                border-bottom: 0.01rem solid var(--prime-color);
                 margin-bottom: 0.8rem;
                 background-color: #fdfcfb;
                 cursor: default;
             }
-            .types .type .page {
+            .types .type .bookmark {
                 height: 3rem;
-                width: calc(var(--page-width) - 4rem);
+                width: calc(var(--bookmark-width) - 4rem);
                 cursor: pointer;
                 margin: 0 auto;
             }
-            .types .type .page.empty {
+            .types .type .bookmark.empty {
                 text-align: center;
             }
-            .types .type .page .title-wrapper {
+            .types .type .bookmark .title-wrapper {
                 display: flex;
                 align-items: center;
             }
-            .types .type .page .title-wrapper .title {
+            .types .type .bookmark .title-wrapper .title {
                 line-height: 1.05rem;
                 font-size: 1rem;
                 margin-left: 0.38rem;
                 transition-duration: 0.2s;
                 transition-timing-function: ease-in-out;
             }
-            .types .type .page:hover > .title-wrapper .title {
+            .types .type .bookmark:hover > .title-wrapper .title {
                 font-size: 1.05rem;
                 transition-duration: 0.2s;
                 transition-timing-function: ease-in-out;
             }
-            .types .type .page:hover > .title-wrapper .image {
+            .types .type .bookmark:hover > .title-wrapper .image {
                 animation: spin 3s linear infinite;
             }
-            .types .type .page .title-wrapper .image {
+            .types .type .bookmark .title-wrapper .image {
                 width: 1rem;
                 height: 1rem;
             }
-            .types .type .page .title-wrapper .image img {
+            .types .type .bookmark .title-wrapper .image img {
                 width: 1rem;
                 height: 1rem;
                 background-color: white;
             }
-            .types .type .page .url {
+            .types .type .bookmark .url {
                 font-size: 0.62rem;
-                width: calc(var(--page-width) - 4rem);
+                width: calc(var(--bookmark-width) - 4rem);
                 margin-top: 0.2rem;
                 color: grey;
                 overflow: hidden;
@@ -256,21 +256,25 @@
                     margin: 0 1rem;
                 }
                 :root {
-                    --page-width: 20rem;
+                    --bookmark-width: 20rem;
                 }
             }
-
-            .add-type {
+            .update-bookmark-button,
+            .expand-bookmark-type-button {
                 height: 2rem;
                 width: 2rem;
                 border-radius: 2rem;
-                background-color: var(--add-type-add-color);
-                outline: 0.1rem solid var(--add-type-add-color);
+                background-color: var(--button-background-color);
+                outline: 0.1rem solid var(--button-background-color);
                 position: fixed;
                 bottom: 2rem;
                 right: 2rem;
             }
-            .add-type::before {
+            .update-bookmark-button {
+                bottom: 5rem;
+            }
+            .expand-bookmark-type-button::before,
+            .update-bookmark-button::before {
                 content: '';
                 position: absolute;
                 left: 50%;
@@ -279,10 +283,11 @@
                 width: 1rem;
                 margin-left: -0.5rem;
                 margin-top: -0.1rem;
-                background-color: var(--add-type-prime-color);
-                outline: 0.1rem solid var(--add-type-prime-color);
+                background-color: var(--button-prime-color);
+                outline: 0.1rem solid var(--button-prime-color);
             }
-            .add-type::after {
+            .expand-bookmark-type-button::after,
+            .update-bookmark-button::after {
                 content: '';
                 position: absolute;
                 left: 50%;
@@ -291,8 +296,52 @@
                 width: 0.2rem;
                 margin-left: -0.1rem;
                 margin-top: -0.5rem;
-                background-color: var(--add-type-prime-color);
-                outline: 0.1rem solid var(--add-type-prime-color);
+                background-color: var(--button-prime-color);
+                outline: 0.1rem solid var(--button-prime-color);
+            }
+            .expand-bookmark-type-button::before,
+            .expand-bookmark-type-button::after {
+                transform: rotate(45deg);
+            }
+
+            .options-dialog {
+                position: fixed;
+                z-index: 5;
+                background-color: white;
+                border-radius: 1rem;
+                overflow: hidden;
+                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
+                height: 20rem;
+                width: 20rem;
+                top: calc(40% - 10rem);
+                left: calc(50% - 10rem);
+
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-content: center;
+            }
+            .options-dialog .title {
+                padding: 0.5rem;
+                flex: 0 0 1.5rem;
+                line-height: 1.5rem;
+                text-align: center;
+                border-bottom: 0.01rem solid lightgray;
+            }
+            .options-dialog .body {
+                margin: 0.5rem;
+                text-align: center;
+                flex: 1 0 auto;
+            }
+            .options-dialog .body label {
+                display: flex;
+                justify-content: space-between;
+                align-content: center;
+            }
+            .options-dialog .body textarea {
+                width: 100%;
+                height: 100%;
+                outline: none;
             }
         </style>
         <script src="./libs/vue.js"></script>
@@ -356,7 +405,7 @@
                     <div class="types" id="types">
                         <div class="type" v-for="(items,type) in favorites">
                             <div class="title" @click="expand(items)">{{type}}</div>
-                            <div class="page" v-for="item in items" @click="jump(item.url)" v-show="item.expand">
+                            <div class="bookmark" v-for="item in items" @click="jump(item.url)" v-show="item.expand">
                                 <div class="title-wrapper">
                                     <div class="image">
                                         <img :src="loading" :img-url="item.url" :alt="item.title" />
@@ -365,13 +414,23 @@
                                 </div>
                                 <div class="url">{{item.url}}</div>
                             </div>
-                            <div class="page empty" v-show="items && items[0] && !items[0].expand" @click="expand(items)">...</div>
+                            <div class="bookmark empty" v-show="items && items[0] && !items[0].expand" @click="expand(items)">...</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="add-type" @click="add"></div>
-            <div></div>
+            <div class="update-bookmark-button" @click="add"></div>
+            <div class="expand-bookmark-type-button" @click="expandAllTypes"></div>
+            <div v-show="options.show" class="options-dialog" @click="$event.stopPropagation();">
+                <div class="title">Add</div>
+                <div class="body">
+                    <textarea v-model="options.json"></textarea>
+                </div>
+                <div class="foot">
+                    <button @click="clear">clear</button>
+                    <button @click="save">save</button>
+                </div>
+            </div>
         </div>
     </body>
     <script>
@@ -393,44 +452,61 @@
                     favorites: {},
                     expandAll: true,
                     macy: undefined,
-                    isMobile: false
+                    options: {
+                        show: false,
+                        json: ''
+                    }
                 };
             },
             mounted() {
-                this.isMobile = document.body.clientWidth < 1000;
                 console.log(document.body.clientWidth);
                 this.focus();
                 document.body.addEventListener('click', (e) => {
                     this.search.autoCompleteResult = {};
                     this.search.autoCompleteResultCurrent = {};
+                    this.options.show = false;
                 });
-                fetch('./libs/bookmarks.json')
-                    .then((response) => response.text())
-                    .then((text) => {
-                        this.favorites = JSON.parse(text);
-                        this.search.engines = this.favorites.Search;
-                        for (let favoritesKey in this.favorites) {
-                            for (let page of this.favorites[favoritesKey]) {
-                                this.$set(page, 'expand', true);
-                            }
-                        }
-                        this.macy = Macy({
-                            container: '#types',
-                            trueOrder: true,
-                            waitForImages: false,
-                            margin: 24,
-                            columns: 4,
-                            breakAt: {
-                                2100: 3,
-                                1570: 2,
-                                1050: 1
-                            }
-                        });
+                this.macy = Macy({
+                    container: '#types',
+                    trueOrder: true,
+                    waitForImages: false,
+                    margin: 24,
+                    columns: 4,
+                    breakAt: {
+                        2100: 3,
+                        1570: 2,
+                        1050: 1
+                    }
+                });
+                try {
+                    let bookmarksSave = localStorage.getItem('bookmarks_save');
+                    if (bookmarksSave) {
+                        this.favorites = JSON.parse(bookmarksSave);
                         this.$nextTick(() => {
                             this.macy.reInit();
                             this.updateIcon();
                         });
-                    });
+                    } else {
+                        // noinspection ExceptionCaughtLocallyJS
+                        throw new Error('no local data');
+                    }
+                } catch (e) {
+                    fetch('./libs/bookmarks.json')
+                        .then((response) => response.text())
+                        .then((text) => {
+                            this.favorites = JSON.parse(text);
+                            this.search.engines = this.favorites.Search;
+                            for (let favoritesKey in this.favorites) {
+                                for (let bookmark of this.favorites[favoritesKey]) {
+                                    this.$set(bookmark, 'expand', true);
+                                }
+                            }
+                            this.$nextTick(() => {
+                                this.macy.reInit();
+                                this.updateIcon();
+                            });
+                        });
+                }
             },
             methods: {
                 changeSearchEngine(e, engine) {
@@ -473,20 +549,20 @@
                     let resultMap = {};
                     if (this.search.text) {
                         for (let favoritesKey in this.favorites) {
-                            for (let page of this.favorites[favoritesKey]) {
-                                if (page.title && page.title.indexOf(this.search.text.toLowerCase()) >= 0) {
-                                    resultMap[page.url] = page;
+                            for (let bookmark of this.favorites[favoritesKey]) {
+                                if (bookmark.title && bookmark.title.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                    resultMap[bookmark.url] = bookmark;
                                 }
-                                if (page.desc && page.desc.indexOf(this.search.text.toLowerCase()) >= 0) {
-                                    resultMap[page.url] = page;
+                                if (bookmark.desc && bookmark.desc.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                    resultMap[bookmark.url] = bookmark;
                                 }
-                                if (page.url.indexOf(this.search.text.toLowerCase()) >= 0) {
-                                    resultMap[page.url] = page;
+                                if (bookmark.url.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                    resultMap[bookmark.url] = bookmark;
                                 }
-                                if (page.tags) {
-                                    for (let tag of page.tags) {
+                                if (bookmark.tags) {
+                                    for (let tag of bookmark.tags) {
                                         if (tag.indexOf(this.search.text.toLowerCase()) >= 0) {
-                                            resultMap[page.url] = page;
+                                            resultMap[bookmark.url] = bookmark;
                                         }
                                     }
                                 }
@@ -536,14 +612,16 @@
                 focus() {
                     this.$refs.search.focus();
                 },
-                add() {
-                    console.log(JSON.stringify(this.favorites));
-                    let a = document.createElement('a');
-
+                add(e) {
+                    e.stopPropagation();
+                    this.options.json = JSON.stringify(this.favorites);
+                    this.options.show = !this.options.show;
+                },
+                expandAllTypes() {
                     this.expandAll = !this.expandAll;
                     for (let favoritesKey in this.favorites) {
-                        for (let page of this.favorites[favoritesKey]) {
-                            page.expand = this.expandAll;
+                        for (let bookmark of this.favorites[favoritesKey]) {
+                            bookmark.expand = this.expandAll;
                         }
                     }
                     this.$nextTick(() => {
@@ -637,6 +715,17 @@
                         url = url.replace('${keyword}', '');
                     }
                     window.open(url, '_blank').focus();
+                },
+                clear() {
+                    localStorage.removeItem('bookmarks_save');
+                },
+                save() {
+                    this.favorites = JSON.parse(this.options.json);
+                    this.options.show = false;
+                    localStorage.setItem('bookmarks_save', this.options.json);
+                    this.$nextTick(() => {
+                        this.macy.reInit();
+                    });
                 }
             }
         });
