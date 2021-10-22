@@ -16,11 +16,35 @@
             "tags": ["onysakura", "fun"]
         }
     ],
+    "BBS": [
+        {
+            "title": "V2EX",
+            "url": "https://www.v2ex.com",
+            "searchUrl": "https://www.google.com/search?q=site%3av2ex.com+${keyword}",
+            "tags": ["search", "bbs"]
+        },
+        {
+            "title": "NGA",
+            "url": "https://bbs.nga.cn/",
+            "tags": ["bbs"]
+        },
+        {
+            "title": "Muchong",
+            "url": "http://muchong.com/bbs/",
+            "tags": ["bbs"]
+        },
+        {
+            "title": "PC beta",
+            "url": "https://bbs.pcbeta.com/",
+            "tags": ["bbs"]
+        }
+    ],
     "Developments": [
         {
             "title": "Github",
             "url": "https://github.com/",
-            "tags": ["git", "github"]
+            "searchUrl": "https://github.com/search?q=${keyword}",
+            "tags": ["search"]
         },
         {
             "title": "Gitee",
@@ -28,88 +52,136 @@
             "tags": ["git", "gitee"]
         }
     ],
+    "Tools": [
+        {
+            "title": "Check IP",
+            "url": "https://checkip.amazonaws.com/"
+        },
+        {
+            "title": "Pastebin",
+            "url": "https://pastebin.ubuntu.com/"
+        },
+        {
+            "title": "Tsinghua Mirror",
+            "url": "https://mirrors.tuna.tsinghua.edu.cn/"
+        }
+    ],
     "Mail": [
         {
             "title": "Google Mail",
-            "desc": "google gmail mail",
             "url": "https://mail.google.com/",
-            "tags": ["mail", "gmail", "google"]
+            "tags": ["gmail"]
         },
         {
             "title": "QQ Mail",
-            "desc": "tencent qq mail",
             "url": "https://mail.qq.com/",
-            "tags": ["mail", "qq", "tencent"]
+            "tags": ["tencent"]
         },
         {
             "title": "163 Mail",
-            "desc": "netease 163 mail",
             "url": "https://mail.163.com/",
-            "tags": ["mail", "163", "netease"]
+            "tags": ["netease"]
         },
         {
             "title": "126 Mail",
-            "desc": "netease 126 mail",
             "url": "https://mail.126.com/",
-            "tags": ["mail", "126", "netease"]
+            "tags": ["netease"]
+        },
+        {
+            "title": "ExMail",
+            "url": "https://exmail.qq.com/",
+            "tags": ["tencent"]
         }
     ],
     "Search": [
         {
             "title": "Google",
-            "desc": "google search",
-            "url": "https://www.google.com/search?q=${keyword}",
-            "tags": ["google"]
-        },
-        {
-            "title": "Github",
-            "desc": "github search",
-            "url": "https://www.github.com/search?q=${keyword}",
-            "tags": ["github"]
+            "url": "https://www.google.com/ncr",
+            "searchUrl": "https://www.google.com/search?q=${keyword}",
+            "tags": ["search"]
         },
         {
             "title": "Bing",
-            "desc": "microsoft bing",
-            "url": "https://cn.bing.com/search?q=${keyword}",
-            "tags": ["microsoft", "bing"]
+            "url": "https://cn.bing.com/",
+            "searchUrl": "https://cn.bing.com/search?q=${keyword}",
+            "tags": ["search", "microsoft"]
+        },
+        {
+            "title": "Baidu",
+            "url": "https://www.baidu.com/",
+            "searchUrl": "https://www.baidu.com/s?wd=${keyword}",
+            "tags": ["search"]
+        },
+        {
+            "title": "Mag[i]",
+            "url": "https://magi.com/",
+            "searchUrl": "https://magi.com/search?q=${keyword}",
+            "tags": ["search", "microsoft"]
         },
         {
             "title": "Duckduckgo",
-            "desc": "duckduckgo",
-            "url": "https://duckduckgo.com/?q=${keyword}",
-            "tags": ["duckduckgo"]
-        },
-        {
-            "title": "V2EX",
-            "desc": "v2ex by google",
-            "url": "https://www.google.com/search?q=site%3av2ex.com+${keyword}",
-            "tags": ["v2ex", "google"]
+            "url": "https://duckduckgo.com/?t=h_",
+            "searchUrl": "https://duckduckgo.com/?q=${keyword}",
+            "tags": ["search"]
         },
         {
             "title": "MDN",
-            "desc": "mdn web docs",
-            "url": "https://developer.mozilla.org/zh-CN/search?q=${keyword}",
-            "tags": ["mdn", "mozilla", "html", "css", "javascript"]
+            "url": "https://developer.mozilla.org/zh-CN/docs/Web",
+            "searchUrl": "https://developer.mozilla.org/zh-CN/search?q=${keyword}",
+            "tags": ["search", "mdn", "html", "css", "js"]
+        }
+    ],
+    "Translation": [
+        {
+            "title": "I18n Translation",
+            "url": "https://i18ns.com/zh/index.html",
+            "searchUrl": "https://i18ns.com/zh/index.html?q=${keyword}",
+            "tags": ["translate"]
+        },
+        {
+            "title": "Google Translate",
+            "url": "https://translate.google.com/?sl=auto&tl=zh-CN",
+            "searchUrl": "https://translate.google.com/?sl=auto&tl=zh-CN&text=${keyword}&op=translate",
+            "tags": ["translate"]
+        },
+        {
+            "title": "Bing Translate",
+            "url": "https://cn.bing.com/translator/?to=zh-Hans",
+            "searchUrl": "https://cn.bing.com/translator/?to=zh-Hans&text=${keyword}",
+            "tags": ["translate"]
+        },
+        {
+            "title": "Sogou Translate",
+            "url": "https://fanyi.sogou.com/text?model=general&transfrom=auto&transto=zh-CHS",
+            "searchUrl": "https://fanyi.sogou.com/text?model=general&transfrom=auto&transto=zh-CHS&keyword=${keyword}",
+            "tags": ["translate"]
+        },
+        {
+            "title": "Baidu Translate",
+            "url": "https://fanyi.baidu.com/",
+            "searchUrl": "https://fanyi.baidu.com/#auto/zh/${keyword}",
+            "tags": ["translate"]
+        },
+        {
+            "title": "Haici Translate",
+            "url": "https://dict.cn/",
+            "searchUrl": "https://dict.cn/${keyword}",
+            "tags": ["translate"]
         }
     ],
     "Icon": [
         {
             "title": "Favicon Yandex",
-            "desc": "get favicon by yandex",
-            "url": "https://favicon.yandex.net/favicon/${keyword}/",
-            "tags": ["icon", "yandex"]
+            "url": "https://favicon.yandex.net/favicon/${keyword}/"
         },
         {
             "title": "Favicon Google",
-            "desc": "get favicon by google",
-            "url": "https://www.google.com/s2/favicons?sz=64&domain_url=${keyword}",
-            "tags": ["icon", "google"]
+            "url": "https://www.google.com/s2/favicons?sz=64&domain_url=${keyword}"
         },
         {
             "title": "Favicon Duckduckgo",
-            "desc": "get favicon by duckduckgo",
             "url": "https://icons.duckduckgo.com/ip2/${keyword}.ico",
-            "tags": ["icon", "duckduckgo"]
+            "tags": ["favicon"]
         }
     ]
 }

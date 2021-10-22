@@ -10,6 +10,7 @@
                 --button-prime-color: white;
                 --button-background-color: #7c6262;
                 --prime-color: #dddddd;
+                --prime-color-darker: #cccccc;
                 --bookmark-width: 25rem;
             }
             * {
@@ -312,7 +313,7 @@
                 overflow: hidden;
                 box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
                 height: 20rem;
-                width: 20rem;
+                width: 30rem;
                 top: calc(40% - 10rem);
                 left: calc(50% - 10rem);
 
@@ -332,16 +333,44 @@
                 margin: 0.5rem;
                 text-align: center;
                 flex: 1 0 auto;
-            }
-            .options-dialog .body label {
                 display: flex;
-                justify-content: space-between;
-                align-content: center;
+                flex-direction: column;
+            }
+            .options-dialog .body .option {
+                text-align: left;
+                margin: 0 0 0.5rem 0.5rem;
             }
             .options-dialog .body textarea {
                 width: 100%;
                 height: 100%;
                 outline: none;
+                border-radius: 0.3rem;
+                border: 0.01rem solid lightgray;
+            }
+            .options-dialog .foot {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-content: center;
+                margin: 0 1rem 0.5rem 0;
+            }
+            .options-dialog .foot button {
+                background-color: white;
+                outline: none;
+                margin-left: 1rem;
+                border: 0.01rem solid lightgray;
+            }
+            .options-dialog .foot button:hover {
+                background-color: var(--prime-color);
+            }
+            .options-dialog .foot button:active {
+                background-color: var(--prime-color-darker);
+            }
+            @media screen and (max-width: 1024px) {
+                .options-dialog {
+                    width: 20rem;
+                    height: 30rem;
+                }
             }
         </style>
         <script src="./libs/vue.js"></script>
@@ -364,7 +393,7 @@
                                     class="engine"
                                     v-for="engine in search.engines"
                                     :class="engine.title === search.engine.title ? 'current' : ''"
-                                    @click="changeSearchEngine($event, engine)"
+                                    @click="changeSearchEngine(engine)"
                                 >
                                     <span class="image">
                                         <img :src="loading" :img-url="engine.url" :alt="engine.title" />
@@ -380,6 +409,7 @@
                                 value=""
                                 v-model="search.text"
                                 :placeholder="search.placeholder"
+                                @keydown="stopMoveInputSelection"
                                 @keyup.enter="doSearch"
                                 @keyup.down="chooseResult(undefined,true)"
                                 @keyup.up="chooseResult(undefined,false)"
@@ -403,7 +433,7 @@
                 </div>
                 <div class="types-wrapper">
                     <div class="types" id="types">
-                        <div class="type" v-for="(items,type) in favorites">
+                        <div class="type" v-for="(items,type) in bookmarks">
                             <div class="title" @click="expand(items)">{{type}}</div>
                             <div class="bookmark" v-for="item in items" @click="jump(item.url)" v-show="item.expand">
                                 <div class="title-wrapper">
@@ -424,6 +454,11 @@
             <div v-show="options.show" class="options-dialog" @click="$event.stopPropagation();">
                 <div class="title">Add</div>
                 <div class="body">
+                    <div class="option">
+                        TrueOrder:
+                        <label><input type="radio" name="trueOrder" v-model="options.trueOrder" :value="true" @change="macyReInit" />Yes</label>
+                        <label><input type="radio" name="trueOrder" v-model="options.trueOrder" :value="false" @change="macyReInit" />No</label>
+                    </div>
                     <textarea v-model="options.json"></textarea>
                 </div>
                 <div class="foot">
@@ -444,46 +479,39 @@
                     search: {
                         placeholder: 'search here',
                         text: '',
-                        engine: { title: 'Google', desc: 'Google Search', url: 'https://www.google.com/search?q=${keyword}', tags: ['Google'] },
+                        engine: { title: 'Google', url: 'https://www.google.com/', searchUrl: 'https://www.google.com/search?q=${keyword}' },
                         engines: [],
                         autoCompleteResult: {},
                         autoCompleteResultCurrent: {}
                     },
-                    favorites: {},
+                    bookmarks: {},
                     expandAll: true,
                     macy: undefined,
                     options: {
                         show: false,
+                        trueOrder: true,
                         json: ''
                     }
                 };
             },
             mounted() {
-                console.log(document.body.clientWidth);
                 this.focus();
                 document.body.addEventListener('click', (e) => {
                     this.search.autoCompleteResult = {};
                     this.search.autoCompleteResultCurrent = {};
                     this.options.show = false;
                 });
-                this.macy = Macy({
-                    container: '#types',
-                    trueOrder: true,
-                    waitForImages: false,
-                    margin: 24,
-                    columns: 4,
-                    breakAt: {
-                        2100: 3,
-                        1570: 2,
-                        1050: 1
-                    }
-                });
                 try {
+                    let bookmarksOptions = localStorage.getItem('bookmarks_options');
+                    if (bookmarksOptions) {
+                        let options = JSON.parse(bookmarksOptions);
+                        this.options.trueOrder = options.trueOrder;
+                    }
                     let bookmarksSave = localStorage.getItem('bookmarks_save');
                     if (bookmarksSave) {
-                        this.favorites = JSON.parse(bookmarksSave);
+                        this.bookmarks = JSON.parse(bookmarksSave);
+                        this.macyReInit();
                         this.$nextTick(() => {
-                            this.macy.reInit();
                             this.updateIcon();
                         });
                     } else {
@@ -494,22 +522,38 @@
                     fetch('./libs/bookmarks.json')
                         .then((response) => response.text())
                         .then((text) => {
-                            this.favorites = JSON.parse(text);
-                            this.search.engines = this.favorites.Search;
-                            for (let favoritesKey in this.favorites) {
-                                for (let bookmark of this.favorites[favoritesKey]) {
+                            this.bookmarks = JSON.parse(text);
+                            if (this.bookmarks['Search'] && this.bookmarks['Search'].length > 0) {
+                                this.search.engines = this.bookmarks['Search'];
+                                this.search.engine = this.search.engines[0];
+                            }
+                            for (let bookmarksKey in this.bookmarks) {
+                                for (let bookmark of this.bookmarks[bookmarksKey]) {
                                     this.$set(bookmark, 'expand', true);
                                 }
                             }
+                            this.macyReInit();
                             this.$nextTick(() => {
-                                this.macy.reInit();
                                 this.updateIcon();
                             });
                         });
                 }
+                console.log(this.options.trueOrder);
+                this.macy = Macy({
+                    container: '#types',
+                    trueOrder: this.options.trueOrder,
+                    waitForImages: false,
+                    margin: 24,
+                    columns: 4,
+                    breakAt: {
+                        2100: 3,
+                        1570: 2,
+                        1050: 1
+                    }
+                });
             },
             methods: {
-                changeSearchEngine(e, engine) {
+                changeSearchEngine(engine) {
                     this.search.engine = engine;
                     this.focus();
                     this.updateIcon(document.querySelector('.search-wrapper .search .engines > .engine .image img'), engine.url);
@@ -533,44 +577,77 @@
                     }
                 },
                 doSearch() {
-                    if (this.search.text) {
+                    let text = this.search.text;
+                    if (text) {
                         if (Object.keys(this.search.autoCompleteResultCurrent).length === 0) {
-                            this.jump(this.search.engine.url.replace('${keyword}', encodeURIComponent(this.search.text)));
+                            this.jump(this.search.engine.searchUrl.replace('${keyword}', encodeURIComponent(this.search.text)));
                         } else {
-                            this.jump(this.search.autoCompleteResultCurrent.url.replace('${keyword}', ''));
+                            if (text.indexOf('!') === 0 && text.indexOf(' ') > 0) {
+                                text = text.substr(text.indexOf(' ')).trim();
+                                this.jump(this.search.autoCompleteResultCurrent.searchUrl.replace('${keyword}', text));
+                            } else {
+                                this.jump(this.search.autoCompleteResultCurrent.url);
+                            }
                         }
                     }
                 },
                 autoComplete(e) {
-                    console.log(e);
-                    if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
-                        return;
-                    }
                     let resultMap = {};
-                    if (this.search.text) {
-                        for (let favoritesKey in this.favorites) {
-                            for (let bookmark of this.favorites[favoritesKey]) {
-                                if (bookmark.title && bookmark.title.indexOf(this.search.text.toLowerCase()) >= 0) {
+                    let text = this.search.text;
+                    if (text) {
+                        if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
+                            return false;
+                        }
+                        let isQuickSearch = text.indexOf('!') === 0;
+                        if (isQuickSearch) {
+                            text = text.substr(1, text.indexOf(' ') > 0 ? text.indexOf(' ') - 1 : undefined);
+                        }
+                        for (let bookmarksKey in this.bookmarks) {
+                            for (let bookmark of this.bookmarks[bookmarksKey]) {
+                                if (isQuickSearch && !bookmark.searchUrl) {
+                                    continue;
+                                }
+                                if (bookmark.title && bookmark.title.indexOf(text.toLowerCase()) >= 0) {
                                     resultMap[bookmark.url] = bookmark;
                                 }
-                                if (bookmark.desc && bookmark.desc.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                if (bookmark.desc && bookmark.desc.indexOf(text.toLowerCase()) >= 0) {
                                     resultMap[bookmark.url] = bookmark;
                                 }
-                                if (bookmark.url.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                if (bookmark.url.indexOf(text.toLowerCase()) >= 0) {
                                     resultMap[bookmark.url] = bookmark;
                                 }
                                 if (bookmark.tags) {
                                     for (let tag of bookmark.tags) {
-                                        if (tag.indexOf(this.search.text.toLowerCase()) >= 0) {
+                                        if (tag.indexOf(text.toLowerCase()) >= 0) {
                                             resultMap[bookmark.url] = bookmark;
                                         }
                                     }
                                 }
                             }
                         }
+                        if (!isQuickSearch) {
+                            this.search.autoCompleteResultCurrent = {};
+                        }
+                    } else {
+                        let down;
+                        if (e.key === 'ArrowDown') {
+                            down = true;
+                        } else if (e.key === 'ArrowUp') {
+                            down = false;
+                        } else {
+                            return false;
+                        }
+                        let engines = this.search.engines;
+                        for (let i = 0; i < engines.length; i++) {
+                            if (engines[i].url === this.search.engine.url) {
+                                let index = down ? (i + 1 < engines.length ? i + 1 : 0) : i === 0 ? engines.length - 1 : i - 1;
+                                console.log(index);
+                                this.changeSearchEngine(engines[index]);
+                                break;
+                            }
+                        }
                     }
                     this.search.autoCompleteResult = resultMap;
-                    this.search.autoCompleteResultCurrent = {};
                 },
                 chooseResult(result, down) {
                     if (result) {
@@ -614,19 +691,8 @@
                 },
                 add(e) {
                     e.stopPropagation();
-                    this.options.json = JSON.stringify(this.favorites);
+                    this.options.json = JSON.stringify(this.bookmarks);
                     this.options.show = !this.options.show;
-                },
-                expandAllTypes() {
-                    this.expandAll = !this.expandAll;
-                    for (let favoritesKey in this.favorites) {
-                        for (let bookmark of this.favorites[favoritesKey]) {
-                            bookmark.expand = this.expandAll;
-                        }
-                    }
-                    this.$nextTick(() => {
-                        this.macy.reInit();
-                    });
                 },
                 getImageContent(src, index, callback) {
                     let iconSrc = this.getIcon(src, index);
@@ -678,10 +744,21 @@
                     return array[index].replace('${path}', path);
                 },
                 expand(arr) {
-                    console.log(arr);
                     for (let arrElement of arr) {
                         arrElement.expand = !arrElement.expand;
                     }
+                    this.macyReInit();
+                },
+                expandAllTypes() {
+                    this.expandAll = !this.expandAll;
+                    for (let bookmarksKey in this.bookmarks) {
+                        for (let bookmark of this.bookmarks[bookmarksKey]) {
+                            bookmark.expand = this.expandAll;
+                        }
+                    }
+                    this.macyReInit();
+                },
+                macyReInit() {
                     this.$nextTick(() => {
                         this.macy.reInit();
                     });
@@ -720,12 +797,23 @@
                     localStorage.removeItem('bookmarks_save');
                 },
                 save() {
-                    this.favorites = JSON.parse(this.options.json);
+                    if (this.options.json) {
+                        this.bookmarks = JSON.parse(this.options.json);
+                    }
                     this.options.show = false;
+                    localStorage.setItem(
+                        'bookmarks_options',
+                        JSON.stringify({
+                            trueOrder: this.options.trueOrder
+                        })
+                    );
                     localStorage.setItem('bookmarks_save', this.options.json);
-                    this.$nextTick(() => {
-                        this.macy.reInit();
-                    });
+                },
+                stopMoveInputSelection(e) {
+                    if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
+                        e.preventDefault();
+                        return;
+                    }
                 }
             }
         });
