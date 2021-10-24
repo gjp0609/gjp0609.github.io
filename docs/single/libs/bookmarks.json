@@ -52,6 +52,20 @@
             "tags": ["git", "gitee"]
         }
     ],
+    "Video": [
+        {
+            "title": "Bilibili",
+            "url": "https://www.bilibili.com/"
+        },
+        {
+            "title": "Bangumi",
+            "url": "https://bangumi.tv/"
+        },
+        {
+            "title": "Dmhy",
+            "url": "http://share.dmhy.org/"
+        }
+    ],
     "Tools": [
         {
             "title": "Check IP",
