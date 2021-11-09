@@ -148,6 +148,18 @@ export const constantMenuRouterMap = [
                         name: 'el-icon-pie-chart'
                     }
                 }
+            },
+            {
+                path: 'notes/:pathMatch(.*)*',
+                realPath: 'notes/',
+                component: () => import('../views/tools/Notes.vue'),
+                meta: {
+                    name: 'Notes',
+                    icon: {
+                        type: 'element-plus',
+                        name: 'Notebook'
+                    }
+                }
             }
         ]
     }
