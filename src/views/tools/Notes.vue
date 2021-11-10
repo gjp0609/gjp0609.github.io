@@ -33,7 +33,7 @@
                 screenWidth: document.body.clientWidth,
                 list: [],
                 routePath: '/tools/notes/',
-                url: import.meta.env.VITE_NOTES_URL,
+                url: import.meta.env.VITE_API_URL + 'notes/',
                 defaultProps: {
                     id: 'Id',
                     children: 'children',
@@ -216,7 +216,7 @@
             .el-tree-node.is-current > * > .is-leaf {
                 color: var(--el-color-primary);
             }
-            .el-tree-node .el-tree-node__label{
+            .el-tree-node .el-tree-node__label {
                 width: 15rem;
             }
             .el-tree-node .el-tree-node__label:hover {
@@ -257,9 +257,11 @@
                 align-items: center;
                 .note {
                     flex: 1 1 0;
-                    overflow-y: auto;
-                    width: 80rem;
-                    padding: 1rem 100%;
+                    overflow-y: scroll;
+                    width: 60rem;
+                }
+                .note::-webkit-scrollbar {
+                    display: none;
                 }
             }
             @media screen and (max-width: 1024px) {
@@ -287,7 +289,7 @@
                     padding-left: 0.5rem;
                     margin-inline-start: 1rem;
                 }
-                h1 {
+                /* h1 {
                     font-size: 1.75rem;
                     margin-block-start: 0.8rem;
                     margin-block-end: 0.7rem;
@@ -316,7 +318,7 @@
                     font-size: 1.15rem;
                     margin-block-start: 1rem;
                     margin-block-end: 0.7rem;
-                }
+                }*/
                 img {
                     display: block;
                     margin-left: 1rem;

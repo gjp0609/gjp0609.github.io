@@ -808,6 +808,7 @@
                         })
                     );
                     localStorage.setItem('bookmarks_save', this.options.json);
+                    this.macyReInit();
                 },
                 stopMoveInputSelection(e) {
                     if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {

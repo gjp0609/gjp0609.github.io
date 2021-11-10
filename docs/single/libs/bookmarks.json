@@ -29,6 +29,11 @@
             "tags": ["bbs"]
         },
         {
+            "title": "XDA",
+            "url": "https://forum.xda-developers.com/",
+            "tags": ["bbs"]
+        },
+        {
             "title": "Muchong",
             "url": "http://muchong.com/bbs/",
             "tags": ["bbs"]
@@ -78,6 +83,10 @@
         {
             "title": "Tsinghua Mirror",
             "url": "https://mirrors.tuna.tsinghua.edu.cn/"
+        },
+        {
+            "title": "GoProxy",
+            "url": "https://goproxy.cn/"
         }
     ],
     "Mail": [
