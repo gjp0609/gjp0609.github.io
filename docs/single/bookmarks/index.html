@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Bookmarks</title>
-        <link rel="stylesheet" href="../common/transform.css" />
+        <link rel="stylesheet" href="../../common/css/transform.css" />
         <style>
             :root {
                 --button-prime-color: white;
@@ -373,8 +373,8 @@
                 }
             }
         </style>
-        <script src="./libs/vue.js"></script>
-        <script src="./libs/macy.min.js"></script>
+        <script src="../../common/js/vue.2.6.14.min.js"></script>
+        <script src="../../common/js/macy.min.js"></script>
     </head>
     <body>
         <div id="app">
@@ -519,17 +519,23 @@
                         throw new Error('no local data');
                     }
                 } catch (e) {
-                    fetch('./libs/bookmarks.json')
-                        .then((response) => response.text())
-                        .then((text) => {
-                            this.bookmarks = JSON.parse(text);
-                            if (this.bookmarks['Search'] && this.bookmarks['Search'].length > 0) {
-                                this.search.engines = this.bookmarks['Search'];
-                                this.search.engine = this.search.engines[0];
-                            }
-                            for (let bookmarksKey in this.bookmarks) {
-                                for (let bookmark of this.bookmarks[bookmarksKey]) {
-                                    this.$set(bookmark, 'expand', true);
+                    Promise.all([fetch('./bookmarks-local.json'), fetch('./bookmarks.json')]).then((values) => {
+                        let a = [];
+                        for (let value of values) {
+                            a.push(value.text());
+                        }
+                        Promise.all([...a]).then((values) => {
+                            for (let value of values) {
+                                let bookmarks = JSON.parse(value);
+                                if (bookmarks['Search'] && bookmarks['Search'].length > 0) {
+                                    this.search.engines = bookmarks['Search'];
+                                    this.search.engine = this.search.engines[0];
+                                }
+                                for (let bookmarksKey in bookmarks) {
+                                    for (let bookmark of bookmarks[bookmarksKey]) {
+                                        this.$set(bookmark, 'expand', true);
+                                    }
+                                    this.bookmarks[bookmarksKey] = bookmarks[bookmarksKey];
                                 }
                             }
                             this.macyReInit();
@@ -537,6 +543,7 @@
                                 this.updateIcon();
                             });
                         });
+                    });
                 }
                 console.log(this.options.trueOrder);
                 this.macy = Macy({

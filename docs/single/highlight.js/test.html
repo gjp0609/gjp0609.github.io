@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>hljs</title>
+        <link rel="stylesheet" href="../../common/css/highlight.github.min.css" />
+        <script src="../../common/js/jquery-3.3.1.min.js"></script>
+        <script src="../../common/js/highlight.min.js"></script>
+        <script>
+            function updateText() {
+                let text = document.getElementById('text');
+                let code = document.getElementById('code');
+                console.log(text.value);
+                code.innerHTML = hljs.highlight(lang, '\n' + text.value).value;
+            }
+        </script>
+        <style>
+            #main {
+                display: flex;
+                flex-direction: column;
+            }
+            select {
+                height: 40px;
+            }
+            pre {
+                flex: 1 1 400px;
+            }
+            pre code {
+                font-family: 'Sarasa Mono SC', monospace;
+                font-size: 1rem;
+            }
+            textarea {
+                height: 300px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <select id="languages" onchange="updateText()"></select>
+            <pre>
+                <code id="code"></code>
+            </pre>
+            <textarea id="text" onkeyup="updateText()">
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
+deb https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free</textarea
+            >
+        </div>
+    </body>
+    <script>
+        let langs;
+        let lang = 'JavaScript';
+        fetch('./languages.json')
+            .then((response) => response.text())
+            .then((text) => {
+                let languages = JSON.parse(text);
+                console.log(languages);
+                langs = languages;
+                let select = document.getElementById('languages');
+                for (let key in languages) {
+                    let option = document.createElement('option');
+                    option.innerHTML = `<option value="${key}">${key}</option>`;
+                    select.appendChild(option);
+                }
+                updateText();
+            });
+        function updateText() {
+            try {
+                let text = document.getElementById('text');
+                let code = document.getElementById('code');
+                let language = document.getElementById('languages');
+                lang = langs[language.value];
+                lang = language.value;
+                code.innerHTML = hljs.highlight(lang, '\n' + text.value).value;
+            } catch (e) {
+                console.log(e);
+                code.innerHTML = 'ERROR! ';
+            }
+        }
+    </script>
+</html>

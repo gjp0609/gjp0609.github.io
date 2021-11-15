@@ -332,7 +332,6 @@
                 code,
                 code * {
                     font-family: 'MononokiWoff2', 'Sarasa Mono SC', monospace;
-                    //font-size: 0.9rem;
                 }
                 code.hljs {
                     background-color: $background-color;
@@ -346,7 +345,6 @@
                 }
                 code .hljs-section,
                 code .hljs-keyword {
-                    //font-size: 0.85rem;
                     font-weight: bold;
                 }
                 code {
@@ -369,6 +367,12 @@
                 p {
                     margin-block-start: 0.7em;
                     margin-block-end: 0.7em;
+                }
+                pre {
+                    margin-left: 1rem;
+                }
+                pre code.hljs {
+                    padding: 0.5rem;
                 }
                 table {
                     margin-left: 1rem;
