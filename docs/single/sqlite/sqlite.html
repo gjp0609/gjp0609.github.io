@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SQLite</title>
+        <script src="../../common/js/sqlite/sql-wasm.js"></script>
+    </head>
+    <body></body>
+    <script>
+        const sqlPromise = initSqlJs({
+            locateFile: (file) => `../../common/js/sqlite/${file}`
+        });
+        const dataPromise = fetch('./test.db').then((res) => res.arrayBuffer());
+        let db;
+        Promise.all([sqlPromise, dataPromise]).then((result) => {
+            let SQL = result[0];
+            let buf = result[1];
+            db = new SQL.Database(new Uint8Array(buf));
+
+            let query = 'asd';
+            const stmt = db.prepare(`select * from test where test.text like '%${query}%'`);
+            console.log(stmt.getSQL());
+            while (stmt.step()) {
+                const row = stmt.getAsObject();
+                console.log(row);
+            }
+        });
+    </script>
+</html>

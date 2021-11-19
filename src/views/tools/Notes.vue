@@ -43,9 +43,7 @@
                     content: '',
                     path: ''
                 },
-                currentPath: '',
-                currentNote: 0,
-                currentParent: 0
+                currentPath: ''
             };
         },
         computed: {
@@ -102,20 +100,10 @@
             };
             let currentPath = this.$router.currentRoute.value.fullPath;
             currentPath = currentPath.replace(this.routePath, '');
-            let currentNote = currentPath;
             if (!currentPath) {
-                currentNote = '0';
-                currentPath = 'Quick/Index.md';
+                currentPath = 'README.md';
             }
             this.currentPath = currentPath;
-            try {
-                this.currentNote = parseInt(currentNote);
-                if (!(typeof this.currentNote === 'number')) {
-                    this.currentNote = 0;
-                }
-            } catch (e) {
-                this.currentNote = 0;
-            }
             this.getNotes();
         },
         methods: {
