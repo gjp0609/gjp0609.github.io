@@ -59,6 +59,7 @@
                     let obj = undefined;
                     try {
                         source = source.replace(/:\s*([-+Ee0-9.]{16,})/g, ': "$1"');
+                        source = source.replace(/\n/g, '');
                         obj = JSON.parse(source);
                     } catch (e) {
                         console.warn('>>> parse json error, ', e.toString());
