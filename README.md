@@ -4,6 +4,16 @@
     -   [pages.onysakura.fun](https://pages.onysakura.fun/)
     -   [gjp0609.github.io](https://gjp0609.github.io/)
     -   [gjp0609.gitee.io/gjp0609.github.io](https://gjp0609.gitee.io/gjp0609.github.io/)
+-   Single Pages:
+    -   BookMarks
+        -   [Github](https://pages.onysakura.fun/single/bookmarks/index.html)
+        -   [Gitee](https://gjp0609.gitee.io/gjp0609.github.io/single/bookmarks/index.html)
+    -   SQLite Demo
+        -   [Github](https://pages.onysakura.fun/single/sqlite/demo.html)
+        -   [Gitee](https://gjp0609.gitee.io/gjp0609.github.io/single/sqlite/demo.html)
+    -   Highlight.js Test
+        -   [Github](https://pages.onysakura.fun/single/highlight.js/test.html)
+        -   [Gitee](https://gjp0609.gitee.io/gjp0609.github.io/single/highlight.js/test.html)
 -   ~~Articles link~~ Notes link:
     -   [Github Pages](https://pages.onysakura.fun/#/tools/notes/)
     -   [Gitee Pages](https://gjp0609.gitee.io/gjp0609.github.io/#/tools/notes/)
