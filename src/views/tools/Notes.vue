@@ -90,6 +90,7 @@
             };
             let currentPath = this.$router.currentRoute.value.fullPath;
             currentPath = currentPath.replace(this.routePath, '');
+            currentPath = decodeURIComponent(currentPath);
             if (!currentPath) {
                 currentPath = 'README.md';
             }
