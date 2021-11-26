@@ -387,6 +387,7 @@
                 p,
                 ol li,
                 ul li {
+                    margin-top: 0.7rem;
                     line-height: 1.5rem;
                 }
                 p {

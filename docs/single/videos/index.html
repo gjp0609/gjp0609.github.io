@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <link rel="icon" href="./libs/favicon.ico" />
+        <link rel="icon" href="./favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Videos</title>
         <link href="../../common/css/video.js/video-js.min.css" rel="stylesheet" />
@@ -234,11 +234,6 @@
                             show: false,
                             list: []
                         },
-                        ep: {
-                            title: 'EP',
-                            show: false,
-                            list: []
-                        },
                         mv: {
                             title: 'MV',
                             show: false,
@@ -382,25 +377,32 @@
             .then((text) => {
                 let sp = text.split('\n');
                 for (let i = 1; i < sp.length; i++) {
-                    let info = sp[i].split('|');
-                    console.log(info[0].trim());
-                    let list = vm.categories[info[0].trim()].list;
-                    let startNum = '1';
-                    let num = '1';
-                    if (info[5].trim() && info[5].trim().indexOf('-') > 0) {
-                        startNum = info[5].trim().split('-')[0];
-                        num = info[5].trim().split('-')[1];
-                    } else {
-                        num = info[5].trim();
+                    if (sp[i].length > 0) {
+                        let info = sp[i].split('|');
+                        let category = info[0].trim();
+                        let dir = info[1].trim();
+                        let nameReg = info[2].trim();
+                        let nums = info[3].trim();
+                        let srt = info[4].trim();
+                        let title = info[5].trim();
+                        let startNum, endNum;
+                        if (nums.indexOf('-') > 0) {
+                            startNum = nums.split('-')[0];
+                            endNum = nums.split('-')[1];
+                        } else {
+                            startNum = '1';
+                            endNum = nums;
+                        }
+                        let list = vm.categories[category].list;
+                        list.push({
+                            dir: dir,
+                            title: title,
+                            nameReg: nameReg,
+                            srt: srt === 'Y',
+                            startNum: parseInt(startNum),
+                            num: parseInt(endNum)
+                        });
                     }
-                    list.push({
-                        dir: info[1].trim(),
-                        title: info[2].trim(),
-                        nameReg: info[3].trim(),
-                        srt: info[4].trim() === 'Y',
-                        startNum: parseInt(startNum),
-                        num: parseInt(num)
-                    });
                 }
             });
         // document.body.addEventListener('touchmove', event => event.preventDefault(), false)

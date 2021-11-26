@@ -89,6 +89,12 @@
             "url": "https://goproxy.cn/"
         }
     ],
+    "Server": [
+        {
+            "title": "Cloudflare",
+            "url": "https://dash.cloudflare.com/"
+        }
+    ],
     "Mail": [
         {
             "title": "Google Mail",

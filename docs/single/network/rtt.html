@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <script src="../../common/js/echarts.min.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+            }
+            #chart {
+                flex: 1 1 40vh;
+            }
+            .options {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+            #result {
+                height: 30vh;
+                min-height: 30vh;
+                overflow-y: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="chart"></div>
+        <div class="options">
+            <button onclick="start()">start</button>
+            <button onclick="stop()">stop</button>
+        </div>
+        <div id="result"></div>
+        <script>
+            let search = location.search.substr(1);
+            let params = {};
+            for (let param of search.split('&')) {
+                if (param.indexOf('=') > 0) {
+                    let split = param.split('=');
+                    params[split[0]] = split[1];
+                }
+            }
+            let testUrl = params['testUrl'] ? decodeURIComponent(params['testUrl']) : 'https://httpbin.org/get';
+            let total = params['total'] ? parseInt(params['total']) : 100;
+            let resultDom = document.getElementById('result');
+            let timeList = [];
+            let rttList = [];
+            let task;
+
+            function start() {
+                if (!task) {
+                    task = setInterval(() => {
+                        let startTime = new Date().getTime();
+                        fetch(testUrl)
+                            .then((resp) => {
+                                record(startTime);
+                            })
+                            .catch((e) => {
+                                record(startTime);
+                            });
+                    }, 1000);
+                }
+            }
+
+            function record(startTime) {
+                timeList.push(startTime);
+                let delay = new Date().getTime() - startTime;
+                rttList.push(new Date().getTime() - startTime);
+                if (timeList.length > total) {
+                    timeList.splice(0, timeList.length - total);
+                    rttList.splice(0, rttList.length - total);
+                }
+                let li = document.createElement('li');
+                li.innerHTML = `<span class="time">${formatTime(new Date(startTime))}</span>: <span class="usage">${delay}</span>`;
+                resultDom.append(li);
+            }
+
+            function stop() {
+                rttList = [];
+                timeList = [];
+                if (task) {
+                    clearInterval(task);
+                    task = undefined;
+                }
+            }
+
+            function formatTime(time) {
+                return (
+                    time.getFullYear() +
+                    '-' +
+                    (time.getMonth() + 1 < 10 ? '0' : '') +
+                    (time.getMonth() + 1) +
+                    '-' +
+                    (time.getDate() < 10 ? '0' : '') +
+                    time.getDate() +
+                    ' ' +
+                    (time.getHours() < 10 ? '0' : '') +
+                    time.getHours() +
+                    ':' +
+                    (time.getMinutes() < 10 ? '0' : '') +
+                    time.getMinutes() +
+                    ':' +
+                    (time.getSeconds() < 10 ? '0' : '') +
+                    time.getSeconds()
+                );
+            }
+
+            let chartDom = document.getElementById('chart');
+            let myChart = echarts.init(chartDom);
+
+            let xAxis = [];
+            for (let i = 0; i < total; i++) {
+                xAxis.push(i);
+            }
+            let option = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {},
+                xAxis: {
+                    // type: 'time',
+                    data: xAxis
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        type: 'line',
+                        data: rttList
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+            setInterval(() => {
+                myChart.setOption({
+                    series: [
+                        {
+                            data: rttList
+                        }
+                    ]
+                });
+            }, 1000);
+        </script>
+    </body>
+</html>
