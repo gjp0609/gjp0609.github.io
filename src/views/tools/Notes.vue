@@ -34,7 +34,9 @@
                 screenWidth: document.body.clientWidth,
                 list: [],
                 routePath: '/tools/notes/',
-                url: import.meta.env.VITE_API_URL,
+                url: import.meta.env.VITE_NOTES_API_URL,
+                urlBak: import.meta.env.VITE_NOTES_API_URL_BAK,
+                fallback: false,
                 defaultProps: {
                     id: 'Id',
                     children: 'children',
@@ -99,10 +101,11 @@
         },
         methods: {
             getNotes() {
-                cachedFetch(this.url + 'list.json')
+                cachedFetch((this.fallback ? this.urlBak : this.url) + 'list.json')
                     .then((response) => {
                         if (response.status === 200) {
                             response.text().then((text) => {
+                                console.log(text);
                                 let json = JSON.parse(text);
                                 let content = Base64.decode(json.content);
                                 this.list = JSON.parse(content);
@@ -124,6 +127,8 @@
                     })
                     .catch((e) => {
                         console.log(e);
+                        this.fallback = true;
+                        this.getNotes();
                     });
             },
             getNote(path, note, force) {
@@ -134,11 +139,11 @@
                 }
                 this.$router.push(this.routePath + newPath);
                 this.currentPath = newPath;
-                baseUrl = this.url + path;
+                baseUrl = (this.fallback ? this.urlBak : this.url) + path;
                 marked.setOptions({
                     baseUrl: baseUrl
                 });
-                cachedFetch(this.url + path + note)
+                cachedFetch((this.fallback ? this.urlBak : this.url) + path + note)
                     .then((response) => {
                         if (response.status === 200) {
                             response.text().then((text) => {

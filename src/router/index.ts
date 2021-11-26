@@ -28,18 +28,6 @@ export const constantMenuRouterMap = [
         },
         children: [
             {
-                path: 'notes/:pathMatch(.*)*',
-                realPath: 'notes/',
-                component: () => import('../views/test/Notes.vue'),
-                meta: {
-                    name: 'Notes',
-                    icon: {
-                        type: 'element-plus',
-                        name: 'Notebook'
-                    }
-                }
-            },
-            {
                 path: 'test',
                 realPath: 'test/',
                 component: () => import('../views/test/Test.vue'),
