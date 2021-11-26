@@ -105,7 +105,6 @@
                     .then((response) => {
                         if (response.status === 200) {
                             response.text().then((text) => {
-                                console.log(text);
                                 let json = JSON.parse(text);
                                 let content = Base64.decode(json.content);
                                 this.list = JSON.parse(content);
