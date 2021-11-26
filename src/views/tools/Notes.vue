@@ -11,7 +11,7 @@
                 @node-click="handleNodeClick"
             ></el-tree>
         </div>
-        <div class="note-wrapper">
+        <div class="note-wrapper" @wheel="scrollNote">
             <div class="note" v-html="noteContent"></div>
         </div>
     </div>
@@ -168,6 +168,13 @@
                 document.querySelectorAll('pre code').forEach((node) => {
                     hljs.highlightElement(node);
                 });
+            },
+            scrollNote(e) {
+                if (e.target.className === 'note-wrapper') {
+                    let note = document.getElementsByClassName('note');
+                    note[0].scroll(0, note[0].scrollTop + e.deltaY);
+                }
+                e.stopPropagation();
             }
         }
     };
@@ -297,6 +304,7 @@
                 }
             }
             :deep(.note) {
+                scroll-behavior: smooth;
                 $prime-color: #ecf5ff;
                 $background-color: #f4f7f9;
                 $background-color-darker: #e3e9ee;
