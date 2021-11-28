@@ -1,10 +1,12 @@
 Categories|Dir      |NameReg         |Num  |Srt|Name
-anime     |lol      |${num}.mkv      |6    |N  |Arcane
-anime     |wzzs     |${num}.mp4      |11   |N  |WZZS
-anime     |wzzs     |${num}.mkv      |12-18|N  |WZZS2
-anime     |monday   |${num}.mkv      |14   |Y  |Monday
-anime     |monday2  |${num}.mkv      |9    |Y  |Monday2
-film      |Animation|test.mkv        |0    |N  |牵牛花
+anime     |lol      |${num}.mkv      |9    |N  |Arcane
+anime     |gjtx     |${num}.mp4      |8    |N  |古见同学有交流障碍症
+anime     |wzzs     |${num}.mp4      |11   |N  |无职转生
+anime     |wzzs     |${num}.mkv      |12-19|N  |无职转生2
+anime     |monday   |${num}.mkv      |14   |N  |Monday
+anime     |monday2  |${num}.mkv      |9    |N  |Monday 2
+anime     |WhatIf   |${num}.mp4      |9    |N  |What If
+film      |Animation|test.mkv        |0    |N  |Test
 mv        |mmd      |SkySanctuary.mp4|0    |N  |Nostromo - Sky_Sanctuary
 mv        |mmd      |BoomClap.mp4    |0    |N  |初音-BoomClap 2.0【2K_60fps】
 mv        |music    |BadApple.mp4    |0    |N  |Alstroemeria Records - Bad Apple!!

@@ -289,6 +289,7 @@
                                 ]
                             };
                         }
+                        let isHandled = false;
                         vm.$nextTick(() => {
                             let player = videojs('my-player', options);
                             player.pause();
@@ -303,22 +304,29 @@
                                 }, 500);
                             });
                             player.on('error', function (e) {
-                                console.log(e);
-                                console.log(player.error().message);
-                                // if (player.error().message.indexOf('No compatible source was found for this media') >= 0) {
-                                // }
-                                try {
-                                    if (isWindows) {
-                                        location.href = `vlc:${url}`;
-                                    } else {
-                                        location.href = `intent:${url}#Intent;package=com.mxtech.videoplayer.pro;S.title=${part};end`;
-                                    }
-                                } catch (e) {
-                                    this.writeClipboard(url);
-                                    if (isWindows) {
-                                        alert('拉起vlc播放器失败，已复制地址到剪切板');
-                                    } else {
-                                        alert('拉起mx播放器失败，已复制地址到剪切板');
+                                if (!isHandled) {
+                                    isHandled = true;
+                                    console.log(e);
+                                    console.log(player.error().message);
+                                    // if (player.error().message.indexOf('No compatible source was found for this media') >= 0) {
+                                    // }
+                                    try {
+                                        let a = document.createElement('a');
+                                        if (isWindows) {
+                                            // location.href = `vlc:${url}`;
+                                            a.href = `vlc:${url}`;
+                                        } else {
+                                            a.href = `intent:${url}#Intent;package=com.mxtech.videoplayer.pro;S.title=${part};end`;
+                                            // location.href = `intent:${url}#Intent;package=com.mxtech.videoplayer.pro;S.title=${part};end`;
+                                        }
+                                        a.click();
+                                    } catch (e) {
+                                        this.writeClipboard(url);
+                                        if (isWindows) {
+                                            alert('拉起vlc播放器失败，已复制地址到剪切板');
+                                        } else {
+                                            alert('拉起mx播放器失败，已复制地址到剪切板');
+                                        }
                                     }
                                 }
                             });
@@ -372,7 +380,7 @@
             }
         });
 
-        fetch('./libs/data.csv')
+        fetch('./data.csv')
             .then((response) => response.text())
             .then((text) => {
                 let sp = text.split('\n');
