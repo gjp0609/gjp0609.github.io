@@ -510,31 +510,33 @@
                         1050: 1
                     }
                 });
-                Promise.all([$utils.cachedFetch('./bookmarks-local.json'), $utils.cachedFetch('./bookmarks.json')]).then((responses) => {
-                    let responseList = [];
-                    for (let response of responses) {
-                        responseList.push(response.text());
-                    }
-                    Promise.all(responseList).then((texts) => {
-                        for (let text of texts) {
-                            let bookmarks = JSON.parse(text);
-                            if (bookmarks['Search'] && bookmarks['Search'].length > 0) {
-                                this.search.engines = bookmarks['Search'];
-                                this.search.engine = this.search.engines[0];
-                            }
-                            for (let bookmarksKey in bookmarks) {
-                                for (let bookmark of bookmarks[bookmarksKey]) {
-                                    this.$set(bookmark, 'expand', true);
-                                }
-                                this.bookmarks[bookmarksKey] = bookmarks[bookmarksKey];
-                            }
+                Promise.all([$utils.cachedFetch('./bookmarks-local.json'), $utils.cachedFetch('./bookmarks.json', 60 * 60 * 24 * 7)]).then(
+                    (responses) => {
+                        let responseList = [];
+                        for (let response of responses) {
+                            responseList.push(response.text());
                         }
-                        this.macyReInit();
-                        this.$nextTick(() => {
-                            this.updateIcon();
+                        Promise.all(responseList).then((texts) => {
+                            for (let text of texts) {
+                                let bookmarks = JSON.parse(text);
+                                if (bookmarks['Search'] && bookmarks['Search'].length > 0) {
+                                    this.search.engines = bookmarks['Search'];
+                                    this.search.engine = this.search.engines[0];
+                                }
+                                for (let bookmarksKey in bookmarks) {
+                                    for (let bookmark of bookmarks[bookmarksKey]) {
+                                        this.$set(bookmark, 'expand', true);
+                                    }
+                                    this.bookmarks[bookmarksKey] = bookmarks[bookmarksKey];
+                                }
+                            }
+                            this.macyReInit();
+                            this.$nextTick(() => {
+                                this.updateIcon();
+                            });
                         });
-                    });
-                });
+                    }
+                );
             },
             methods: {
                 changeSearchEngine(engine) {
@@ -683,7 +685,8 @@
                         callback(null);
                         return;
                     }
-                   $utils.cachedFetch(iconSrc)
+                    $utils
+                        .cachedFetch(iconSrc, -1)
                         .then((response) => {
                             if (response.status === 200) {
                                 if (response.headers.has('Is-Cached-Fetch')) {

@@ -54,10 +54,13 @@ const $utils = {
         expireKey: ':expire',
         saveLocal: (key, value, expire) => {
             let defaultExpire = 60 * 60 * 2; // 默认 2 小时
-            let now = Date.now() / 1000;
-            expire = (expire || defaultExpire) + now;
+            expire = expire || defaultExpire;
+            if (expire > 0) {
+                let now = Date.now() / 1000;
+                expire = expire + now;
+                localStorage.setItem(key + ':expire', expire);
+            }
             localStorage.setItem(key, value);
-            localStorage.setItem(key + ':expire', expire);
         },
         getLocal: (key) => {
             let value = localStorage.getItem(key);

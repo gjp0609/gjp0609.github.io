@@ -36,9 +36,8 @@
         </div>
     </body>
     <script>
-        $utils.debugMode = true;
         $utils
-            .cachedFetch('./languages.json')
+            .cachedFetch('./languages.json', -1)
             .then((response) => response.text())
             .then((text) => {
                 let select = document.getElementById('languages');
