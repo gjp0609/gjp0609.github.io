@@ -31,7 +31,7 @@ const $utils = {
                         .clone()
                         .text()
                         .then((content) => {
-                            $utils.cache.saveLocal(cacheKey, content, expiry);
+                            $utils.cache.saveLocal(url, content, expiry);
                         });
                 } else if (ct && ct.match(/image/i)) {
                     response
