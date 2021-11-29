@@ -42,7 +42,7 @@ const $utils = {
                             reader.readAsDataURL(blob);
                             reader.onloadend = () => {
                                 let base64Data = reader.result;
-                                $utils.cache.saveLocal(cacheKey, base64Data, expiry);
+                                $utils.cache.saveLocal(url, base64Data, expiry);
                             };
                         });
                 }
