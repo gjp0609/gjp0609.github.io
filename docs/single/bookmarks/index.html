@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Bookmarks</title>
+        <link rel="icon" href="./favicon.ico">
         <link rel="stylesheet" href="../../common/css/transform.css" />
         <style>
             :root {
@@ -312,7 +313,7 @@
                 border-radius: 1rem;
                 overflow: hidden;
                 box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
-                height: 20rem;
+                height: 10rem;
                 width: 30rem;
                 top: calc(40% - 10rem);
                 left: calc(50% - 10rem);
@@ -339,13 +340,6 @@
             .options-dialog .body .option {
                 text-align: left;
                 margin: 0 0 0.5rem 0.5rem;
-            }
-            .options-dialog .body textarea {
-                width: 100%;
-                height: 100%;
-                outline: none;
-                border-radius: 0.3rem;
-                border: 0.01rem solid lightgray;
             }
             .options-dialog .foot {
                 display: flex;
@@ -459,10 +453,8 @@
                         <label><input type="radio" name="trueOrder" v-model="options.trueOrder" :value="true" @change="macyReInit" />Yes</label>
                         <label><input type="radio" name="trueOrder" v-model="options.trueOrder" :value="false" @change="macyReInit" />No</label>
                     </div>
-                    <textarea v-model="options.json"></textarea>
                 </div>
                 <div class="foot">
-                    <button @click="clear">clear</button>
                     <button @click="save">save</button>
                 </div>
             </div>
@@ -489,8 +481,7 @@
                     macy: undefined,
                     options: {
                         show: false,
-                        trueOrder: true,
-                        json: ''
+                        trueOrder: true
                     }
                 };
             },
@@ -501,51 +492,11 @@
                     this.search.autoCompleteResultCurrent = {};
                     this.options.show = false;
                 });
-                try {
-                    let bookmarksOptions = localStorage.getItem('bookmarks_options');
-                    if (bookmarksOptions) {
-                        let options = JSON.parse(bookmarksOptions);
-                        this.options.trueOrder = options.trueOrder;
-                    }
-                    let bookmarksSave = localStorage.getItem('bookmarks_save');
-                    if (bookmarksSave) {
-                        this.bookmarks = JSON.parse(bookmarksSave);
-                        this.macyReInit();
-                        this.$nextTick(() => {
-                            this.updateIcon();
-                        });
-                    } else {
-                        // noinspection ExceptionCaughtLocallyJS
-                        throw new Error('no local data');
-                    }
-                } catch (e) {
-                    Promise.all([cachedFetch('./bookmarks-local.json'), cachedFetch('./bookmarks.json')]).then((values) => {
-                        let a = [];
-                        for (let value of values) {
-                            a.push(value.text());
-                        }
-                        Promise.all([...a]).then((values) => {
-                            for (let value of values) {
-                                let bookmarks = JSON.parse(value);
-                                if (bookmarks['Search'] && bookmarks['Search'].length > 0) {
-                                    this.search.engines = bookmarks['Search'];
-                                    this.search.engine = this.search.engines[0];
-                                }
-                                for (let bookmarksKey in bookmarks) {
-                                    for (let bookmark of bookmarks[bookmarksKey]) {
-                                        this.$set(bookmark, 'expand', true);
-                                    }
-                                    this.bookmarks[bookmarksKey] = bookmarks[bookmarksKey];
-                                }
-                            }
-                            this.macyReInit();
-                            this.$nextTick(() => {
-                                this.updateIcon();
-                            });
-                        });
-                    });
+                let bookmarksOptions = localStorage.getItem('bookmarks_options');
+                if (bookmarksOptions) {
+                    let options = JSON.parse(bookmarksOptions);
+                    this.options.trueOrder = options.trueOrder;
                 }
-                console.log(this.options.trueOrder);
                 this.macy = Macy({
                     container: '#types',
                     trueOrder: this.options.trueOrder,
@@ -557,6 +508,31 @@
                         1570: 2,
                         1050: 1
                     }
+                });
+                Promise.all([cachedFetch('./bookmarks-local.json'), cachedFetch('./bookmarks.json')]).then((responses) => {
+                    let responseList = [];
+                    for (let response of responses) {
+                        responseList.push(response.text());
+                    }
+                    Promise.all(responseList).then((texts) => {
+                        for (let text of texts) {
+                            let bookmarks = JSON.parse(text);
+                            if (bookmarks['Search'] && bookmarks['Search'].length > 0) {
+                                this.search.engines = bookmarks['Search'];
+                                this.search.engine = this.search.engines[0];
+                            }
+                            for (let bookmarksKey in bookmarks) {
+                                for (let bookmark of bookmarks[bookmarksKey]) {
+                                    this.$set(bookmark, 'expand', true);
+                                }
+                                this.bookmarks[bookmarksKey] = bookmarks[bookmarksKey];
+                            }
+                        }
+                        this.macyReInit();
+                        this.$nextTick(() => {
+                            this.updateIcon();
+                        });
+                    });
                 });
             },
             methods: {
@@ -698,37 +674,65 @@
                 },
                 add(e) {
                     e.stopPropagation();
-                    this.options.json = JSON.stringify(this.bookmarks);
                     this.options.show = !this.options.show;
                 },
                 getImageContent(src, index, callback) {
-                    let iconSrc = this.getIcon(src, index);
+                    let iconSrc = this.getIcon(src, index++);
                     if (iconSrc === null) {
                         callback(null);
                         return;
                     }
-                    let image = new Image();
-                    image.src = iconSrc;
-                    image.onload = () => {
-                        let width = image.naturalWidth;
-                        if (width === 1) {
-                            index++;
-                            this.getImageContent(src, index, callback);
-                        } else {
-                            try {
-                                let canvas = document.createElement('canvas');
-                                let ctx = canvas.getContext('2d');
-                                let dataURL;
-                                canvas.height = image.naturalHeight;
-                                canvas.width = image.naturalWidth;
-                                ctx.drawImage(image, 0, 0);
-                                dataURL = canvas.toDataURL('image/ico');
-                                callback(dataURL);
-                            } catch (e) {
-                                callback(iconSrc);
+                    cachedFetch(iconSrc)
+                        .then((response) => {
+                            if (response.status === 200) {
+                                if (response.headers.has('Is-Cached-Fetch')) {
+                                    response.text().then((text) => {
+                                        if (text.length === 118) {
+                                            this.getImageContent(src, index, callback);
+                                        } else {
+                                            callback(text);
+                                        }
+                                    });
+                                } else {
+                                    response.blob().then((content) => {
+                                        let reader = new FileReader();
+                                        reader.readAsDataURL(content);
+                                        reader.onloadend = () => {
+                                            let base64data = reader.result;
+                                            if (base64data.length === 118) {
+                                                this.getImageContent(src, index, callback);
+                                            } else {
+                                                callback(base64data);
+                                            }
+                                        };
+                                    });
+                                }
                             }
-                        }
-                    };
+                        })
+                        .catch((e) => {
+                            let image = new Image();
+                            image.src = iconSrc;
+                            image.onload = () => {
+                                let width = image.naturalWidth;
+                                if (width === 1) {
+                                    index++;
+                                    this.getImageContent(src, index, callback);
+                                } else {
+                                    try {
+                                        let canvas = document.createElement('canvas');
+                                        let ctx = canvas.getContext('2d');
+                                        let dataURL;
+                                        canvas.height = image.naturalHeight;
+                                        canvas.width = image.naturalWidth;
+                                        ctx.drawImage(image, 0, 0);
+                                        dataURL = canvas.toDataURL('image/ico');
+                                        callback(dataURL);
+                                    } catch (e) {
+                                        callback(iconSrc);
+                                    }
+                                }
+                            };
+                        });
                 },
                 getIcon(url, index) {
                     index = index || 0;
@@ -736,8 +740,8 @@
                     index = index >> 1;
                     let array = [
                         'https://favicon.yandex.net/favicon/${path}',
-                        'https://icons.duckduckgo.com/ip2/${path}.ico',
-                        'https://www.google.com/s2/favicons?sz=64&domain_url=${path}'
+                        'https://www.google.com/s2/favicons?sz=64&domain_url=${path}',
+                        'https://icons.duckduckgo.com/ip2/${path}.ico'
                     ];
                     if (index >= array.length) {
                         return null;
@@ -800,13 +804,7 @@
                     }
                     window.open(url, '_blank').focus();
                 },
-                clear() {
-                    localStorage.removeItem('bookmarks_save');
-                },
                 save() {
-                    if (this.options.json) {
-                        this.bookmarks = JSON.parse(this.options.json);
-                    }
                     this.options.show = false;
                     localStorage.setItem(
                         'bookmarks_options',
@@ -814,13 +812,11 @@
                             trueOrder: this.options.trueOrder
                         })
                     );
-                    localStorage.setItem('bookmarks_save', this.options.json);
                     this.macyReInit();
                 },
                 stopMoveInputSelection(e) {
                     if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
                         e.preventDefault();
-                        return;
                     }
                 }
             }
@@ -845,6 +841,7 @@
                 let age = (Date.now() - whenCached) / 1000;
                 if (age < expiry) {
                     let response = new Response(new Blob([cached]));
+                    response.headers.set('Is-Cached-Fetch', 'true');
                     return Promise.resolve(response);
                 } else {
                     // 清除旧值
@@ -866,6 +863,19 @@
                             .then((content) => {
                                 localStorage.setItem(cacheKey, content);
                                 localStorage.setItem(cacheKey + ':ts', Date.now());
+                            });
+                    } else if (ct && ct.match(/image/i)) {
+                        response
+                            .clone()
+                            .blob()
+                            .then((blob) => {
+                                let reader = new FileReader();
+                                reader.readAsDataURL(blob);
+                                reader.onloadend = function () {
+                                    let base64Data = reader.result;
+                                    localStorage.setItem(cacheKey, base64Data);
+                                    localStorage.setItem(cacheKey + ':ts', Date.now());
+                                };
                             });
                     }
                 }
