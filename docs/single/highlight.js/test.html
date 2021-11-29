@@ -6,14 +6,7 @@
         <link rel="stylesheet" href="../../common/css/highlight.github.min.css" />
         <script src="../../common/js/jquery-3.3.1.min.js"></script>
         <script src="../../common/js/highlight.min.js"></script>
-        <script>
-            function updateText() {
-                let text = document.getElementById('text');
-                let code = document.getElementById('code');
-                console.log(text.value);
-                code.innerHTML = hljs.highlight(lang, '\n' + text.value).value;
-            }
-        </script>
+        <script src="../../common/js/utils.js"></script>
         <style>
             #main {
                 display: flex;
@@ -23,62 +16,99 @@
                 height: 40px;
             }
             pre {
-                flex: 1 1 400px;
+                flex: 1 1 60vh;
+                overflow-y: auto;
             }
             pre code {
                 font-family: 'Sarasa Mono SC', monospace;
                 font-size: 1rem;
             }
             textarea {
-                height: 300px;
+                height: 30vh;
             }
         </style>
     </head>
     <body>
         <div id="main">
-            <select id="languages" onchange="updateText()"></select>
-            <pre>
-                <code id="code"></code>
-            </pre>
-            <textarea id="text" onkeyup="updateText()">
-function updateText() {
-    let text = document.getElementById('text');
-    let code = document.getElementById('code');
-    console.log(text.value);
-    code.innerHTML = hljs.highlight(lang, '\n' + text.value).value;
-}</textarea
-            >
+            <select id="languages" onchange="updateText(true)"></select>
+            <pre id="code"></pre>
+            <textarea id="text" onkeyup="updateText()"></textarea>
         </div>
     </body>
     <script>
-        let langs;
-        let lang = 'JavaScript';
-        fetch('./languages.json')
+        $utils.debugMode = true;
+        $utils
+            .cachedFetch('./languages.json')
             .then((response) => response.text())
             .then((text) => {
-                let languages = JSON.parse(text);
-                console.log(languages);
-                langs = languages;
                 let select = document.getElementById('languages');
+                let languages = JSON.parse(text);
                 for (let key in languages) {
                     let option = document.createElement('option');
-                    option.innerHTML = `<option value="${key}">${key}</option>`;
+                    option.innerText = languages[key];
+                    option.value = key;
                     select.appendChild(option);
                 }
-                updateText();
+                init();
             });
-        function updateText() {
+
+        function updateText(force) {
+            let text = document.getElementById('text');
+            let code = document.getElementById('code');
             try {
-                let text = document.getElementById('text');
-                let code = document.getElementById('code');
-                let language = document.getElementById('languages');
-                lang = langs[language.value];
-                lang = language.value;
-                code.innerHTML = hljs.highlight(lang, '\n' + text.value).value;
+                if (force) {
+                    let language = document.getElementById('languages');
+                    let lang = language.value.split(', ')[0];
+                    code.innerHTML = hljs.highlight(text.value, { language: lang, ignoreIllegals: true }).value;
+                } else {
+                    let highlightAuto = hljs.highlightAuto(text.value);
+                    code.innerHTML = highlightAuto.value;
+                    if (!highlightAuto.language) {
+                        highlightAuto.language = 'text';
+                    }
+                    $('#languages option').each((index, option) => {
+                        option.value.split(', ').forEach((language) => {
+                            if (highlightAuto.language === language) {
+                                option.defaultSelected = true;
+                            }
+                        });
+                    });
+                }
             } catch (e) {
-                console.log(e);
-                code.innerHTML = 'ERROR! ';
+                code.innerText = e;
             }
+        }
+
+        function init() {
+            let text = document.getElementById('text');
+            text.value =
+                'function updateText(force) {\n' +
+                "    let text = document.getElementById('text');\n" +
+                "    let code = document.getElementById('code');\n" +
+                '    try {\n' +
+                '        if (force) {\n' +
+                "            let language = document.getElementById('languages');\n" +
+                '            let lang = language.value;\n' +
+                '            code.innerHTML = hljs.highlight(text.value, { language: lang, ignoreIllegals: true }).value;\n' +
+                '        } else {\n' +
+                '            let highlightAuto = hljs.highlightAuto(text.value);\n' +
+                '            code.innerHTML = highlightAuto.value;\n' +
+                '            if (!highlightAuto.language) {\n' +
+                "                highlightAuto.language = 'text';\n" +
+                '            }\n' +
+                "            $('#languages option').each((index, option) => {\n" +
+                "                option.value.split(', ').forEach((language) => {\n" +
+                '                    if (highlightAuto.language === language) {\n' +
+                '                        option.defaultSelected = true;\n' +
+                '                    }\n' +
+                '                });\n' +
+                '            });\n' +
+                '        }\n' +
+                '    } catch (e) {\n' +
+                '        code.innerText = e;\n' +
+                '    }\n' +
+                '}';
+            updateText();
         }
     </script>
 </html>
