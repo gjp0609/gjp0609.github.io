@@ -55,6 +55,12 @@
             "title": "Gitee",
             "url": "https://gitee.com/",
             "tags": ["git", "gitee"]
+        },
+        {
+            "title": "MDN",
+            "url": "https://developer.mozilla.org/zh-CN/docs/Web",
+            "searchUrl": "https://developer.mozilla.org/zh-CN/search?q=${keyword}",
+            "tags": ["search", "mdn", "html", "css", "js"]
         }
     ],
     "Video": [
@@ -68,7 +74,7 @@
         },
         {
             "title": "Dmhy",
-            "url": "http://share.dmhy.org/"
+            "url": "https://share.dmhy.org/"
         }
     ],
     "Tools": [
@@ -93,6 +99,10 @@
         {
             "title": "Cloudflare",
             "url": "https://dash.cloudflare.com/"
+        },
+        {
+            "title": "Tencent Cloud",
+            "url": "https://console.cloud.tencent.com/"
         }
     ],
     "Mail": [
@@ -152,12 +162,6 @@
             "url": "https://duckduckgo.com/?t=h_",
             "searchUrl": "https://duckduckgo.com/?q=${keyword}",
             "tags": ["search"]
-        },
-        {
-            "title": "MDN",
-            "url": "https://developer.mozilla.org/zh-CN/docs/Web",
-            "searchUrl": "https://developer.mozilla.org/zh-CN/search?q=${keyword}",
-            "tags": ["search", "mdn", "html", "css", "js"]
         }
     ],
     "Translation": [
