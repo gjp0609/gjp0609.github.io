@@ -195,7 +195,7 @@
                 margin-bottom: 1rem;
                 border: 0.01rem solid var(--prime-color);
                 border-radius: 1rem;
-                overflow: hidden;
+                /*overflow: hidden;*/
             }
             .types .type > .title {
                 text-align: center;
@@ -252,6 +252,35 @@
                 white-space: nowrap;
                 overflow-wrap: normal;
                 text-overflow: ellipsis;
+            }
+            .types .type .bookmark .arrow {
+                visibility: hidden;
+                margin-left: 3rem;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #55524d;
+            }
+            .types .type .bookmark .tooltip {
+                visibility: hidden;
+                position: absolute;
+                width: var(--bookmark-width);
+                padding: 0.5rem;
+                font-size: 0.8rem;
+                border-radius: 0.3rem;
+                color: white;
+                background-color: #55524d;
+                box-shadow: grey;
+                z-index: 4;
+            }
+            @media screen and (min-width: 1024px) {
+                .types .type .bookmark:hover > .tooltip {
+                    visibility: visible;
+                }
+                .types .type .bookmark:hover > .arrow {
+                    visibility: visible;
+                }
             }
             @media screen and (max-width: 1024px) {
                 .types {
@@ -433,11 +462,13 @@
                             <div class="bookmark" v-for="item in items" @click="jump(item.url)" v-show="item.expand">
                                 <div class="title-wrapper">
                                     <div class="image">
-                                        <img :src="loading" :img-url="item.url" :alt="item.title" />
+                                        <img :src="loading" :img-url="item.favicon?item.favicon:item.url" :alt="item.title" />
                                     </div>
                                     <div class="title">{{item.title}}</div>
                                 </div>
                                 <div class="url">{{item.url}}</div>
+                                <div v-if="item.desc" class="arrow"></div>
+                                <div v-if="item.desc" class="tooltip">{{item.desc}}</div>
                             </div>
                             <div class="bookmark empty" v-show="items && items[0] && !items[0].expand" @click="expand(items)">...</div>
                         </div>
@@ -510,7 +541,7 @@
                         1050: 1
                     }
                 });
-                Promise.all([$utils.cachedFetch('./bookmarks-local.json'), $utils.cachedFetch('./bookmarks.json', 60 * 60 * 24 * 7)]).then(
+                Promise.all([$utils.cachedFetch('./bookmarks-local.json', 1), $utils.cachedFetch('./bookmarks.json', 1 * 1 * 1 * 1)]).then(
                     (responses) => {
                         let responseList = [];
                         for (let response of responses) {
@@ -593,18 +624,18 @@
                                 if (isQuickSearch && !bookmark.searchUrl) {
                                     continue;
                                 }
-                                if (bookmark.title && bookmark.title.indexOf(text.toLowerCase()) >= 0) {
+                                if (bookmark.title && bookmark.title.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
                                     resultMap[bookmark.url] = bookmark;
                                 }
-                                if (bookmark.desc && bookmark.desc.indexOf(text.toLowerCase()) >= 0) {
+                                if (bookmark.desc && bookmark.desc.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
                                     resultMap[bookmark.url] = bookmark;
                                 }
-                                if (bookmark.url.indexOf(text.toLowerCase()) >= 0) {
+                                if (bookmark.url.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
                                     resultMap[bookmark.url] = bookmark;
                                 }
                                 if (bookmark.tags) {
                                     for (let tag of bookmark.tags) {
-                                        if (tag.indexOf(text.toLowerCase()) >= 0) {
+                                        if (tag.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
                                             resultMap[bookmark.url] = bookmark;
                                         }
                                     }

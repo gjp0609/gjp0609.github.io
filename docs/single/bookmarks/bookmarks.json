@@ -93,6 +93,11 @@
         {
             "title": "GoProxy",
             "url": "https://goproxy.cn/"
+        },
+        {
+            "title": "Minifier",
+            "url": "https://www.minifier.org/",
+            "desc": "Make your website smaller and faster to load by minifying the JS and CSS code."
         }
     ],
     "Server": [
