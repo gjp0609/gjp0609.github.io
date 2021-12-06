@@ -542,7 +542,7 @@
                         1050: 1
                     }
                 });
-                Promise.all([$utils.cachedFetch('./bookmarks-local.json', 1), $utils.cachedFetch('./bookmarks.json', 1 * 1 * 1 * 1)]).then(
+                Promise.all([$utils.cachedFetch('./bookmarks-local.json', 1), $utils.cachedFetch('./bookmarks.json', 60 * 60 * 24 * 2)]).then(
                     (responses) => {
                         let responseList = [];
                         for (let response of responses) {

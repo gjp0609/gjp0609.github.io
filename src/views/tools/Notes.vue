@@ -255,23 +255,6 @@
             .el-tree-node .el-tree-node__label {
                 width: 15rem;
             }
-            .el-tree-node .el-tree-node__label:hover {
-                animation: 5s wordsLoop linear infinite normal;
-            }
-            @-webkit-keyframes wordsLoop {
-                0%,
-                20% {
-                    transform: translateX(0px);
-                }
-                45%,
-                55% {
-                    transform: translateX(calc(-100% + 200px));
-                }
-                80%,
-                100% {
-                    transform: translateX(0px);
-                }
-            }
         }
         @media screen and (min-width: 1024px) {
             .list {
