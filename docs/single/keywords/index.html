@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>keywords</title>
+        <script src="../../common/js/vue.2.6.14.min.js"></script>
+        <style>
+            body {
+                /*margin: 0;*/
+                background-color: lightyellow;
+            }
+
+            #main {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .keywords {
+                height: 4rem;
+                line-height: 4rem;
+                text-align: center;
+            }
+
+            .keywords input {
+                box-sizing: border-box;
+                font-size: 1.2rem;
+                padding: 0.2rem;
+                /*outline: none;*/
+                border: 0.01rem solid black;
+                border-radius: 0.3rem;
+            }
+
+            .article {
+                width: 30rem;
+                padding: 1rem;
+            }
+
+            .article > div {
+                text-indent: 2rem;
+                line-height: 1.8rem;
+            }
+
+            .keyword {
+                background-blend-mode: multiply;
+            }
+
+            .keyword.s0 {
+                background-color: #f6c;
+            }
+
+            .keyword.s1 {
+                background-color: #fc6;
+            }
+
+            .keyword.s2 {
+                background-color: #cf6;
+            }
+
+            .keyword.s3 {
+                background-color: #6fc;
+            }
+
+            .keyword.s4 {
+                background-color: #6cf;
+            }
+
+            .keyword.s5 {
+                background-color: #c6f;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <div>
+                <div class="keywords">
+                    <input v-model="keywords" />
+                </div>
+                <div class="article" v-html="textHighlight"></div>
+            </div>
+        </div>
+    </body>
+    <script>
+        let main = document.getElementById('main');
+        let vm = new Vue({
+            el: main,
+            data: () => {
+                return {
+                    /* 后台获取的 */
+                    text:
+                        '壬戌之秋，七月既望，苏子与客泛舟游于赤壁之下。清风徐来，水波不兴，举酒属客，诵明月之诗，歌窈窕之章。少焉，月出于东山之上，徘徊于斗牛之间，白露横江，水光接天；纵一苇之所如，凌万顷之茫然。浩浩乎如凭虚御风，而不知其所止；飘飘乎如遗世独立，羽化而登仙。\n' +
+                        '于是饮酒乐甚，扣舷而歌之。歌曰：“桂棹兮兰桨，击空明兮溯流光。渺渺兮予怀，望美人兮天一方。”客有吹洞箫者，倚歌而和之，其声呜呜然，如怨如慕，如泣如诉，余音袅袅，不绝如缕。舞幽壑之潜蛟，泣孤舟之嫠妇。\n' +
+                        '苏子愀然，正襟危坐，而问客曰：“何为其然也？”\n' +
+                        '客曰：“‘月明星稀，乌鹊南飞’，此非曹孟德之诗乎？西望夏口，东望武昌，山川相缪，郁乎苍苍，此非孟德之困于周郎者乎？方其破荆州，下江陵，顺流而东也，舳舻千里，旌旗蔽空，酾酒临江，横槊赋诗，固一世之雄也，而今安在哉？况吾与子，渔樵于江渚之上，侣鱼虾而友麋鹿；驾一叶之扁舟，举匏樽以相属。寄蜉蝣于天地，渺沧海之一粟。哀吾生之须臾，羡长江之无穷。挟飞仙以遨游，抱明月而长终。知不可乎骤得，托遗响于悲风。”\n' +
+                        '苏子曰：“客亦知夫水与月乎？逝者如斯，而未尝往也；盈虚者如彼，而卒莫消长也，盖将自其变者而观之，则天地曾不能以一瞬；自其不变者而观之，则物与我皆无尽也，而又何羡乎？且夫天地之间，物各有主，苟非吾之所有，虽一毫而莫取。惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共食。”\n' +
+                        '客喜而笑，洗盏更酌。肴核既尽，杯盘狼籍，相与枕藉乎舟中，不知东方之既白。',
+                    keywords: '苏子 客 孟德 也'
+                };
+            },
+            computed: {
+                /**
+                 * 高亮关键字
+                 */
+                textHighlight() {
+                    console.time('Render');
+                    let text = this.text;
+                    if (!this.keywords) {
+                        return text;
+                    }
+                    let result = '';
+                    let keywordArray = this.keywords.split(' ');
+                    let lines = text.split('\n');
+                    for (let line of lines) {
+                        let arr = [];
+                        for (let keywordNum = 0; keywordNum < keywordArray.length; keywordNum++) {
+                            let keyword = keywordArray[keywordNum];
+                            // 从开头开始遍历每一行
+                            for (let pos = 0; pos < line.length; pos++) {
+                                // 获取部分
+                                let sub = line.substr(pos);
+                                // 匹配关键词
+                                let index = sub.indexOf(keyword);
+                                if (index >= 0) {
+                                    if (index > 0) {
+                                        pos = index + pos;
+                                    }
+                                    // 保存匹配的关键词所在位置
+                                    arr.push([keywordNum, pos, pos + keyword.length]);
+                                }
+                            }
+                        }
+                        // console.log('%c ' + JSON.stringify(arr), 'color: #a6c; font-weight: bold; font-size: 1.3rem');
+                        let resultLine = '';
+                        for (let i = 0; i < line.length; i++) {
+                            let char = line.charAt(i);
+                            let keywords = [];
+                            for (let j = 0; j < arr.length; j++) {
+                                if (arr[j][1] <= i && arr[j][2] > i) {
+                                    keywords.push(arr[j][0]);
+                                }
+                            }
+                            let className = '';
+                            keywords.forEach((keyword) => {
+                                className += 's' + keyword + ' ';
+                            });
+                            if (keywords.length > 0) {
+                                resultLine += `<span class="keyword ${className}">${char}</span>`;
+                            } else {
+                                resultLine += char;
+                            }
+                        }
+                        result += '<div>' + resultLine + '</div><br/>';
+                    }
+                    let temp = '';
+                    for (let line of result.split('<br/>')) {
+                        temp += '<div>' + line + '</div>';
+                    }
+                    console.timeEnd('Render');
+                    return temp;
+                }
+            },
+            mounted() {}
+        });
+    </script>
+</html>
