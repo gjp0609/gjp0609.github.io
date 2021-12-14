@@ -104,9 +104,6 @@
                 textHighlight() {
                     console.time('Render');
                     let text = this.text;
-                    if (!this.keywords) {
-                        return text;
-                    }
                     let result = '';
                     let keywordArray = this.keywords.split(' ');
                     let lines = text.split('\n');
