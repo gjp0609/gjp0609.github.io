@@ -173,38 +173,37 @@
         {
             "title": "I18n Translation",
             "url": "https://i18ns.com/zh/index.html",
-            "searchUrl": "https://i18ns.com/zh/index.html?q=${keyword}",
-            "tags": ["translate"]
+            "searchUrl": "https://i18ns.com/zh/index.html?q=${keyword}"
         },
         {
             "title": "Google Translate",
             "url": "https://translate.google.com/?sl=auto&tl=zh-CN",
-            "searchUrl": "https://translate.google.com/?sl=auto&tl=zh-CN&text=${keyword}&op=translate",
-            "tags": ["translate"]
+            "searchUrl": "https://translate.google.com/?sl=auto&tl=zh-CN&text=${keyword}&op=translate"
         },
         {
             "title": "Bing Translate",
             "url": "https://cn.bing.com/translator/?to=zh-Hans",
-            "searchUrl": "https://cn.bing.com/translator/?to=zh-Hans&text=${keyword}",
-            "tags": ["translate"]
+            "searchUrl": "https://cn.bing.com/translator/?to=zh-Hans&text=${keyword}"
         },
         {
             "title": "Sogou Translate",
             "url": "https://fanyi.sogou.com/text?model=general&transfrom=auto&transto=zh-CHS",
-            "searchUrl": "https://fanyi.sogou.com/text?model=general&transfrom=auto&transto=zh-CHS&keyword=${keyword}",
-            "tags": ["translate"]
+            "searchUrl": "https://fanyi.sogou.com/text?model=general&transfrom=auto&transto=zh-CHS&keyword=${keyword}"
         },
         {
             "title": "Baidu Translate",
             "url": "https://fanyi.baidu.com/",
-            "searchUrl": "https://fanyi.baidu.com/#auto/zh/${keyword}",
-            "tags": ["translate"]
+            "searchUrl": "https://fanyi.baidu.com/#auto/zh/${keyword}"
         },
         {
             "title": "Haici Translate",
             "url": "https://dict.cn/",
-            "searchUrl": "https://dict.cn/${keyword}",
-            "tags": ["translate"]
+            "searchUrl": "https://dict.cn/${keyword}"
+        },
+        {
+            "title": "DeepL Translate",
+            "url": "https://www.deepl.com/zh/translator",
+            "searchUrl": "https://www.deepl.com/zh/translator#en/zh/${keyword}"
         }
     ],
     "Icon": [
