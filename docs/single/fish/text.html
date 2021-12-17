@@ -127,13 +127,10 @@
                                     block: 'start'
                                 });
                                 clearInterval(scroll);
-                                this.autoSave();
                             } catch (e) {
                                 console.log(11);
                             }
                         }, 1000);
-                    } else {
-                        this.autoSave();
                     }
                 },
                 save(lineNum) {
