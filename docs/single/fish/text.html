@@ -1,0 +1,151 @@
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8" />
+        <title>asd</title>
+        <script src="../../common/js/vue.2.6.14.min.js"></script>
+        <script src="../../common/js/macy.min.js"></script>
+        <script src="../../common/js/utils.js"></script>
+        <style>
+            html,
+            body {
+                margin: 0;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            #app {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+            .file {
+                height: 3rem;
+                line-height: 3rem;
+                text-align: center;
+                flex: 0;
+            }
+            .article {
+                flex: 1;
+                width: 60rem;
+                margin: 2rem auto;
+                overflow-y: scroll;
+            }
+            .article .line {
+                display: flex;
+                text-indent: 2rem;
+                color: #1b1b1b;
+                word-break: break-all;
+            }
+            .article .line:hover {
+                color: black;
+                background-color: lightgray;
+            }
+            .article .line .index {
+                opacity: 0;
+                font-size: 1.2rem;
+                height: 2rem;
+                line-height: 2rem;
+                cursor: pointer;
+                flex: 1 1 5rem;
+                text-align: right;
+            }
+            .article .line:hover > .index {
+                opacity: 1;
+            }
+            .article .line .text {
+                flex: 1 1 50rem;
+                padding: 0.5rem;
+            }
+            .notification {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                height: 2rem;
+                line-height: 2rem;
+                background-color: lightskyblue;
+                border-radius: 0.4rem;
+                padding: 0 2rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <div class="file">
+                <label>File:<input type="file" @change="read" /> </label>
+            </div>
+            <div class="article">
+                <div class="line" v-for="(line, index) in lines" :id="'line-'+index">
+                    <!--                    ✍☢卐卍√▶▷◇✐✎✍-->
+                    <code class="index" @click="save(index)" :title="index">✎</code>
+                    <span class="text">{{line}}</span>
+                </div>
+            </div>
+            <div class="notification" v-show="show">Saved!</div>
+        </div>
+    </body>
+    <script>
+        let app = document.getElementById('app');
+        let vue = new Vue({
+            el: app,
+            data() {
+                return {
+                    show: false,
+                    fileName: '',
+                    lines: []
+                };
+            },
+            mounted() {
+                this.fileName = 'text.html';
+                fetch('./text.html')
+                    .then((response) => response.text())
+                    .then((text) => {
+                        this.initText(text);
+                    });
+                setInterval(() => {
+                    console.log(111);
+                }, 1000);
+            },
+            methods: {
+                read(e) {
+                    let file = e.target.files[0];
+                    this.fileName = file.name;
+                    const reader = new FileReader();
+                    reader.onload = (e) => this.initText(e.target.result);
+                    reader.readAsText(file, 'utf-8');
+                },
+                initText(text) {
+                    let list = text.split('\n');
+                    this.lines = [];
+                    for (let line of list) {
+                        if (line && line.trim()) {
+                            this.lines.push(line.trim());
+                        }
+                    }
+                    let top = localStorage.getItem('fish-text-' + encodeURIComponent(this.fileName));
+                    console.log(top);
+                    if (top) {
+                        let scroll = setInterval(() => {
+                            try {
+                                document.getElementById('line-' + top).scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                                clearInterval(scroll);
+                            } catch (e) {
+                                console.log(11);
+                            }
+                        }, 1000);
+                    }
+                },
+                save(lineNum) {
+                    console.log(lineNum);
+                    localStorage.setItem('fish-text-' + encodeURIComponent(this.fileName), lineNum);
+                    this.show = true;
+                    setTimeout(() => {
+                        this.show = false;
+                    }, 1000);
+                }
+            }
+        });
+    </script>
+</html>
