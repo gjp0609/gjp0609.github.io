@@ -101,9 +101,6 @@
                     .then((text) => {
                         this.initText(text);
                     });
-                setInterval(() => {
-                    console.log(111);
-                }, 1000);
             },
             methods: {
                 read(e) {
@@ -121,20 +118,22 @@
                             this.lines.push(line.trim());
                         }
                     }
-                    let top = localStorage.getItem('fish-text-' + encodeURIComponent(this.fileName));
-                    console.log(top);
-                    if (top) {
+                    let history = localStorage.getItem('fish-text-' + encodeURIComponent(this.fileName));
+                    if (history) {
                         let scroll = setInterval(() => {
                             try {
-                                document.getElementById('line-' + top).scrollIntoView({
+                                document.getElementById('line-' + history).scrollIntoView({
                                     behavior: 'smooth',
                                     block: 'start'
                                 });
                                 clearInterval(scroll);
+                                this.autoSave();
                             } catch (e) {
                                 console.log(11);
                             }
                         }, 1000);
+                    } else {
+                        this.autoSave();
                     }
                 },
                 save(lineNum) {
@@ -144,6 +143,22 @@
                     setTimeout(() => {
                         this.show = false;
                     }, 1000);
+                    this.autoSave();
+                },
+                autoSave() {
+                    setInterval(() => {
+                        let list = document.getElementsByClassName('index');
+                        let current = '0';
+                        for (let index of list) {
+                            let bound = index.getBoundingClientRect();
+                            if (bound.y > 0) {
+                                current = index.title;
+                                break;
+                            }
+                        }
+                        console.log('auto save: ', current);
+                        this.save(current);
+                    }, 1000 * 10);
                 }
             }
         });
