@@ -1,13 +1,4 @@
-Categories|Dir      |NameReg         |Num  |Srt|Name
-anime     |lol      |${num}.mkv      |9    |N  |Arcane
-anime     |gjtx     |${num}.mp4      |8    |N  |古见同学有交流障碍症
-anime     |wzzs     |${num}.mp4      |11   |N  |无职转生
-anime     |wzzs     |${num}.mkv      |12-19|N  |无职转生2
-anime     |monday   |${num}.mkv      |14   |N  |Monday
-anime     |monday2  |${num}.mkv      |9    |N  |Monday 2
-anime     |WhatIf   |${num}.mp4      |9    |N  |What If
-film      |Animation|test.mkv        |0    |N  |Test
-mv        |mmd      |SkySanctuary.mp4|0    |N  |Nostromo - Sky_Sanctuary
-mv        |mmd      |BoomClap.mp4    |0    |N  |初音-BoomClap 2.0【2K_60fps】
-mv        |music    |BadApple.mp4    |0    |N  |Alstroemeria Records - Bad Apple!!
-mv        |music    |JLJT.mp4        |0    |N  |GARNiDELiA - 極楽浄土
+Categories|Dir      |NameReg                            |Num|Status|Name
+Anime     |Test     |[XXX SUB].XXX.[${num}].1080p.GB.mkv|9  |2     |Test Anime
+Film      |Animation|XXX.mkv                            |0  |      |XXX
+Music     |MMD      |aa - bb.mp4                        |0  |      |aa - bb
