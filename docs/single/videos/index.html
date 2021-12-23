@@ -98,6 +98,11 @@
                 list-style: none;
                 padding-left: 0;
                 overflow-y: auto;
+                -ms-overflow-style: none;
+                overflow: -moz-scrollbars-none;
+            }
+            .list::-webkit-scrollbar {
+                width: 0 !important;
             }
 
             .list .item {
@@ -115,7 +120,6 @@
                 line-height: 2rem;
                 padding-left: 1rem;
             }
-
             .list .item .title .status {
                 font-weight: bold;
                 min-height: 2rem;
@@ -132,6 +136,13 @@
             }
             .list .item .title.status-2 .status {
                 color: #0a0;
+            }
+            .list .item .title .info {
+                display: inline-block;
+                color: #74a193;
+                font-size: 0.8rem;
+                min-height: 2rem;
+                line-height: 2rem;
             }
 
             @media screen and (min-width: 1024px) {
@@ -202,10 +213,11 @@
                 <template v-for="(category, key) in categories" v-if="currentCategory === key">
                     <ul class="list" v-if="category.list.length > 0">
                         <template v-for="item in category.list" v-key="item.dir">
-                            <li class="item" :class="item.show ? 'select' : ''">
+                            <li class="item" :class="item.show ? 'select' : ''" @click="showPart(item)">
                                 <template v-if="item.num !== 0">
-                                    <div class="title" :class="'status-'+item.status" @click="showPart(item)">
-                                        <span class="status">{{item.statusText}}</span>{{ item.title }}
+                                    <div class="title" :class="'status-'+item.status">
+                                        <span class="status">{{item.statusText}}</span><span class="name">{{ item.title }}</span>
+                                        <span class="info">{{item.info}}</span>
                                     </div>
                                     <div class="part-wrapper" v-show="item.show">
                                         <template v-for="num in item.num" v-key="num" v-if="num >= item.startNum">
@@ -410,13 +422,15 @@
                 let sp = text.split('\n');
                 for (let i = 1; i < sp.length; i++) {
                     if (sp[i].length > 0) {
-                        let info = sp[i].split('|');
-                        let category = info[0].trim();
-                        let dir = info[1].trim();
-                        let nameReg = info[2].trim();
-                        let nums = info[3].trim();
-                        let status = info[4].trim();
-                        let title = info[5].trim();
+                        let lineSplit = sp[i].split('|');
+                        let category = lineSplit[0].trim();
+                        let dir = lineSplit[1].trim();
+                        let nameReg = lineSplit[2].trim();
+                        let nums = lineSplit[3].trim();
+                        let status = lineSplit[4].trim();
+                        let subs = lineSplit[5].trim();
+                        let info = lineSplit[6].trim();
+                        let title = lineSplit[7].trim();
                         let startNum, endNum;
                         let statusText;
                         switch (status) {
@@ -449,6 +463,7 @@
                             srt: false,
                             status: status,
                             statusText: statusText,
+                            info: subs,
                             startNum: parseInt(startNum),
                             num: parseInt(endNum)
                         });
