@@ -100,8 +100,25 @@
             "desc": "Make your website smaller and faster to load by minifying the JS and CSS code."
         },
         {
+            "title": "PlantUML",
+            "url": "https://plantuml.com/",
+            "desc": "Open-source tool that uses simple textual descriptions to draw beautiful UML diagrams."
+        }
+    ],
+    "Interesting": [
+        {
             "title": "Microsoft Azure TTS",
             "url": "https://azure.microsoft.com/en-us/services/cognitive-services/text-to-speech/#overview"
+        },
+        {
+            "title": "Unicode Tools",
+            "url": "https://qwerty.dev/",
+            "desc": "Unicode tools to help you stand out online!"
+        },
+        {
+            "title": "ASCII Tools",
+            "url": "https://ascii.co.uk/",
+            "desc": "The place for all things textual."
         }
     ],
     "Server": [
@@ -114,7 +131,38 @@
             "url": "https://console.cloud.tencent.com/"
         }
     ],
+    "NetDisk": [
+        {
+            "title": "阿里云盘",
+            "url": "https://www.aliyundrive.com/drive"
+        },
+        {
+            "title": "腾讯微云",
+            "url": "https://www.weiyun.com/disk"
+        },
+        {
+            "title": "百度网盘",
+            "url": "https://pan.baidu.com/"
+        },
+        {
+            "title": "天翼云盘",
+            "url": "https://cloud.189.cn/"
+        },
+        {
+            "title": "OneDrive",
+            "url": "https://onedrive.live.com/"
+        },
+        {
+            "title": "Google 云端硬盘",
+            "url": "https://drive.google.com/"
+        },
+        {
+            "title": "Mega",
+            "url": "https://mega.nz/"
+        }
+    ],
     "Mail": [
+        "Collapsed by default",
         {
             "title": "Google Mail",
             "url": "https://mail.google.com/",
@@ -142,6 +190,7 @@
         }
     ],
     "Search": [
+        "Collapsed by default",
         {
             "title": "Google",
             "url": "https://www.google.com/ncr",
@@ -174,6 +223,7 @@
         }
     ],
     "Translation": [
+        "Collapsed by default",
         {
             "title": "I18n Translation",
             "url": "https://i18ns.com/zh/index.html",
@@ -211,6 +261,7 @@
         }
     ],
     "Icon": [
+        "Collapsed by default",
         {
             "title": "Favicon Yandex",
             "url": "https://favicon.yandex.net/favicon/${keyword}/"

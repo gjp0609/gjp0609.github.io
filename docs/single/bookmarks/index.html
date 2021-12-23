@@ -479,7 +479,7 @@
             <div class="update-bookmark-button" @click="add"></div>
             <div class="expand-bookmark-type-button" @click="expandAllTypes"></div>
             <div v-show="options.show" class="options-dialog" @click="$event.stopPropagation();">
-                <div class="title">Add</div>
+                <div class="title">Config</div>
                 <div class="body">
                     <div class="option">
                         TrueOrder:
@@ -551,15 +551,26 @@
                         Promise.all(responseList).then((texts) => {
                             for (let text of texts) {
                                 let bookmarks = JSON.parse(text);
-                                if (bookmarks['Search'] && bookmarks['Search'].length > 0) {
-                                    this.search.engines = bookmarks['Search'];
+                                let searchList = bookmarks['Search'];
+                                if (searchList && searchList.length > 0) {
+                                    if (typeof searchList[0] === 'string') {
+                                        searchList.shift();
+                                    }
+                                    this.search.engines = searchList;
                                     this.search.engine = this.search.engines[0];
                                 }
                                 for (let bookmarksKey in bookmarks) {
+                                    let bookmarkList = [];
+                                    let expand = true;
                                     for (let bookmark of bookmarks[bookmarksKey]) {
-                                        this.$set(bookmark, 'expand', true);
+                                        if (typeof bookmark === 'string') {
+                                            expand = false;
+                                        } else {
+                                            bookmark['expand'] = expand;
+                                            bookmarkList.push(bookmark);
+                                        }
                                     }
-                                    this.bookmarks[bookmarksKey] = bookmarks[bookmarksKey];
+                                    this.bookmarks[bookmarksKey] = bookmarkList;
                                 }
                             }
                             this.macyReInit();
@@ -807,7 +818,7 @@
                 },
                 macyReInit() {
                     this.$nextTick(() => {
-                        this.macy.reInit();
+                        setTimeout(() => this.macy.reInit(), 0);
                     });
                 },
                 getDomain(url) {
