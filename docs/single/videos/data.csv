@@ -1,4 +1,6 @@
-Categories|Dir      |NameReg                            |Num|Status|Name
-Anime     |Test     |[XXX SUB].XXX.[${num}].1080p.GB.mkv|9  |2     |Test Anime
-Film      |Animation|XXX.mkv                            |0  |      |XXX
-Music     |MMD      |aa - bb.mp4                        |0  |      |aa - bb
+Categories|Dir                  |NameReg                              |Num  |Status|Sub                  |Info       |Name
+Anime     |Test1                |[XXX SUB].XXX.[${num}].1080p.GB.mkv  |9    |0     |SAIO-Raws            |HEVC E-AC-3|Test Anime1
+Anime     |Test2                |[XXX SUB].XXX.[${num}].1080p.GB.mkv  |9    |1     |VCB-Studio           |HEVC E-AC-3|Test Anime2
+Anime     |Test3                |[XXX SUB].XXX.[${num}].1080p.BIG5.mp4|24   |2     |SAIO-Raws            |HEVC E-AC-3|Test Anime3
+Film      |Animation            |XXX.mkv                              |0    |      |Netflix              |           |XXX
+Music     |MMD                  |aa - bb.mp4                          |0    |      |                     |           |aa - bb
