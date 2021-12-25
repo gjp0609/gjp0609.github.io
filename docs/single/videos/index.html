@@ -38,8 +38,14 @@
                     flex-direction: column-reverse;
                 }
 
+                aside {
+                    flex: 1 0;
+                    border-right: none;
+                    overflow-y: auto;
+                }
+
                 .video {
-                    min-height: 10vh;
+                    flex: 0 1 20vh;
                 }
 
                 .video-js {
@@ -48,11 +54,6 @@
 
                 #my-player_html5_api {
                     height: auto !important;
-                }
-
-                aside {
-                    flex: 1;
-                    border-right: none;
                 }
             }
 
@@ -101,6 +102,7 @@
                 -ms-overflow-style: none;
                 overflow: -moz-scrollbars-none;
             }
+
             .list::-webkit-scrollbar {
                 width: 0 !important;
             }
@@ -108,9 +110,11 @@
             .list .item {
                 padding: 0.5rem;
             }
+
             .list .item:hover {
                 background-color: #f5f5f5;
             }
+
             .list .item.select {
                 background-color: #efefef;
             }
@@ -120,6 +124,7 @@
                 line-height: 2rem;
                 padding-left: 1rem;
             }
+
             .list .item .title .status {
                 font-weight: bold;
                 min-height: 2rem;
@@ -128,15 +133,19 @@
                 padding-right: 0.5rem;
                 user-select: none;
             }
+
             .list .item .title.status-0 {
                 color: #aaa;
             }
+
             .list .item .title.status-1 .status {
                 color: #00a;
             }
+
             .list .item .title.status-2 .status {
                 color: #0a0;
             }
+
             .list .item .title .info {
                 display: inline-block;
                 color: #74a193;
@@ -191,6 +200,7 @@
                 user-select: none;
                 cursor: pointer;
             }
+
             .list .item .part-wrapper .part:hover {
                 background-color: #cee3e3;
             }
@@ -216,8 +226,8 @@
                             <li class="item" :class="item.show ? 'select' : ''" @click="showPart(item)">
                                 <template v-if="item.num !== 0">
                                     <div class="title" :class="'status-'+item.status">
-                                        <span class="status">{{item.statusText}}</span><span class="name">{{ item.title }}</span>
-                                        <span class="info" v-show="item.info">{{item.info}}</span>
+                                        <span class="status">{{ item.statusText }}</span><span class="name">{{ item.title }}</span>
+                                        <span class="info" v-show="item.info">{{ item.info }}</span>
                                     </div>
                                     <div class="part-wrapper" v-show="item.show">
                                         <template v-for="num in item.num" v-key="num" v-if="num >= item.startNum">
@@ -233,10 +243,15 @@
                                 </template>
                                 <template v-else>
                                     <div v-if="item.status==='0'" class="title" :class="'status-'+item.status">
-                                        <span class="status">{{item.statusText}}</span>{{ item.title }}
+                                        <span class="status">{{ item.statusText }}</span>{{ item.title }}
                                     </div>
-                                    <div v-else class="title" @click="play(key, item, item.nameReg)" @dblclick="copyUrl(key, item, item.nameReg)">
-                                        <span class="status">{{item.statusText}}</span>{{ item.title }}
+                                    <div
+                                        v-else
+                                        class="title"
+                                        @click="play(key, item, item.nameReg, $event)"
+                                        @dblclick="copyUrl(key, item, item.nameReg)"
+                                    >
+                                        <span class="status">{{ item.statusText }}</span>{{ item.title }}
                                     </div>
                                 </template>
                             </li>
@@ -337,12 +352,19 @@
                             player.src(url);
                             player.load(url);
                             player.ready(() => {
-                                setTimeout(() => {
-                                    let aaa = document.getElementById('my-player_html5_api');
-                                    console.log(aaa.offsetHeight);
+                                let setHeight = setInterval(() => {
                                     let videoJs = document.getElementsByClassName('video-js')[0];
-                                    videoJs.style.height = aaa.offsetHeight + 'px';
-                                }, 500);
+                                    if (videoJs) {
+                                        clearInterval(setHeight);
+                                        if (isWindows) {
+                                            videoJs.style.height = '100%';
+                                        } else {
+                                            let offsetHeight = document.getElementById('my-player_html5_api').offsetHeight;
+                                            videoJs.style.height = offsetHeight + 'px';
+                                            document.getElementsByClassName('video')[0].style.height = offsetHeight + 'px';
+                                        }
+                                    }
+                                }, 100);
                             });
                             player.on('error', function (e) {
                                 if (!isHandled) {
