@@ -217,13 +217,13 @@
                                 <template v-if="item.num !== 0">
                                     <div class="title" :class="'status-'+item.status">
                                         <span class="status">{{item.statusText}}</span><span class="name">{{ item.title }}</span>
-                                        <span class="info">{{item.info}}</span>
+                                        <span class="info" v-show="item.info">{{item.info}}</span>
                                     </div>
                                     <div class="part-wrapper" v-show="item.show">
                                         <template v-for="num in item.num" v-key="num" v-if="num >= item.startNum">
                                             <div
                                                 class="part"
-                                                @click="play(key, item, getFileName(item.nameReg, num))"
+                                                @click="play(key, item, getFileName(item.nameReg, num), $event)"
                                                 @dblclick="copyUrl(key, item, getFileName(item.nameReg, num))"
                                             >
                                                 {{ padNumber(num) }}
@@ -246,7 +246,7 @@
                 </template>
             </aside>
             <div class="video">
-                <video v-show="current" id="my-player" class="video-js" :class="theme" controls preload="auto" data-setup="{}"></video>
+                <video v-if="current" id="my-player" class="video-js" :class="theme" controls preload="auto" data-setup="{}"></video>
             </div>
         </div>
     </body>
@@ -303,7 +303,8 @@
                 }
             },
             methods: {
-                play(category, item, part) {
+                play(category, item, part, e) {
+                    e.stopPropagation();
                     let url = domain + encodeURIComponent(category) + '/' + encodeURIComponent(item.dir) + '/' + encodeURIComponent(part);
                     if (item.dir.indexOf('/') !== -1) {
                         url = url.replace(/%2F/g, '/');
