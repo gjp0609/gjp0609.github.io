@@ -13,6 +13,10 @@
                 box-sizing: border-box;
             }
 
+            :root {
+                --max-height: 30vh;
+            }
+
             html,
             body {
                 margin: 0;
@@ -45,15 +49,20 @@
                 }
 
                 .video {
-                    flex: 0 1 20vh;
+                    flex: 0 1 var(--max-height);
                 }
 
                 .video-js {
                     width: 100%;
+                    max-height: var(--max-height);
                 }
 
                 #my-player_html5_api {
-                    height: auto !important;
+                    height: var(--max-height);
+                }
+
+                .video-js.vjs-fullscreen > #my-player_html5_api {
+                    height: 100% !important;
                 }
             }
 
