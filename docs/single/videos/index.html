@@ -146,7 +146,7 @@
                 color: #0a0;
             }
 
-            .list .item .title .info {
+            .list .item .title .subs {
                 display: inline-block;
                 color: #74a193;
                 font-size: 0.8rem;
@@ -223,11 +223,11 @@
                 <template v-for="(category, key) in categories" v-if="currentCategory === key">
                     <ul class="list" v-if="category.list.length > 0">
                         <template v-for="item in category.list" v-key="item.dir">
-                            <li class="item" :class="item.show ? 'select' : ''" @click="showPart(item)">
+                            <li class="item" :class="item.show ? 'select' : ''" :title="item.info" @click="showPart(item)">
                                 <template v-if="item.num !== 0">
                                     <div class="title" :class="'status-'+item.status">
                                         <span class="status">{{ item.statusText }}</span><span class="name">{{ item.title }}</span>
-                                        <span class="info" v-show="item.info">{{ item.info }}</span>
+                                        <span class="subs" v-show="item.subs">{{ item.subs }}</span>
                                     </div>
                                     <div class="part-wrapper" v-show="item.show">
                                         <template v-for="num in item.num" v-key="num" v-if="num >= item.startNum">
@@ -486,7 +486,8 @@
                             srt: false,
                             status: status,
                             statusText: statusText,
-                            info: subs,
+                            subs: subs,
+                            info: info,
                             startNum: parseInt(startNum),
                             num: parseInt(endNum)
                         });
