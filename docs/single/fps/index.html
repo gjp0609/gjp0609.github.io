@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FPS Test</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+            }
+
+            #main {
+                width: 100vw;
+                height: 100vh;
+            }
+
+            #fps {
+                font-family: 'Sarasa Mono SC', monospace;
+                position: fixed;
+                top: 0.5rem;
+                left: 0.5rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <code id="fps"></code>
+            <canvas id="anime"></canvas>
+        </div>
+    </body>
+    <script>
+        const main = document.getElementById('main');
+        const fps = document.getElementById('fps');
+        const canvas = document.getElementById('anime');
+        let maxWidth = main.clientWidth;
+        let maxHeight = main.offsetHeight;
+        canvas.width = maxWidth;
+        canvas.height = maxHeight;
+        const ctx = canvas.getContext('2d');
+        console.log(main.clientHeight);
+        console.log(main.clientHeight);
+        ctx.fillStyle = '#7f7f7f';
+        let width = 30;
+        let speed = 2;
+        let angle = { x: 1 + Math.random() * speed, y: 1 + Math.random() * speed };
+        let position = {
+            x: (maxWidth - width) / 2,
+            y: (maxHeight - width) / 2
+        };
+        window.requestAnimationFrame(draw);
+        let count = 0;
+        let frameCount = 0;
+        let frameMax = undefined;
+        let frameMin = undefined;
+        let lastSecond = new Date().getSeconds();
+        function draw() {
+            let nowSecond = new Date().getSeconds();
+            frameCount++;
+            if (lastSecond !== nowSecond) {
+                fps.innerText = 'fps: ' + frameCount + '\nmax: ' + (frameMax || '') + '\nmin: ' + (frameMin || '');
+                if (count > 1) {
+                    frameMax = frameMax ? (frameCount > frameMax ? frameCount : frameMax) : frameCount;
+                    frameMin = frameMin ? (frameCount < frameMin ? frameCount : frameMin) : frameCount;
+                } else {
+                    count++;
+                }
+                frameCount = 0;
+                lastSecond = nowSecond;
+            }
+            ctx.clearRect(0, 0, maxWidth, maxHeight);
+            if (position.x + width > maxWidth || position.x <= 0) {
+                angle.x = -angle.x;
+            }
+            if (position.y + width > maxHeight || position.y <= 0) {
+                angle.y = -angle.y;
+            }
+            position.x += angle.x;
+            position.y += angle.y;
+            ctx.fillRect(position.x, position.y, width, width);
+            window.requestAnimationFrame(draw);
+        }
+    </script>
+</html>
