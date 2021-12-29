@@ -16,44 +16,6 @@ export const constantMenuRouterMap = [
         }
     },
     {
-        path: '/test',
-        realPath: '/test',
-        component: Layout,
-        meta: {
-            name: 'Test',
-            icon: {
-                type: 'material-icons',
-                name: 'help_outline'
-            }
-        },
-        children: [
-            {
-                path: 'test',
-                realPath: 'test/',
-                component: () => import('../views/test/Test.vue'),
-                meta: {
-                    name: 'TestPage',
-                    icon: {
-                        type: 'material-icons',
-                        name: 'check_circle_outline'
-                    }
-                }
-            },
-            {
-                path: 'test2',
-                realPath: 'test2/',
-                component: () => import('../views/test/Test2.vue'),
-                meta: {
-                    name: 'TestPage2',
-                    icon: {
-                        type: 'material-icons',
-                        name: 'check_circle_outline'
-                    }
-                }
-            }
-        ]
-    },
-    {
         path: '/tools',
         realPath: '/tools',
         component: Layout,
@@ -146,6 +108,167 @@ export const constantMenuRouterMap = [
                     icon: {
                         type: 'element-plus',
                         name: 'Notebook'
+                    }
+                }
+            }
+        ]
+    },
+    {
+        path: '/single',
+        realPath: '/single',
+        component: Layout,
+        meta: {
+            name: 'Single',
+            icon: {
+                type: 'material-icons',
+                name: 'help_outline'
+            }
+        },
+        children: [
+            {
+                path: 'bookmarks',
+                realPath: 'bookmarks/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Bookmarks',
+                    params: { a: 1 },
+                    icon: {
+                        type: 'material-icons',
+                        name: 'bookmarks'
+                    }
+                }
+            },
+            {
+                path: 'fps',
+                realPath: 'fps/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'fps',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'videogame_asset'
+                    }
+                }
+            },
+            {
+                path: 'highlight.js',
+                realPath: 'highlight.js/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'highlight.js',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'format_align_center'
+                    }
+                }
+            },
+            {
+                path: 'keywords',
+                realPath: 'keywords/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'keywords',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'line_weight'
+                    }
+                }
+            },
+            {
+                path: 'materialDesignIcons',
+                realPath: 'materialDesignIcons/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Material Design Icons',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'palette'
+                    }
+                }
+            },
+            {
+                path: 'network/rtt.html',
+                realPath: 'network/rtt.html',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Network RTT',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'signal_cellular_alt'
+                    }
+                }
+            },
+            {
+                path: 'read',
+                realPath: 'read/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Read',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'menu_book'
+                    }
+                }
+            },
+            {
+                path: 'solarSystem',
+                realPath: 'solarSystem/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Solar System',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'wb_sunny'
+                    }
+                }
+            },
+            {
+                path: 'videos',
+                realPath: 'videos/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Videos',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'live_tv'
+                    }
+                }
+            }
+        ]
+    },
+    {
+        path: '/test',
+        realPath: '/test',
+        component: Layout,
+        meta: {
+            name: 'Test',
+            icon: {
+                type: 'material-icons',
+                name: 'help_outline'
+            }
+        },
+        children: [
+            {
+                path: 'test',
+                realPath: 'test/',
+                component: () => import('../views/test/Test.vue'),
+                meta: {
+                    name: 'TestPage',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'check_circle_outline'
+                    }
+                }
+            },
+            {
+                path: 'test2',
+                realPath: 'test2/',
+                component: () => import('../views/test/Test2.vue'),
+                meta: {
+                    name: 'TestPage2',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'check_circle_outline'
                     }
                 }
             }

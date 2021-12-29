@@ -6,7 +6,7 @@ import { store, key } from './store';
 import router from './router/index';
 import App from './App.vue';
 
-import '../docs/material-design-icons/material-design-icons.css';
+import '../docs/common/css/material-design-icons/material-design-icons.css';
 import './styles/base.scss';
 
 const app = createApp(App);

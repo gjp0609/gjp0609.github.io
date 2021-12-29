@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Solar System</title>
+        <style>
+            :root {
+                --width: 500px;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+
+            }
+
+            body {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .parent {
+                width: var(--width);
+                height: var(--width);
+                margin: 0 auto;
+            }
+
+            canvas {
+                position: absolute;
+                height: var(--width);
+                width: var(--width);
+            }
+            #solar {
+                z-index: 4;
+            }
+            #planet {
+                z-index: 6;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="parent">
+            <canvas id="solar"></canvas>
+            <canvas id="planet"></canvas>
+        </div>
+        <script>
+            const real = false; // 距离真实比例
+            const speed = 5; // 地球 ${speed} 秒一圈
+            const planetWidth = 5; // 行星大小
+            const randomStatus = true; // 每次随机位置
+
+            let solarSystemHalfWidth = 7479.893533;
+            solarSystemHalfWidth = real ? solarSystemHalfWidth : Math.log1p(solarSystemHalfWidth);
+
+            const solar = document.getElementById('solar');
+            let canvasWidth = solar.clientWidth;
+            let maxWidth = solarSystemHalfWidth * 2 * 1.1;
+            let scale = canvasWidth / maxWidth;
+            let centerPoint = { x: (maxWidth * scale) / 2, y: (maxWidth * scale) / 2 };
+            solar.width = solar.clientWidth;
+            solar.height = solar.clientHeight;
+            const solarCtx = solar.getContext('2d');
+            solarCtx.shadowOffsetX = 0; // 阴影x轴偏移
+            solarCtx.shadowOffsetY = 0; // 阴影y轴偏移
+            solarCtx.shadowBlur = 3; // 阴影虚化扩散量
+            solarCtx.lineWidth = 1;
+
+            let planets = [
+                // { color: '#ffffff', type: 'other', half: 7479.893533, isNotPlanet: true }, // a 古柏断涯
+                { color: '#8caaca', type: 'planet', half: 4503.443661, roundTime: 60327.624 }, // ♆ 海王星
+                { color: '#addee3', type: 'planet', half: 2876.679082, roundTime: 30799.095 }, // ⛢ 天王星
+                { color: '#dfc384', type: 'planet', half: 1433.44937, roundTime: 10759 }, // ♄ 土星
+                { color: '#ceba9b', type: 'planet', half: 778.5472, roundTime: 4332.59 }, // ♃ 木星
+                { color: '#fd906c', type: 'planet', half: 227.9366, roundTime: 686.98 }, // ♂ 火星
+                { color: '#7fb5d7', type: 'planet', half: 149.598023, roundTime: 365.256363004 }, // ♁ 地球
+                { color: '#d9c4a9', type: 'planet', half: 108.208, roundTime: 224.701 }, // ♀ 金星
+                { color: '#b9b8b8', type: 'planet', half: 57.9091, roundTime: 87.9691 }, // ☿ 水星
+                { color: '#f7a145', type: 'sun', half: 1.392, isNotPlanet: true } // ☉ Sun
+            ];
+
+            for (let planet of planets) {
+                solarCtx.strokeStyle = planet.color;
+                solarCtx.fillStyle = planet.color;
+                solarCtx.shadowColor = planet.color;
+                solarCtx.beginPath();
+                let half = real ? planet.half : Math.log1p(planet.half);
+                solarCtx.arc(centerPoint.x, centerPoint.y, half * scale, 0, Math.PI * 2, true); // 绘制
+                if (planet.type === 'planet') {
+                    solarCtx.stroke();
+                } else {
+                    solarCtx.fill();
+                }
+            }
+
+            const planet = document.getElementById('planet');
+            planet.width = planet.clientWidth;
+            planet.height = planet.clientHeight;
+            const planetCtx = planet.getContext('2d');
+            planetCtx.shadowOffsetX = 0; // 阴影x轴偏移
+            planetCtx.shadowOffsetY = 0; // 阴影y轴偏移
+            planetCtx.shadowBlur = 3; // 阴影虚化扩散量
+            planetCtx.lineWidth = 1;
+
+            let startTime = new Date().getTime();
+            let initTime = (randomStatus ? Math.random() : 1) * 10000000;
+            window.requestAnimationFrame(drawPlanet);
+
+            function drawPlanet() {
+                let nowTime = new Date().getTime();
+                let time = initTime + nowTime - startTime;
+
+                planetCtx.clearRect(0, 0, 10000, 10000);
+                for (let planet of planets) {
+                    if (planet.type === 'planet') {
+                        planetCtx.strokeStyle = planet.color;
+                        planetCtx.fillStyle = planet.color;
+                        planetCtx.shadowColor = planet.color;
+                        let round = ((time * Math.PI * 2) / speed / 1000 / (planet.roundTime / 365.256363004)) % (Math.PI * 2);
+                        let half = real ? planet.half : Math.log1p(planet.half);
+                        let x = centerPoint.x + half * scale * Math.cos(round);
+                        let y = centerPoint.x + half * scale * Math.sin(round);
+                        planetCtx.beginPath();
+                        planetCtx.arc(x, y, planetWidth, 0, Math.PI * 2, true); // 绘制
+                        planetCtx.fill();
+                    }
+                }
+                window.requestAnimationFrame(drawPlanet);
+            }
+        </script>
+    </body>
+</html>

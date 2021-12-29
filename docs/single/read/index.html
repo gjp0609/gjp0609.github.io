@@ -96,8 +96,8 @@
                 };
             },
             mounted() {
-                this.fileName = 'text.html';
-                fetch('./text.html')
+                this.fileName = 'index.html';
+                fetch('./' + this.fileName)
                     .then((response) => response.text())
                     .then((text) => {
                         this.initText(text);
