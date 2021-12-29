@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Title</title>
         <script src="../../common/js/echarts.min.js"></script>
         <style>
@@ -10,25 +11,47 @@
                 padding: 0;
                 display: flex;
                 flex-direction: column;
+                height: 100vh;
             }
+
             #chart {
-                flex: 1 1 40vh;
+                flex: 1 1 30vh;
             }
+
+            .options,
+            #result {
+                margin: 0.5rem auto;
+            }
+
             .options {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-around;
+                min-width: 20vw;
             }
+
+            .options input {
+                margin: 0.5rem;
+            }
+            .options button {
+                margin: 0.5rem 0.2rem;
+            }
+
             #result {
-                height: 30vh;
-                min-height: 30vh;
+                flex: 1;
                 overflow-y: auto;
+                padding: 0 2rem;
+                list-style: none;
+            }
+            #result::-webkit-scrollbar {
+                display: none;
             }
         </style>
     </head>
     <body>
         <div id="chart"></div>
         <div class="options">
+            <input id="url" value="https://httpbin.org/get" />
             <button onclick="start()">start</button>
             <button onclick="stop()">stop</button>
         </div>
@@ -43,7 +66,7 @@
                 }
             }
             let testUrl = params['testUrl'] ? decodeURIComponent(params['testUrl']) : 'https://httpbin.org/get';
-            let total = params['total'] ? parseInt(params['total']) : 100;
+            let total = params['total'] ? parseInt(params['total']) : 60;
             let resultDom = document.getElementById('result');
             let timeList = [];
             let rttList = [];
@@ -51,6 +74,9 @@
 
             function start() {
                 if (!task) {
+                    if (document.getElementById('url').value) {
+                        testUrl = document.getElementById('url').value;
+                    }
                     task = setInterval(() => {
                         let startTime = new Date().getTime();
                         fetch(testUrl)
@@ -84,6 +110,9 @@
                     clearInterval(task);
                     task = undefined;
                 }
+                let li = document.createElement('li');
+                li.innerHTML = `<span class="time">&nbsp;</span>`;
+                resultDom.append(li);
             }
 
             function formatTime(time) {

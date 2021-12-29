@@ -9,9 +9,14 @@
                 margin: 0;
             }
 
+            body * {
+                box-sizing: border-box;
+            }
+
             #main {
                 width: 100vw;
                 height: 100vh;
+                overflow: hidden;
             }
 
             #fps {
@@ -37,22 +42,35 @@
         canvas.width = maxWidth;
         canvas.height = maxHeight;
         const ctx = canvas.getContext('2d');
-        console.log(main.clientHeight);
-        console.log(main.clientHeight);
         ctx.fillStyle = '#7f7f7f';
         let width = 30;
-        let speed = 2;
-        let angle = { x: 1 + Math.random() * speed, y: 1 + Math.random() * speed };
-        let position = {
-            x: (maxWidth - width) / 2,
-            y: (maxHeight - width) / 2
+        let speed = 3;
+        let angle = {
+            value: (Math.PI / 2) * (Math.random() / 2 + 0.25),
+            x: 0,
+            y: 0,
+            right: Math.random() > 0.5,
+            bottom: Math.random() > 0.5,
+            refresh: () => {
+                angle.x = Math.sin(angle.value) * speed;
+                angle.y = Math.cos(angle.value) * speed;
+                angle.x = angle.right ? angle.x : -angle.x;
+                angle.y = angle.bottom ? angle.y : -angle.y;
+            }
         };
-        window.requestAnimationFrame(draw);
+        angle.refresh();
+        let position = {
+            x: (maxWidth - width) * Math.random(),
+            y: (maxHeight - width) * Math.random()
+        };
         let count = 0;
         let frameCount = 0;
         let frameMax = undefined;
         let frameMin = undefined;
         let lastSecond = new Date().getSeconds();
+
+        window.requestAnimationFrame(draw);
+
         function draw() {
             let nowSecond = new Date().getSeconds();
             frameCount++;
@@ -68,16 +86,68 @@
                 lastSecond = nowSecond;
             }
             ctx.clearRect(0, 0, maxWidth, maxHeight);
-            if (position.x + width > maxWidth || position.x <= 0) {
-                angle.x = -angle.x;
+            let p = false;
+            if (position.x + width > maxWidth) {
+                angle.right = false;
+                p = true;
             }
-            if (position.y + width > maxHeight || position.y <= 0) {
-                angle.y = -angle.y;
+            if (position.x <= 0) {
+                angle.right = true;
+                p = true;
+            }
+            if (position.y + width > maxHeight) {
+                angle.bottom = false;
+                p = true;
+            }
+            if (position.y <= 0) {
+                angle.bottom = true;
+                p = true;
+            }
+            angle.refresh();
+            if (p) {
+                randomColor();
+                randomAngle();
             }
             position.x += angle.x;
             position.y += angle.y;
             ctx.fillRect(position.x, position.y, width, width);
             window.requestAnimationFrame(draw);
+        }
+
+        function randomAngle() {
+            angle.value = (Math.PI / 2) * (Math.random() / 2 + 0.25);
+        }
+
+        function randomColor() {
+            ctx.fillStyle = `rgb(${100 + 127 * Math.random()}, ${100 + 127 * Math.random()}, ${100 + 127 * Math.random()})`;
+        }
+
+        document.body.addEventListener('dblclick', speedUp);
+        {
+            // Mobile
+            let timer;
+            let touchDuration = 500;
+            document.body.addEventListener('touchstart', (e) => {
+                timer = setInterval(speedUp, touchDuration);
+            });
+            document.body.addEventListener('touchend', (e) => {
+                if (timer) clearTimeout(timer);
+            });
+        }
+        {
+            // PC
+            let timerPc;
+            let touchDuration = 500;
+            document.body.addEventListener('mousedown', (e) => {
+                timerPc = setInterval(speedUp, touchDuration);
+            });
+            document.body.addEventListener('mouseup', (e) => {
+                if (timerPc) clearTimeout(timerPc);
+            });
+        }
+
+        function speedUp() {
+            speed *= 1.2;
         }
     </script>
 </html>
