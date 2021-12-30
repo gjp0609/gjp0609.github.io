@@ -121,7 +121,7 @@ export const constantMenuRouterMap = [
             name: 'Single',
             icon: {
                 type: 'material-icons',
-                name: 'help_outline'
+                name: 'web'
             }
         },
         children: [
@@ -219,6 +219,18 @@ export const constantMenuRouterMap = [
                     icon: {
                         type: 'material-icons',
                         name: 'wb_sunny'
+                    }
+                }
+            },
+            {
+                path: 'timer',
+                realPath: 'timer/',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Timer',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'timer'
                     }
                 }
             },
