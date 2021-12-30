@@ -486,6 +486,7 @@
                         <label><input type="radio" name="trueOrder" v-model="options.trueOrder" :value="true" @change="macyReInit" />Yes</label>
                         <label><input type="radio" name="trueOrder" v-model="options.trueOrder" :value="false" @change="macyReInit" />No</label>
                     </div>
+                    <div class="option">Clear Cache: <button @click="clearCache">Clear</button></div>
                 </div>
                 <div class="foot">
                     <button @click="save">save</button>
@@ -850,6 +851,10 @@
                         url = url.replace('${keyword}', '');
                     }
                     window.open(url, '_blank').focus();
+                },
+                clearCache() {
+                    localStorage.removeItem('./bookmarks.json');
+                    localStorage.removeItem('./bookmarks-local.json');
                 },
                 save() {
                     this.options.show = false;

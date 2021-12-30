@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Title</title>
+        <script src="../../common/js/vue.2.6.14.min.js"></script>
+        <style>
+            body * {
+                box-sizing: border-box;
+                user-select: none;
+                font-family: 'Sarasa Mono SC', monospace;
+            }
+
+            body {
+                margin: 0;
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #main {
+                flex: 1;
+                display: flex;
+            }
+
+            @media screen and (max-width: 1024px) {
+                #main {
+                    flex-direction: column;
+                }
+            }
+
+            .type {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .clock {
+                flex: 0;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .clock .wrapper {
+                margin: 2rem auto;
+            }
+
+            .clock .time {
+                font-size: 15vw;
+            }
+
+            .clock .date {
+                font-size: 6vw;
+            }
+
+            .interval {
+                background-color: #fafdff;
+                text-align: center;
+            }
+
+            .interval .status {
+                font-size: 1.2rem;
+            }
+
+            .interval .status.running {
+                color: green;
+            }
+
+            .interval .status.stopping {
+                color: red;
+            }
+
+            .interval .remain {
+                margin: 1rem;
+            }
+
+            .interval .option {
+                margin: 1rem;
+            }
+
+            .interval .option input {
+                height: 1.5rem;
+                line-height: 1.5rem;
+                width: 15rem;
+                margin: 0.3rem;
+                padding-left: 0.5rem;
+                outline: unset;
+                border: 0.01rem solid #777;
+                border-radius: 0.3rem;
+            }
+
+            .interval .button {
+                cursor: pointer;
+                display: inline-block;
+                width: 5rem;
+                padding: 0.2rem;
+                border: 0.01rem solid #777;
+                border-radius: 0.3rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <div class="type clock" v-show="!focus||focus==='clock'" @dblclick="focusOne('clock')" @touchstart="doubleTouch(()=>focusOne('clock'))">
+                <div class="wrapper">
+                    <div class="time">{{ now.hour + ':' + now.minute + ':' + now.second }}</div>
+                    <div class="date">{{ now.year + '-' + now.month + '-' + now.day }}</div>
+                </div>
+            </div>
+            <div
+                class="type interval"
+                v-show="!focus||focus==='interval'"
+                @dblclick="focusOne('interval')"
+                @touchstart="doubleTouch(()=>focusOne('interval'))"
+            >
+                <div class="status running" v-show="interval.running" @click="startInterval">Running</div>
+                <div class="status stopping" v-show="!interval.running" @click="startInterval">Stopping</div>
+                <div class="option">
+                    <input v-model="interval.second" />
+                    <br />
+                    <input v-model="interval.message" />
+                </div>
+                <div>
+                    <span class="button" v-show="!interval.running" @click="startInterval">Start</span>
+                    <span class="button" v-show="interval.running" @click="stopInterval">Stop</span>
+                </div>
+                <div class="remain">Remain: {{ interval.remain }}</div>
+            </div>
+            <!--            <div class="type timeout" v-show="!focus||focus==='timeout'">333</div>-->
+            <!--            <div class="type timecount" v-show="!focus||focus==='timecount'">444</div>-->
+        </div>
+        <script>
+            let debug = false;
+            new Vue({
+                el: document.getElementById('main'),
+                data: () => {
+                    return {
+                        now: {},
+                        focus: 'interval',
+                        doubleTouchTime: undefined,
+                        clock: [1, 1, 1],
+                        clockRange: [24, 60, 60],
+                        interval: {
+                            running: false,
+                            second: 0,
+                            remain: 0,
+                            task: undefined,
+                            message: ''
+                        }
+                    };
+                },
+                mounted() {
+                    this.now = formatTime(new Date());
+                    setInterval(() => {
+                        this.now = formatTime(new Date());
+                    }, 1000);
+                    console.log(new Date().getTime());
+                    let time = localStorage.getItem('Timer-clock');
+                    let interval = localStorage.getItem('Timer-interval');
+                    if (interval) {
+                        let json = JSON.parse(interval);
+                        this.interval.second = json.second;
+                        this.interval.remain = json.second;
+                        this.interval.message = json.message;
+                    }
+                    if (time) {
+                        this.time = time;
+                    }
+                },
+                methods: {
+                    startInterval() {
+                        if (this.interval.second > 0) {
+                            let flag = parseInt(Math.random() * 1000000);
+                            console.log(flag);
+                            this.stopInterval();
+                            this.interval.running = true;
+                            this.interval.task = setInterval(() => {
+                                this.interval.remain--;
+                                if (this.interval.remain <= 0) {
+                                    this.interval.remain = this.interval.second;
+                                    notify(this.interval.message);
+                                }
+                            }, 1000);
+                        }
+                    },
+                    stopInterval() {
+                        this.interval.running = false;
+                        this.interval.remain = this.interval.second;
+                        if (this.interval.task) {
+                            clearInterval(this.interval.task);
+                        }
+                    },
+                    focusOne(type) {
+                        if (this.focus) {
+                            this.focus = undefined;
+                        } else {
+                            this.focus = type;
+                        }
+                    },
+                    doubleTouch(callback) {
+                        if (callback) {
+                            if (this.doubleTouchTime) {
+                                if (new Date().getTime() - this.doubleTouchTime < 250) {
+                                    callback();
+                                }
+                                this.doubleTouchTime = undefined;
+                            } else {
+                                this.doubleTouchTime = new Date().getTime();
+                            }
+                        }
+                    }
+                }
+            });
+
+            function formatTime(time) {
+                return {
+                    year: time.getFullYear(),
+                    month: (time.getMonth() + 1 < 10 ? '0' : '') + time.getMonth(),
+                    day: (time.getDate() < 10 ? '0' : '') + time.getDate(),
+                    hour: (time.getHours() < 10 ? '0' : '') + time.getHours(),
+                    minute: (time.getMinutes() < 10 ? '0' : '') + time.getMinutes(),
+                    second: (time.getSeconds() < 10 ? '0' : '') + time.getSeconds()
+                };
+            }
+
+            function notify(message) {
+                if (debug) {
+                    console.log('%c Notify ', 'background-color: #6cf; font-size: 1rem', message);
+                    return;
+                }
+                if (window.Notification && Notification.permission === 'granted') {
+                    new Notification(message);
+                } else {
+                    Notification.requestPermission(function (status) {
+                        if (Notification.permission !== status) {
+                            Notification.permission = status;
+                        }
+                    });
+                }
+            }
+        </script>
+    </body>
+</html>
