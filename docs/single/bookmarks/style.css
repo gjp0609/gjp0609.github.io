@@ -1,0 +1,448 @@
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #f5fcff;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #cceeff;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #99ddff;
+}
+*::-webkit-scrollbar-thumb:active {
+  background-color: #66ccff;
+}
+/* 旋转360度 */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow-y: hidden;
+}
+#app .parent {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+#app .parent .search-wrapper {
+  flex: 0 0 auto;
+  padding: 2rem 0 1rem 0;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: flex-end;
+  box-shadow: 0.2rem 0.2rem 1rem 0.2rem #cdcdcd;
+}
+@media screen and (max-width: 1024px) {
+  #app .parent .search-wrapper {
+    padding: 1rem 0 0.8rem 0;
+  }
+}
+#app .parent .search-wrapper .search {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+@media screen and (max-width: 1024px) {
+  #app .parent .search-wrapper .search {
+    padding-right: 1rem;
+  }
+}
+#app .parent .search-wrapper .search .engines {
+  appearance: none;
+  -webkit-appearance: none;
+}
+#app .parent .search-wrapper .search .engines:hover > .engine-list {
+  display: block;
+  box-shadow: 0.2rem 0.2rem 1rem 0.2rem #cdcdcd;
+}
+#app .parent .search-wrapper .search .engines .engine {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 3rem;
+  font-size: 1.1rem;
+  background-color: white;
+  user-select: none;
+}
+@media screen and (max-width: 1024px) {
+  #app .parent .search-wrapper .search .engines .engine {
+    height: 2rem;
+  }
+}
+#app .parent .search-wrapper .search .engines .engine .image {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+#app .parent .search-wrapper .search .engines .engine .image img {
+  width: 1.1rem;
+}
+#app .parent .search-wrapper .search .engines .engine .title {
+  margin-left: 0.5rem;
+}
+#app .parent .search-wrapper .search .engines .engine-list {
+  position: fixed;
+  display: none;
+  z-index: 2;
+}
+#app .parent .search-wrapper .search .engines .engine-list .engine {
+  padding-left: 1rem;
+}
+#app .parent .search-wrapper .search .engines .engine-list .engine.current,
+#app .parent .search-wrapper .search .engines .engine-list .engine:hover {
+  background-color: #cdcdcd;
+}
+#app .parent .search-wrapper .search .engines .engine-list .engine .title {
+  padding-right: 1.5rem;
+}
+#app .parent .search-wrapper .search .input input {
+  box-sizing: border-box;
+  height: 3rem;
+  line-height: 2rem;
+  width: 30rem;
+  font-size: 1.2rem;
+  margin-left: 1rem;
+  padding-left: 1.5rem;
+  border: 0.01rem solid #cdcdcd;
+  outline: 0.01rem solid white;
+  border-radius: 2rem;
+}
+@media screen and (max-width: 1024px) {
+  #app .parent .search-wrapper .search .input input {
+    font-size: 1.1rem;
+    height: 2.2rem;
+    line-height: 1.8rem;
+    width: 10rem;
+  }
+}
+#app .parent .search-wrapper .search .input input:focus {
+  border: 0.01rem solid #cdcdcd;
+  outline: 0.01rem solid #cdcdcd;
+}
+#app .parent .search-wrapper .search .input .auto-complete {
+  position: fixed;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+  width: 30rem;
+  max-height: 50rem;
+  background-color: white;
+  box-shadow: 0.2rem 0.2rem 1rem 0.2rem #cdcdcd;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  overflow-y: auto;
+  z-index: 2;
+}
+@media screen and (max-width: 1024px) {
+  #app .parent .search-wrapper .search .input .auto-complete {
+    margin-left: -8rem;
+    width: 20rem;
+    max-height: 30rem;
+  }
+}
+#app .parent .search-wrapper .search .input .auto-complete .result {
+  padding: 0.5rem 0 0.5rem 1.5rem;
+}
+#app .parent .search-wrapper .search .input .auto-complete .result.current {
+  background-color: #cdcdcd;
+}
+#app .parent .search-wrapper .search .input .auto-complete .result .url {
+  font-size: 0.7rem;
+  width: 20rem;
+  color: #666;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#app .parent .types-wrapper {
+  flex: 1;
+  overflow-y: scroll;
+}
+#app .parent .types-wrapper .types {
+  margin: 0 10%;
+}
+@media screen and (max-width: 1024px) {
+  #app .parent .types-wrapper .types {
+    margin: 0 1rem;
+  }
+}
+#app .parent .types-wrapper .types .type {
+  width: 25rem;
+  min-width: 25rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  border: 0.01rem solid #cdcdcd;
+  border-radius: 1rem;
+  /*overflow: hidden;*/
+}
+#app .parent .types-wrapper .types .type > .title {
+  text-align: center;
+  font-size: 1.1rem;
+  padding: 0.4rem;
+  border-bottom: 0.01rem solid #cdcdcd;
+  margin-bottom: 0.8rem;
+  background-color: #f5f5f5;
+  cursor: default;
+  border-radius: 1rem 1rem 0 0;
+}
+#app .parent .types-wrapper .types .type .bookmark {
+  height: 3rem;
+  width: calc(25rem - 4rem);
+  cursor: pointer;
+  margin: 0 auto;
+}
+#app .parent .types-wrapper .types .type .bookmark:hover > .title-wrapper .title {
+  font-size: 1.05rem;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+#app .parent .types-wrapper .types .type .bookmark:hover > .title-wrapper .image {
+  animation: spin 3s linear infinite;
+}
+#app .parent .types-wrapper .types .type .bookmark.empty {
+  text-align: center;
+}
+@media screen and (min-width: 1024px) {
+  #app .parent .types-wrapper .types .type .bookmark:hover > .arrow {
+    visibility: visible;
+  }
+  #app .parent .types-wrapper .types .type .bookmark:hover > .tooltip {
+    visibility: visible;
+  }
+}
+#app .parent .types-wrapper .types .type .bookmark .title-wrapper {
+  display: flex;
+  align-items: center;
+}
+#app .parent .types-wrapper .types .type .bookmark .title-wrapper .image {
+  width: 1rem;
+  height: 1rem;
+}
+#app .parent .types-wrapper .types .type .bookmark .title-wrapper .image img {
+  width: 1rem;
+  height: 1rem;
+  background-color: white;
+}
+#app .parent .types-wrapper .types .type .bookmark .title-wrapper .title {
+  line-height: 1.05rem;
+  font-size: 1rem;
+  margin-left: 0.38rem;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+#app .parent .types-wrapper .types .type .bookmark .url {
+  font-size: 0.62rem;
+  width: calc(25rem - 4rem);
+  margin-top: 0.2rem;
+  color: grey;
+  overflow: hidden;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
+}
+#app .parent .types-wrapper .types .type .bookmark .arrow {
+  visibility: hidden;
+  margin-left: 3rem;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #4ab496;
+}
+#app .parent .types-wrapper .types .type .bookmark .tooltip {
+  visibility: hidden;
+  position: absolute;
+  width: 25rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 0.3rem;
+  color: white;
+  background-color: #4ab496;
+  box-shadow: #4ab496;
+  z-index: 4;
+}
+#app .bookmark-button {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 2rem;
+  background-color: #b4b4b4;
+  outline: 0.1rem solid #9a9a9a;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+}
+#app .bookmark-button::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 0.2rem;
+  width: 1rem;
+  margin-left: -0.5rem;
+  margin-top: -0.1rem;
+  background-color: white;
+  outline: 0.1rem solid white;
+}
+#app .bookmark-button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 1rem;
+  width: 0.2rem;
+  margin-left: -0.1rem;
+  margin-top: -0.5rem;
+  background-color: white;
+  outline: 0.1rem solid white;
+}
+#app .update-bookmark-button {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 2rem;
+  background-color: #b4b4b4;
+  outline: 0.1rem solid #9a9a9a;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  bottom: 5rem;
+}
+#app .update-bookmark-button::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 0.2rem;
+  width: 1rem;
+  margin-left: -0.5rem;
+  margin-top: -0.1rem;
+  background-color: white;
+  outline: 0.1rem solid white;
+}
+#app .update-bookmark-button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 1rem;
+  width: 0.2rem;
+  margin-left: -0.1rem;
+  margin-top: -0.5rem;
+  background-color: white;
+  outline: 0.1rem solid white;
+}
+#app .expand-bookmark-type-button {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 2rem;
+  background-color: #b4b4b4;
+  outline: 0.1rem solid #9a9a9a;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+}
+#app .expand-bookmark-type-button::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 0.2rem;
+  width: 1rem;
+  margin-left: -0.5rem;
+  margin-top: -0.1rem;
+  background-color: white;
+  outline: 0.1rem solid white;
+}
+#app .expand-bookmark-type-button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 1rem;
+  width: 0.2rem;
+  margin-left: -0.1rem;
+  margin-top: -0.5rem;
+  background-color: white;
+  outline: 0.1rem solid white;
+}
+#app .expand-bookmark-type-button::before,
+#app .expand-bookmark-type-button::after {
+  transform: rotate(45deg);
+}
+#app .options-dialog {
+  position: fixed;
+  z-index: 5;
+  background-color: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0.2rem 0.2rem 1rem 0.2rem #cdcdcd;
+  height: 10rem;
+  width: 30rem;
+  top: calc(40% - 10rem);
+  left: calc(50% - 10rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: center;
+}
+@media screen and (max-width: 1024px) {
+  #app .options-dialog {
+    width: 20rem;
+    height: 30rem;
+  }
+}
+#app .options-dialog .title {
+  padding: 0.5rem;
+  flex: 0 0 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  border-bottom: 0.01rem solid lightgray;
+}
+#app .options-dialog .body {
+  margin: 0.5rem;
+  text-align: center;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+#app .options-dialog .body .option {
+  text-align: left;
+  margin: 0 0 0.5rem 0.5rem;
+}
+#app .options-dialog .foot {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-content: center;
+  margin: 0 1rem 0.5rem 0;
+}
+#app .options-dialog .foot button {
+  background-color: white;
+  outline: none;
+  margin-left: 1rem;
+  border: 0.01rem solid lightgray;
+}
+#app .options-dialog .foot button:hover {
+  background-color: #cdcdcd;
+}
+#app .options-dialog .foot button:active {
+  background-color: #b4b4b4;
+}
+/*# sourceMappingURL=style.css.map */

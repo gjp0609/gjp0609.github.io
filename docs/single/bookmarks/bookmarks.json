@@ -165,6 +165,32 @@
             "url": "https://mega.nz/"
         }
     ],
+    "SpeedTest": [
+        {
+            "title": "Speedtest by Ookla",
+            "url": "https://www.speedtest.net/"
+        },
+        {
+            "title": "测速网",
+            "url": "https://www.speedtest.cn/"
+        },
+        {
+            "title": "Cloudflare",
+            "url": "https://speed.cloudflare.com/"
+        },
+        {
+            "title": "中国科学技术大学",
+            "url": "https://test.ustc.edu.cn/"
+        },
+        {
+            "title": "华东师范大学",
+            "url": "https://speedtest.ecnu.edu.cn/"
+        },
+        {
+            "title": "东北大学",
+            "url": "https://speed4.neu6.edu.cn/"
+        }
+    ],
     "Mail": [
         "Collapsed by default",
         {

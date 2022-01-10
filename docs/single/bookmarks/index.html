@@ -5,398 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Bookmarks</title>
         <link rel="icon" href="./favicon.ico" />
-        <link rel="stylesheet" href="../../common/css/transform.css" />
-        <style>
-            :root {
-                --button-prime-color: white;
-                --button-background-color: #7c6262;
-                --prime-color: #dddddd;
-                --prime-color-darker: #cccccc;
-                --bookmark-width: 25rem;
-            }
-            * {
-                box-sizing: border-box;
-            }
-
-            *::-webkit-scrollbar {
-                width: 6px;
-                height: 6px;
-                background-color: white;
-            }
-            *::-webkit-scrollbar-thumb {
-                background-color: #c5e3f6;
-                border-radius: 6px;
-                transition: background-color 0.3s;
-            }
-            *::-webkit-scrollbar-thumb:hover {
-                background-color: #a0d9fd;
-            }
-            *::-webkit-scrollbar-thumb:active {
-                background-color: #7eccfc;
-            }
-            html,
-            body {
-                margin: 0;
-                height: 100%;
-                overflow-y: hidden;
-            }
-
-            .parent {
-                display: flex;
-                flex-direction: column;
-                height: 100vh;
-            }
-
-            .search-wrapper {
-                flex: 0 0 auto;
-                padding: 2rem 0 1rem 0;
-                margin-bottom: 2rem;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-                align-content: flex-end;
-                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
-            }
-            .search-wrapper .search {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-content: center;
-            }
-            .search-wrapper .search .engines {
-                appearance: none;
-                -webkit-appearance: none;
-            }
-            .search-wrapper .search .engines .engine {
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                height: 3rem;
-                font-size: 1.1rem;
-                background-color: white;
-                user-select: none;
-            }
-            .search-wrapper .search .engines .engine .image {
-                width: 1.1rem;
-                height: 1.1rem;
-                display: flex;
-                align-items: center;
-            }
-            .search-wrapper .search .engines .engine .image img {
-                width: 1.1rem;
-            }
-            .search-wrapper .search .engines .engine .title {
-                margin-left: 0.5rem;
-            }
-            .search-wrapper .search .engines .engine-list {
-                position: fixed;
-                display: none;
-                z-index: 2;
-            }
-            .search-wrapper .search .engines .engine-list .engine {
-                padding-left: 1rem;
-            }
-            .search-wrapper .search .engines .engine-list .engine.current,
-            .search-wrapper .search .engines .engine-list .engine:hover {
-                background-color: var(--prime-color);
-            }
-            .search-wrapper .search .engines .engine-list .engine .title {
-                padding-right: 1.5rem;
-            }
-            .search-wrapper .search .engines:hover > .engine-list {
-                display: block;
-                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
-            }
-            @media screen and (max-width: 1024px) {
-                .search-wrapper {
-                    padding: 1rem 0 0.8rem 0;
-                }
-                .search-wrapper .search .engines .engine {
-                    height: 2rem;
-                }
-                .search-wrapper .search {
-                    padding-right: 1rem;
-                }
-            }
-
-            .search-wrapper .search input {
-                box-sizing: border-box;
-                height: 3rem;
-                line-height: 2rem;
-                width: 30rem;
-                font-size: 1.2rem;
-                margin-left: 1rem;
-                padding-left: 1.5rem;
-                border: 0.01rem solid var(--prime-color);
-                outline: 0.01rem solid white;
-                border-radius: 2rem;
-            }
-            .search-wrapper .search input:focus {
-                border: 0.01rem solid var(--prime-color);
-                outline: 0.01rem solid var(--prime-color);
-            }
-            @media screen and (max-width: 1024px) {
-                .search-wrapper .search input {
-                    font-size: 1.1rem;
-                    height: 2.2rem;
-                    line-height: 1.8rem;
-                    width: 10rem;
-                }
-            }
-
-            .search-wrapper .search .auto-complete {
-                position: fixed;
-                margin-top: 0.5rem;
-                margin-left: 1rem;
-                width: 30rem;
-                max-height: 50rem;
-                background-color: white;
-                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
-                border-radius: 0.5rem;
-                overflow: hidden;
-                overflow-y: auto;
-                z-index: 2;
-            }
-            .search-wrapper .search .auto-complete .result {
-                padding: 0.5rem 0 0.5rem 1.5rem;
-            }
-            .search-wrapper .search .auto-complete .result .url {
-                font-size: 0.7rem;
-                width: 20rem;
-                color: #666;
-                white-space: nowrap;
-                overflow-wrap: normal;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            .search-wrapper .search .auto-complete .result.current {
-                background-color: var(--prime-color);
-            }
-            @media screen and (max-width: 1024px) {
-                .search-wrapper .search .auto-complete {
-                    margin-left: -8rem;
-                    width: 20rem;
-                    max-height: 30rem;
-                }
-            }
-
-            .types-wrapper {
-                flex: 1;
-                overflow-y: scroll;
-            }
-            .types {
-                margin: 0 10%;
-            }
-            .types .type {
-                width: var(--bookmark-width);
-                min-width: var(--bookmark-width);
-                display: flex;
-                flex-direction: column;
-                margin-bottom: 1rem;
-                border: 0.01rem solid var(--prime-color);
-                border-radius: 1rem;
-                /*overflow: hidden;*/
-            }
-            .types .type > .title {
-                text-align: center;
-                font-size: 1.1rem;
-                padding: 0.4rem;
-                border-bottom: 0.01rem solid var(--prime-color);
-                margin-bottom: 0.8rem;
-                background-color: #fdfcfb;
-                cursor: default;
-                border-radius: 1rem 1rem 0 0;
-            }
-            .types .type .bookmark {
-                height: 3rem;
-                width: calc(var(--bookmark-width) - 4rem);
-                cursor: pointer;
-                margin: 0 auto;
-            }
-            .types .type .bookmark.empty {
-                text-align: center;
-            }
-            .types .type .bookmark .title-wrapper {
-                display: flex;
-                align-items: center;
-            }
-            .types .type .bookmark .title-wrapper .title {
-                line-height: 1.05rem;
-                font-size: 1rem;
-                margin-left: 0.38rem;
-                transition-duration: 0.2s;
-                transition-timing-function: ease-in-out;
-            }
-            .types .type .bookmark:hover > .title-wrapper .title {
-                font-size: 1.05rem;
-                transition-duration: 0.2s;
-                transition-timing-function: ease-in-out;
-            }
-            .types .type .bookmark:hover > .title-wrapper .image {
-                animation: spin 3s linear infinite;
-            }
-            .types .type .bookmark .title-wrapper .image {
-                width: 1rem;
-                height: 1rem;
-            }
-            .types .type .bookmark .title-wrapper .image img {
-                width: 1rem;
-                height: 1rem;
-                background-color: white;
-            }
-            .types .type .bookmark .url {
-                font-size: 0.62rem;
-                width: calc(var(--bookmark-width) - 4rem);
-                margin-top: 0.2rem;
-                color: grey;
-                overflow: hidden;
-                white-space: nowrap;
-                overflow-wrap: normal;
-                text-overflow: ellipsis;
-            }
-            .types .type .bookmark .arrow {
-                visibility: hidden;
-                margin-left: 3rem;
-                width: 0;
-                height: 0;
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-bottom: 5px solid #55524d;
-            }
-            .types .type .bookmark .tooltip {
-                visibility: hidden;
-                position: absolute;
-                width: var(--bookmark-width);
-                padding: 0.5rem;
-                font-size: 0.8rem;
-                border-radius: 0.3rem;
-                color: white;
-                background-color: #55524d;
-                box-shadow: grey;
-                z-index: 4;
-            }
-            @media screen and (min-width: 1024px) {
-                .types .type .bookmark:hover > .tooltip {
-                    visibility: visible;
-                }
-                .types .type .bookmark:hover > .arrow {
-                    visibility: visible;
-                }
-            }
-            @media screen and (max-width: 1024px) {
-                .types {
-                    margin: 0 1rem;
-                }
-                :root {
-                    --bookmark-width: 20rem;
-                }
-            }
-            .update-bookmark-button,
-            .expand-bookmark-type-button {
-                height: 2rem;
-                width: 2rem;
-                border-radius: 2rem;
-                background-color: var(--button-background-color);
-                outline: 0.1rem solid var(--button-background-color);
-                position: fixed;
-                bottom: 2rem;
-                right: 2rem;
-            }
-            .update-bookmark-button {
-                bottom: 5rem;
-            }
-            .expand-bookmark-type-button::before,
-            .update-bookmark-button::before {
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                height: 0.2rem;
-                width: 1rem;
-                margin-left: -0.5rem;
-                margin-top: -0.1rem;
-                background-color: var(--button-prime-color);
-                outline: 0.1rem solid var(--button-prime-color);
-            }
-            .expand-bookmark-type-button::after,
-            .update-bookmark-button::after {
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                height: 1rem;
-                width: 0.2rem;
-                margin-left: -0.1rem;
-                margin-top: -0.5rem;
-                background-color: var(--button-prime-color);
-                outline: 0.1rem solid var(--button-prime-color);
-            }
-            .expand-bookmark-type-button::before,
-            .expand-bookmark-type-button::after {
-                transform: rotate(45deg);
-            }
-
-            .options-dialog {
-                position: fixed;
-                z-index: 5;
-                background-color: white;
-                border-radius: 1rem;
-                overflow: hidden;
-                box-shadow: 0.2rem 0.2rem 1rem 0.2rem var(--prime-color);
-                height: 10rem;
-                width: 30rem;
-                top: calc(40% - 10rem);
-                left: calc(50% - 10rem);
-
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                align-content: center;
-            }
-            .options-dialog .title {
-                padding: 0.5rem;
-                flex: 0 0 1.5rem;
-                line-height: 1.5rem;
-                text-align: center;
-                border-bottom: 0.01rem solid lightgray;
-            }
-            .options-dialog .body {
-                margin: 0.5rem;
-                text-align: center;
-                flex: 1 0 auto;
-                display: flex;
-                flex-direction: column;
-            }
-            .options-dialog .body .option {
-                text-align: left;
-                margin: 0 0 0.5rem 0.5rem;
-            }
-            .options-dialog .foot {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-end;
-                align-content: center;
-                margin: 0 1rem 0.5rem 0;
-            }
-            .options-dialog .foot button {
-                background-color: white;
-                outline: none;
-                margin-left: 1rem;
-                border: 0.01rem solid lightgray;
-            }
-            .options-dialog .foot button:hover {
-                background-color: var(--prime-color);
-            }
-            .options-dialog .foot button:active {
-                background-color: var(--prime-color-darker);
-            }
-            @media screen and (max-width: 1024px) {
-                .options-dialog {
-                    width: 20rem;
-                    height: 30rem;
-                }
-            }
-        </style>
+        <link rel="stylesheet" href="./style.css" />
         <script src="../../common/js/vue.2.6.14.min.js"></script>
         <script src="../../common/js/macy.min.js"></script>
         <script src="../../common/js/utils.js"></script>
@@ -427,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div class="input">
                             <input
                                 ref="search"
                                 type="text"
@@ -449,8 +58,8 @@
                                     @mouseleave="chooseResult(result,false)"
                                     @click="doSearch"
                                 >
-                                    <div class="title">{{result.title}}</div>
-                                    <div class="url">{{result.url}}</div>
+                                    <div class="title">{{ result.title }}</div>
+                                    <div class="url">{{ result.url }}</div>
                                 </div>
                             </div>
                         </div>
@@ -459,17 +68,17 @@
                 <div class="types-wrapper">
                     <div class="types" id="types">
                         <div class="type" v-for="(items,type) in bookmarks">
-                            <div class="title" @click="expand(items)">{{type}}</div>
+                            <div class="title" @click="expand(items)">{{ type }}</div>
                             <div class="bookmark" v-for="item in items" @click="jump(item.url)" v-show="item.expand">
                                 <div class="title-wrapper">
                                     <div class="image">
                                         <img :src="loading" :img-url="item.favicon?item.favicon:item.url" :alt="item.title" />
                                     </div>
-                                    <div class="title">{{item.title}}</div>
+                                    <div class="title">{{ item.title }}</div>
                                 </div>
-                                <div class="url">{{item.url}}</div>
+                                <div class="url">{{ item.url }}</div>
                                 <div v-if="item.desc" class="arrow"></div>
-                                <div v-if="item.desc" class="tooltip">{{item.desc}}</div>
+                                <div v-if="item.desc" class="tooltip">{{ item.desc }}</div>
                             </div>
                             <div class="bookmark empty" v-show="items && items[0] && !items[0].expand" @click="expand(items)">...</div>
                         </div>
@@ -486,7 +95,10 @@
                         <label><input type="radio" name="trueOrder" v-model="options.trueOrder" :value="true" @change="macyReInit" />Yes</label>
                         <label><input type="radio" name="trueOrder" v-model="options.trueOrder" :value="false" @change="macyReInit" />No</label>
                     </div>
-                    <div class="option">Clear Cache: <button @click="clearCache">Clear</button></div>
+                    <div class="option">
+                        Clear Cache:
+                        <button @click="clearCache">Clear</button>
+                    </div>
                 </div>
                 <div class="foot">
                     <button @click="save">save</button>
@@ -612,7 +224,7 @@
                         if (Object.keys(this.search.autoCompleteResultCurrent).length === 0) {
                             this.jump(this.search.engine.searchUrl.replace('${keyword}', encodeURIComponent(this.search.text)));
                         } else {
-                            if (text.indexOf('!') === 0 && text.indexOf(' ') > 0) {
+                            if ((text.indexOf('!') === 0 || text.indexOf('！') === 0) && text.indexOf(' ') > 0) {
                                 text = text.substr(text.indexOf(' ')).trim();
                                 this.jump(this.search.autoCompleteResultCurrent.searchUrl.replace('${keyword}', text));
                             } else {
@@ -628,7 +240,7 @@
                         if (['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
                             return false;
                         }
-                        let isQuickSearch = text.indexOf('!') === 0;
+                        let isQuickSearch = text.indexOf('!') === 0 || text.indexOf('！') === 0;
                         if (isQuickSearch) {
                             text = text.substr(1, text.indexOf(' ') > 0 ? text.indexOf(' ') - 1 : undefined);
                         }
