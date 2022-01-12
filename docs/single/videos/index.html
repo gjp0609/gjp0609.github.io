@@ -8,218 +8,7 @@
         <link href="../../common/css/video.js/video-js.min.css" rel="stylesheet" />
         <link href="../../common/css/video.js/vjs-theme-sea.css" rel="stylesheet" />
         <script src="../../common/js/vue.2.6.14.min.js"></script>
-        <style>
-            * {
-                box-sizing: border-box;
-            }
-
-            :root {
-                --max-height: 30vh;
-            }
-
-            html,
-            body {
-                margin: 0;
-                width: 100vw;
-                height: 100vh;
-            }
-
-            #app {
-                width: 100vw;
-                height: 100vh;
-                display: flex;
-                flex-direction: row;
-                overflow: hidden;
-            }
-
-            aside {
-                display: flex;
-                flex-direction: column;
-            }
-
-            @media screen and (max-width: 1024px) {
-                #app {
-                    flex-direction: column-reverse;
-                }
-
-                aside {
-                    flex: 1 0;
-                    border-right: none;
-                    overflow-y: auto;
-                }
-
-                .video {
-                    flex: 0 1 var(--max-height);
-                }
-
-                .video-js {
-                    width: 100%;
-                    max-height: var(--max-height);
-                }
-
-                #my-player_html5_api {
-                    height: var(--max-height);
-                }
-
-                .video-js.vjs-fullscreen > #my-player_html5_api {
-                    height: 100% !important;
-                }
-            }
-
-            @media screen and (min-width: 1024px) {
-                aside {
-                    width: 400px;
-                    flex-shrink: 0;
-                    border-right: #808080 solid 1px;
-                    cursor: default;
-                }
-
-                .video {
-                    flex: 1;
-                }
-
-                .video-js {
-                    width: 100%;
-                }
-            }
-
-            .category {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                height: 3rem;
-                line-height: 3rem;
-                border-bottom: #808080 solid 1px;
-            }
-
-            .category div {
-                width: 4rem;
-                text-align: center;
-                flex: 1;
-            }
-
-            .category div.active {
-                background-color: lightgray;
-            }
-
-            .list {
-                display: block;
-                flex: 1;
-                list-style: none;
-                padding-left: 0;
-                overflow-y: auto;
-                -ms-overflow-style: none;
-                overflow: -moz-scrollbars-none;
-            }
-
-            .list::-webkit-scrollbar {
-                width: 0 !important;
-            }
-
-            .list .item {
-                padding: 0.5rem;
-            }
-
-            .list .item:hover {
-                background-color: #f5f5f5;
-            }
-
-            .list .item.select {
-                background-color: #efefef;
-            }
-
-            .list .item .title {
-                min-height: 2rem;
-                line-height: 2rem;
-                padding-left: 1rem;
-            }
-
-            .list .item .title .status {
-                font-weight: bold;
-                min-height: 2rem;
-                line-height: 2rem;
-                font-size: 0.8rem;
-                padding-right: 0.5rem;
-                user-select: none;
-            }
-
-            .list .item .title.status-0 {
-                color: #aaa;
-            }
-
-            .list .item .title.status-1 .status {
-                color: #00a;
-            }
-
-            .list .item .title.status-2 .status {
-                color: #0a0;
-            }
-
-            .list .item .title .subs {
-                display: inline-block;
-                color: #74a193;
-                font-size: 0.8rem;
-                min-height: 2rem;
-                line-height: 2rem;
-            }
-
-            @media screen and (min-width: 1024px) {
-                .list .item .title {
-                    word-break: keep-all;
-                    white-space: nowrap;
-                    width: fit-content;
-                    min-width: 100%;
-                }
-
-                .list .item .title:hover {
-                    animation: 5s wordsLoop linear infinite normal;
-                }
-
-                @-webkit-keyframes wordsLoop {
-                    0%,
-                    20% {
-                        transform: translateX(0px);
-                    }
-                    45%,
-                    55% {
-                        transform: translateX(calc(-100% + 383px));
-                    }
-                    80%,
-                    100% {
-                        transform: translateX(0px);
-                    }
-                }
-            }
-
-            .list .item .part-wrapper {
-                display: grid;
-                justify-content: space-around;
-                grid-template-columns: repeat(auto-fill, 3rem);
-            }
-
-            .list .item .part-wrapper .part {
-                width: 3rem;
-                display: inline-block;
-                border-radius: 0.3rem;
-                background-color: #f2fcfc;
-                text-align: center;
-                height: 1.5rem;
-                line-height: 1.5rem;
-                margin: 0.2rem;
-                user-select: none;
-                cursor: pointer;
-            }
-
-            .list .item .part-wrapper .part:hover {
-                background-color: #cee3e3;
-            }
-
-            .no-data {
-                color: gray;
-                text-align: center;
-                margin-top: 10rem;
-            }
-        </style>
+        <link href="./style.css" rel="stylesheet" />
     </head>
     <body>
         <div id="app">
@@ -252,7 +41,7 @@
                                 </template>
                                 <template v-else>
                                     <div v-if="item.status==='0'" class="title" :class="'status-'+item.status">
-                                        <span class="status">{{ item.statusText }}</span>{{ item.title }}
+                                        <span class="status">{{ item.statusText }}</span><span class="name">{{ item.title }}</span>
                                     </div>
                                     <div
                                         v-else
@@ -260,7 +49,7 @@
                                         @click="play(key, item, item.nameReg, $event)"
                                         @dblclick="copyUrl(key, item, item.nameReg)"
                                     >
-                                        <span class="status">{{ item.statusText }}</span>{{ item.title }}
+                                        <span class="status">{{ item.statusText }}</span><span class="name">{{ item.title }}</span>
                                     </div>
                                 </template>
                             </li>

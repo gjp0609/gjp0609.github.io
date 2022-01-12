@@ -1,0 +1,189 @@
+@-webkit-keyframes wordsLoop {
+  0%,
+  20% {
+    transform: translateX(0px);
+  }
+  45%,
+  55% {
+    transform: translateX(calc(-100% + 383px));
+  }
+  80%,
+  100% {
+    transform: translateX(0px);
+  }
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+}
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+@media screen and (max-width: 1024px) {
+  #app {
+    flex-direction: column-reverse;
+  }
+}
+#app aside {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+@media screen and (max-width: 1024px) {
+  #app aside {
+    flex: 1 0;
+    border-right: none;
+    overflow-y: auto;
+  }
+}
+@media screen and (min-width: 1024px) {
+  #app aside {
+    width: 400px;
+    flex-shrink: 0;
+    border-right: #808080 solid 1px;
+    cursor: default;
+  }
+}
+#app aside .category {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 3rem;
+  line-height: 3rem;
+  border-bottom: #808080 solid 1px;
+}
+#app aside .category div {
+  width: 4rem;
+  text-align: center;
+  flex: 1;
+}
+#app aside .category div.active {
+  background-color: lightgray;
+}
+#app aside .list {
+  display: block;
+  flex: 1;
+  list-style: none;
+  padding-left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+#app aside .list::-webkit-scrollbar {
+  width: 0 !important;
+}
+#app aside .list .item {
+  padding: 0.5rem;
+}
+#app aside .list .item:hover {
+  background-color: #f5f5f5;
+}
+#app aside .list .item.select {
+  background-color: #efefef;
+}
+#app aside .list .item .title {
+  min-height: 2rem;
+  line-height: 2rem;
+  padding-left: 1rem;
+}
+@media screen and (min-width: 1024px) {
+  #app aside .list .item .title {
+    word-break: keep-all;
+    white-space: nowrap;
+    width: fit-content;
+    min-width: 100%;
+  }
+  #app aside .list .item .title:hover {
+    animation: 5s wordsLoop linear infinite normal;
+  }
+}
+#app aside .list .item .title .status {
+  font-weight: bold;
+  min-height: 2rem;
+  line-height: 2rem;
+  font-size: 0.8rem;
+  padding-right: 0.5rem;
+  user-select: none;
+}
+#app aside .list .item .title.status-0 {
+  color: #aaa;
+}
+#app aside .list .item .title.status-1 .status {
+  color: #00a;
+}
+#app aside .list .item .title.status-2 .status {
+  color: #0a0;
+}
+@media screen and (max-width: 1024px) {
+  #app aside .list .item .title .name {
+    word-break: break-all;
+  }
+}
+#app aside .list .item .title .subs {
+  display: inline-block;
+  color: #74a193;
+  font-size: 0.8rem;
+  min-height: 2rem;
+  line-height: 2rem;
+}
+#app aside .list .item .part-wrapper {
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(auto-fill, 3rem);
+}
+#app aside .list .item .part-wrapper .part {
+  width: 3rem;
+  display: inline-block;
+  border-radius: 0.3rem;
+  background-color: #f2fcfc;
+  text-align: center;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  margin: 0.2rem;
+  user-select: none;
+  cursor: pointer;
+}
+#app aside .list .item .part-wrapper .part:hover {
+  background-color: #cee3e3;
+}
+#app aside .no-data {
+  color: gray;
+  text-align: center;
+  margin-top: 10rem;
+}
+@media screen and (max-width: 1024px) {
+  #app .video {
+    flex: 0 1 30vh;
+  }
+}
+@media screen and (min-width: 1024px) {
+  #app .video {
+    flex: 1;
+  }
+}
+#app .video .video-js {
+  width: 100%;
+  max-height: 30vh;
+}
+@media screen and (min-width: 1024px) {
+  #app .video .video-js {
+    width: 100%;
+  }
+}
+#app .video .video-js.vjs-fullscreen > #my-player_html5_api {
+  height: 100% !important;
+}
+#app .video .video-js #my-player_html5_api {
+  height: 30vh;
+}
+/*# sourceMappingURL=style.css.map */
