@@ -277,6 +277,8 @@
                     border-left: $background-color-darker solid 0.2rem;
                     padding-left: 0.5rem;
                     margin-inline-start: 1rem;
+                    padding-top: 0.01rem;
+                    padding-bottom: 0.01rem;
                 }
                 /* h1 {
                     font-size: 1.75rem;
