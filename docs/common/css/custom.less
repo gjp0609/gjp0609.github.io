@@ -12,6 +12,12 @@
     }
     .scrollbar() {
         @scrollbar-color: #66ccff;
+        // moz
+        * {
+            scrollbar-color: lighten(@scrollbar-color, 20%) lighten(@scrollbar-color, 28%);
+            scrollbar-width: thin;
+        }
+        // webkit
         *::-webkit-scrollbar {
             width: 6px;
             height: 6px;

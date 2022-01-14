@@ -247,6 +247,8 @@
                     flex: 1 1 0;
                     overflow-y: scroll;
                     width: 60rem;
+                    // moz
+                    scrollbar-width: none;
                 }
                 .note::-webkit-scrollbar {
                     display: none;
