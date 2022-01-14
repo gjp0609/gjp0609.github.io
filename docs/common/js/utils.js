@@ -102,3 +102,5 @@ const $utils = {
         $utils.cache.clearExpired();
     }, 1000 * 30);
 })();
+
+export default $utils;
