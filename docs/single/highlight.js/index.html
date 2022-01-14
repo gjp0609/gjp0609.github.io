@@ -7,7 +7,6 @@
         <link rel="stylesheet" href="../../common/css/highlight.github.min.css" />
         <script src="../../common/js/jquery-3.3.1.min.js"></script>
         <script src="../../common/js/highlight.min.js"></script>
-        <script src="../../common/js/utils.js"></script>
         <style>
             #main {
                 display: flex;
@@ -31,34 +30,36 @@
     </head>
     <body>
         <div id="main">
-            <select id="languages" onchange="updateText(true)"></select>
+            <select id="languages"></select>
             <pre id="code"></pre>
-            <textarea id="text" onkeyup="updateText()"></textarea>
+            <textarea id="text"></textarea>
         </div>
     </body>
-    <script>
-        $utils
-            .cachedFetch('./languages.json', -1)
+    <script type="module">
+        import { cachedFetch } from '../../common/js/utils/index.js';
+
+        let languagesDom = document.querySelector('#languages');
+        let textDom = document.querySelector('#text');
+        languagesDom.addEventListener('change', updateText);
+        textDom.addEventListener('keyup', updateText);
+
+        cachedFetch('./languages.json', -1)
             .then((response) => response.text())
             .then((text) => {
-                let select = document.getElementById('languages');
                 let languages = JSON.parse(text);
                 for (let key in languages) {
                     let option = document.createElement('option');
                     option.innerText = languages[key];
                     option.value = key;
-                    select.appendChild(option);
+                    languagesDom.appendChild(option);
                 }
                 init();
             });
 
         function updateText(force) {
-            let text = document.getElementById('text');
-            let code = document.getElementById('code');
             try {
                 if (force) {
-                    let language = document.getElementById('languages');
-                    let lang = language.value.split(', ')[0];
+                    let lang = languagesDom.value.split(', ')[0];
                     code.innerHTML = hljs.highlight(text.value, { language: lang, ignoreIllegals: true }).value;
                 } else {
                     let highlightAuto = hljs.highlightAuto(text.value);
@@ -80,15 +81,11 @@
         }
 
         function init() {
-            let text = document.getElementById('text');
-            text.value =
+            textDom.value =
                 'function updateText(force) {\n' +
-                "    let text = document.getElementById('text');\n" +
-                "    let code = document.getElementById('code');\n" +
                 '    try {\n' +
                 '        if (force) {\n' +
-                "            let language = document.getElementById('languages');\n" +
-                '            let lang = language.value;\n' +
+                "            let lang = languagesDom.value.split(', ')[0];\n" +
                 '            code.innerHTML = hljs.highlight(text.value, { language: lang, ignoreIllegals: true }).value;\n' +
                 '        } else {\n' +
                 '            let highlightAuto = hljs.highlightAuto(text.value);\n' +

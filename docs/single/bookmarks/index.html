@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="./style.css" />
         <script src="../../common/js/vue.2.6.14.min.js"></script>
         <script src="../../common/js/macy.min.js"></script>
-        <script src="../../common/js/utils.js"></script>
     </head>
     <body>
         <div id="app">
@@ -106,7 +105,8 @@
             </div>
         </div>
     </body>
-    <script>
+    <script type="module">
+        import { cachedFetch } from '../../common/js/utils/index.js';
         let app = document.getElementById('app');
         let vm = new Vue({
             el: app,
@@ -155,44 +155,42 @@
                         1050: 1
                     }
                 });
-                Promise.all([$utils.cachedFetch('./bookmarks-local.json', 1), $utils.cachedFetch('./bookmarks.json', 60 * 60 * 24 * 2)]).then(
-                    (responses) => {
-                        let responseList = [];
-                        for (let response of responses) {
-                            responseList.push(response.text());
-                        }
-                        Promise.all(responseList).then((texts) => {
-                            for (let text of texts) {
-                                let bookmarks = JSON.parse(text);
-                                let searchList = bookmarks['Search'];
-                                if (searchList && searchList.length > 0) {
-                                    if (typeof searchList[0] === 'string') {
-                                        searchList.shift();
-                                    }
-                                    this.search.engines = searchList;
-                                    this.search.engine = this.search.engines[0];
-                                }
-                                for (let bookmarksKey in bookmarks) {
-                                    let bookmarkList = [];
-                                    let expand = true;
-                                    for (let bookmark of bookmarks[bookmarksKey]) {
-                                        if (typeof bookmark === 'string') {
-                                            expand = false;
-                                        } else {
-                                            bookmark['expand'] = expand;
-                                            bookmarkList.push(bookmark);
-                                        }
-                                    }
-                                    this.bookmarks[bookmarksKey] = bookmarkList;
-                                }
-                            }
-                            this.macyReInit();
-                            this.$nextTick(() => {
-                                this.updateIcon();
-                            });
-                        });
+                Promise.all([cachedFetch('./bookmarks-local.json', 1), cachedFetch('./bookmarks.json', 60 * 60 * 24 * 2)]).then((responses) => {
+                    let responseList = [];
+                    for (let response of responses) {
+                        responseList.push(response.text());
                     }
-                );
+                    Promise.all(responseList).then((texts) => {
+                        for (let text of texts) {
+                            let bookmarks = JSON.parse(text);
+                            let searchList = bookmarks['Search'];
+                            if (searchList && searchList.length > 0) {
+                                if (typeof searchList[0] === 'string') {
+                                    searchList.shift();
+                                }
+                                this.search.engines = searchList;
+                                this.search.engine = this.search.engines[0];
+                            }
+                            for (let bookmarksKey in bookmarks) {
+                                let bookmarkList = [];
+                                let expand = true;
+                                for (let bookmark of bookmarks[bookmarksKey]) {
+                                    if (typeof bookmark === 'string') {
+                                        expand = false;
+                                    } else {
+                                        bookmark['expand'] = expand;
+                                        bookmarkList.push(bookmark);
+                                    }
+                                }
+                                this.bookmarks[bookmarksKey] = bookmarkList;
+                            }
+                        }
+                        this.macyReInit();
+                        this.$nextTick(() => {
+                            this.updateIcon();
+                        });
+                    });
+                });
             },
             methods: {
                 changeSearchEngine(engine) {
@@ -341,8 +339,7 @@
                         callback(null);
                         return;
                     }
-                    $utils
-                        .cachedFetch(iconSrc, -1)
+                    cachedFetch(iconSrc, -1)
                         .then((response) => {
                             if (response.status === 200) {
                                 if (response.headers.has('Is-Cached-Fetch')) {
