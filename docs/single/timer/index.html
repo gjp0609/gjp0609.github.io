@@ -6,10 +6,26 @@
         <title>Title</title>
         <script src="../../common/js/vue.2.6.14.min.js"></script>
         <style>
+            :root {
+                --error-light: #f7dee3;
+                --error-light-hover: #f5d2d9;
+                --error-light-active: #f2c5ce;
+                --error-dark: #d03050;
+                --error-dark-hover: #de576d;
+                --error-dark-active: #ab1f3f;
+                --success-light: #daf0e4;
+                --success-light-hover: #cceada;
+                --success-light-active: #bfe5d1;
+                --success-dark: #18a058;
+                --success-dark-hover: #36ad6a;
+                --success-dark-active: #0c7a43;
+            }
+
             body * {
                 box-sizing: border-box;
                 user-select: none;
                 font-family: 'Sarasa Mono SC', monospace;
+                -webkit-tap-highlight-color: transparent;
             }
 
             body {
@@ -25,176 +41,237 @@
                 display: flex;
             }
 
-            @media screen and (max-width: 1024px) {
-                #main {
-                    flex-direction: column;
-                }
-            }
-
             .type {
                 flex: 1;
                 display: flex;
                 flex-direction: column;
                 padding: 1rem;
+                text-align: center;
             }
 
             .clock {
+                background-color: #fafefd;
+            }
+
+            .loop {
+                background-color: #fafdff;
+            }
+
+            .countdown {
+                background-color: #fdfcff;
+            }
+
+            .background {
                 flex: 0;
-                text-align: center;
+                background-repeat: no-repeat;
+                font-size: 10vw;
+                color: white;
+                text-shadow: none !important;
+            }
+
+            .show {
+                flex: 2;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
             }
 
-            .clock .wrapper {
-                margin: 2rem auto;
+            .show .time {
+                font-size: 10vw;
             }
 
-            .clock .time {
-                font-size: 15vw;
+            .show .date {
+                font-size: 2vw;
             }
 
-            .clock .date {
-                font-size: 6vw;
+            .wrapper {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
             }
 
-            .interval {
-                background-color: #fafdff;
-                text-align: center;
-            }
-
-            .interval .status {
+            .status {
                 font-size: 1.2rem;
+                height: 4rem;
             }
 
-            .interval .status.running {
-                color: green;
+            .status.running {
+                color: var(--success-dark);
             }
 
-            .interval .status.stopping {
-                color: red;
+            .status.stopping {
+                color: var(--error-dark);
             }
 
-            .interval .remain {
-                margin: 1rem;
+            .option,
+            .operation {
+                margin-bottom: 1rem;
             }
 
-            .interval .option {
-                margin: 1rem;
-            }
-
-            .interval .option input {
-                height: 1.5rem;
-                line-height: 1.5rem;
+            input {
+                height: 2rem;
+                line-height: 2rem;
                 width: 15rem;
                 margin: 0.3rem;
                 padding-left: 0.5rem;
                 outline: unset;
-                border: 0.01rem solid #777;
+                border: 0.01rem solid #e0e0e6;
                 border-radius: 0.3rem;
+                caret-color: #18a058;
             }
 
-            .interval .button {
+            input:hover {
+                border-color: #36ad6a;
+            }
+
+            input:focus {
+                box-shadow: 0 0 0.2rem 0.1rem #a1d2b6;
+            }
+
+            .operation button {
                 cursor: pointer;
                 display: inline-block;
                 width: 5rem;
-                padding: 0.2rem;
-                border: 0.01rem solid #777;
-                border-radius: 0.3rem;
+                height: 2rem;
+                line-height: 2rem;
+                border: none;
+                border-radius: 2rem;
+                overflow: hidden;
+                font-weight: bold;
+            }
+
+            .operation button.run {
+                background-color: var(--success-light);
+            }
+
+            .operation button.run:hover {
+                background-color: var(--success-light-hover);
+            }
+
+            .operation button.run:active {
+                background-color: var(--success-light-active);
+                border-radius: 2rem;
+            }
+
+            .operation button.stop {
+                background-color: var(--error-light);
+            }
+
+            .operation button.stop:hover {
+                background-color: var(--error-light-hover);
+            }
+
+            .operation button.stop:focus {
+                background-color: var(--error-light-active);
+            }
+
+            @media screen and (max-width: 1024px) {
+                #main {
+                    flex-direction: column;
+                }
+
+                .type {
+                    flex: 1 0 60vh;
+                }
+
+                .show .time {
+                    font-size: 18vw;
+                }
+
+                .show .date {
+                    font-size: 8vw;
+                }
             }
         </style>
     </head>
     <body>
         <div id="main">
-            <div class="type clock" v-show="!focus||focus==='clock'" @dblclick="focusOne('clock')" @touchstart="doubleTouch(()=>focusOne('clock'))">
-                <div class="wrapper">
+            <div style="position: fixed">{{ doubleTouchTime }}</div>
+            <div
+                class="type clock"
+                v-show="!focus||focus==='clock'"
+                @dblclick="focusOne('clock')"
+                @touchstart="doubleTouch($event, ()=>focusOne('clock'))"
+            >
+                <div class="background">CLOCK</div>
+                <div class="show">
                     <div class="time">{{ now.hour + ':' + now.minute + ':' + now.second }}</div>
                     <div class="date">{{ now.year + '-' + now.month + '-' + now.day }}</div>
                 </div>
             </div>
-            <div
-                class="type interval"
-                v-show="!focus||focus==='interval'"
-                @dblclick="focusOne('interval')"
-                @touchstart="doubleTouch(()=>focusOne('interval'))"
-            >
-                <div class="status running" v-show="interval.running" @click="startInterval">Running</div>
-                <div class="status stopping" v-show="!interval.running" @click="startInterval">Stopping</div>
-                <div class="option">
-                    <input v-model="interval.second" />
-                    <br />
-                    <input v-model="interval.message" />
+            <template v-for="item of countdown" :key="item.title">
+                <div
+                    class="type"
+                    :class="item.name"
+                    v-show="!focus||focus===item.name"
+                    @dblclick.stop.prevent="focusOne(item.name)"
+                    @touchstart="doubleTouch($event, ()=>focusOne(item.name))"
+                >
+                    <div class="background">{{ item.title }}</div>
+                    <div class="show">
+                        <div class="time">{{ item.remain }}</div>
+                    </div>
+                    <div class="wrapper">
+                        <div class="status running" v-show="item.running">Running</div>
+                        <div class="status stopping" v-show="!item.running">Stopping</div>
+                        <div class="option" @dblclick.stop.prevent="item">
+                            <input type="time" step="1" v-model="item.time" value="00:10:00" />
+                            <br />
+                            <input type="text" placeholder="提示信息" v-model="item.message" />
+                        </div>
+                        <div class="operation" @dblclick.stop.prevent="doNothing">
+                            <button class="run" v-show="!item.running" @click.stop.prevent="countdownStart(item)">Start</button>
+                            <button class="stop" v-show="item.running" @click.stop.prevent="countdownStop(item)">Stop</button>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <span class="button" v-show="!interval.running" @click="startInterval">Start</span>
-                    <span class="button" v-show="interval.running" @click="stopInterval">Stop</span>
-                </div>
-                <div class="remain">Remain: {{ interval.remain }}</div>
-            </div>
-            <!--            <div class="type timeout" v-show="!focus||focus==='timeout'">333</div>-->
-            <!--            <div class="type timecount" v-show="!focus||focus==='timecount'">444</div>-->
+            </template>
         </div>
         <script>
-            let debug = false;
+            let debug = true;
             new Vue({
                 el: document.getElementById('main'),
                 data: () => {
                     return {
                         now: {},
-                        focus: 'interval',
+                        focus: undefined,
+                        doubleTouchTask: undefined,
                         doubleTouchTime: undefined,
-                        clock: [1, 1, 1],
-                        clockRange: [24, 60, 60],
-                        interval: {
-                            running: false,
-                            second: 0,
-                            remain: 0,
-                            task: undefined,
-                            message: ''
-                        }
+                        countdown: [
+                            {
+                                name: 'loop',
+                                title: 'LOOP',
+                                time: '00:10:00',
+                                remain: '00:10:00',
+                                loop: true,
+                                running: false,
+                                task: undefined,
+                                message: ''
+                            },
+                            {
+                                name: 'countdown',
+                                title: 'COUNT',
+                                time: '00:10:00',
+                                remain: '00:10:00',
+                                running: false,
+                                loop: false,
+                                task: undefined,
+                                message: ''
+                            }
+                        ]
                     };
                 },
                 mounted() {
+                    // this.updateTime();
                     this.now = formatTime(new Date());
                     setInterval(() => {
                         this.now = formatTime(new Date());
                     }, 1000);
-                    console.log(new Date().getTime());
-                    let time = localStorage.getItem('Timer-clock');
-                    let interval = localStorage.getItem('Timer-interval');
-                    if (interval) {
-                        let json = JSON.parse(interval);
-                        this.interval.second = json.second;
-                        this.interval.remain = json.second;
-                        this.interval.message = json.message;
-                    }
-                    if (time) {
-                        this.time = time;
-                    }
                 },
                 methods: {
-                    startInterval() {
-                        if (this.interval.second > 0) {
-                            let flag = parseInt(Math.random() * 1000000);
-                            console.log(flag);
-                            this.stopInterval();
-                            this.interval.running = true;
-                            this.interval.task = setInterval(() => {
-                                this.interval.remain--;
-                                if (this.interval.remain <= 0) {
-                                    this.interval.remain = this.interval.second;
-                                    notify(this.interval.message);
-                                }
-                            }, 1000);
-                        }
-                    },
-                    stopInterval() {
-                        this.interval.running = false;
-                        this.interval.remain = this.interval.second;
-                        if (this.interval.task) {
-                            clearInterval(this.interval.task);
-                        }
-                    },
+                    doNothing() {},
+                    updateTime() {},
                     focusOne(type) {
                         if (this.focus) {
                             this.focus = undefined;
@@ -202,17 +279,98 @@
                             this.focus = type;
                         }
                     },
-                    doubleTouch(callback) {
-                        if (callback) {
+                    doubleTouch(e, callback) {
+                        let now = new Date().getTime();
+                        if (e.target.nodeName === 'DIV') {
                             if (this.doubleTouchTime) {
-                                if (new Date().getTime() - this.doubleTouchTime < 250) {
-                                    callback();
+                                if (now - this.doubleTouchTime < 400) {
+                                    setTimeout(callback, 0);
                                 }
                                 this.doubleTouchTime = undefined;
                             } else {
-                                this.doubleTouchTime = new Date().getTime();
+                                this.doubleTouchTime = now;
+                                this.doubleTouchTask = setTimeout(() => {
+                                    this.doubleTouchTime = undefined;
+                                }, 500);
                             }
                         }
+                    },
+                    countdownStart(item) {
+                        if (item.time === '00:00:00') {
+                            return;
+                        }
+                        let count = 0;
+                        let startTime = new Date();
+                        item.running = true;
+                        item.remain = item.time;
+                        item.task = setInterval(() => {
+                            let result = this.timeDecrease(item.remain, startTime, count);
+                            console.log(result);
+                            switch (result.code) {
+                                case -1:
+                                    this.countdownStop(item);
+                                    break;
+                                case 0:
+                                    // skip
+                                    break;
+                                case 1:
+                                    count = result.count;
+                                    item.remain = result.time;
+                                    break;
+                                case 2:
+                                    notify(item.message);
+                                    this.countdownStop(item);
+                                    if (item.name === 'loop') {
+                                        itemStart(true);
+                                    }
+                                    break;
+                            }
+                        }, 1000);
+                    },
+                    countdownStop(item) {
+                        item.running = false;
+                        item.remain = item.time;
+                        if (item.task) {
+                            clearInterval(item.task);
+                        }
+                    },
+                    timeDecrease(time, startTime, count) {
+                        let split = time.split(':');
+                        let hour = parseInt(split[0]);
+                        let minute = parseInt(split[1]);
+                        let second = parseInt(split[2]);
+                        let x = parseInt((new Date().getTime() - startTime) / 1000);
+                        let c = x - count;
+                        if (x > count) {
+                            count = x;
+                            if (second > 0) {
+                                second -= c;
+                            } else if (minute > 0) {
+                                minute--;
+                                second = 59;
+                            } else if (hour > 0) {
+                                hour--;
+                                minute = 59;
+                                second = 59;
+                            } else {
+                                return { code: 2 };
+                            }
+                            if (hour === 0 && minute === 0 && second === 0) {
+                                return { code: 2 };
+                            }
+                            return {
+                                code: 1,
+                                count: count,
+                                time: this.numToStr(hour) + ':' + this.numToStr(minute) + ':' + this.numToStr(second)
+                            };
+                        } else {
+                            return {
+                                code: 0
+                            };
+                        }
+                    },
+                    numToStr(num) {
+                        return num > 9 ? num : '0' + num;
                     }
                 }
             });
@@ -220,7 +378,7 @@
             function formatTime(time) {
                 return {
                     year: time.getFullYear(),
-                    month: (time.getMonth() + 1 < 10 ? '0' : '') + time.getMonth(),
+                    month: (time.getMonth() + 1 < 10 ? '0' : '') + (time.getMonth() + 1),
                     day: (time.getDate() < 10 ? '0' : '') + time.getDate(),
                     hour: (time.getHours() < 10 ? '0' : '') + time.getHours(),
                     minute: (time.getMinutes() < 10 ? '0' : '') + time.getMinutes(),
