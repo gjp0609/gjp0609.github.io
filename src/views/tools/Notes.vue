@@ -34,6 +34,7 @@
                 screenWidth: document.body.clientWidth,
                 list: [],
                 routePath: '/tools/notes/',
+                isDev: import.meta.env.DEV,
                 url: import.meta.env.VITE_NOTES_API_URL,
                 urlBak: import.meta.env.VITE_NOTES_API_URL_BAK,
                 fallback: false,
@@ -70,11 +71,19 @@
                     this.highlight();
                     pangu.spacingElementByTagName('p');
                     for (let ele of document.getElementsByTagName('img')) {
-                        cachedFetch(ele.getAttribute('data-url')).then((response) => {
+                        let imageUrl = ele.getAttribute('data-url');
+                        if (imageUrl.indexOf('./') === 0) {
+                            imageUrl = this.url + this.currentPath.substr(0, this.currentPath.lastIndexOf('/')) + imageUrl.substr(1);
+                        }
+                        cachedFetch(imageUrl).then((response) => {
                             if (response.status === 200) {
                                 response.text().then((text) => {
-                                    let json = JSON.parse(text);
-                                    ele.src = 'data:image/png;base64,' + json.content;
+                                    if (this.isDev) {
+                                        ele.src = imageUrl;
+                                    } else {
+                                        let json = JSON.parse(text);
+                                        ele.src = 'data:image/png;base64,' + json.content;
+                                    }
                                 });
                             }
                         });
@@ -105,8 +114,13 @@
                     .then((response) => {
                         if (response.status === 200) {
                             response.text().then((text) => {
-                                let json = JSON.parse(text);
-                                let content = Base64.decode(json.content);
+                                let content;
+                                if (this.isDev) {
+                                    content = text;
+                                } else {
+                                    let json = JSON.parse(text);
+                                    content = Base64.decode(json.content);
+                                }
                                 this.list = JSON.parse(content);
                                 localStorage.setItem('notes_time', new Date().getTime().toString());
                                 localStorage.setItem('notes_list', content);
@@ -146,8 +160,12 @@
                     .then((response) => {
                         if (response.status === 200) {
                             response.text().then((text) => {
-                                let json = JSON.parse(text);
-                                this.notePath.content = Base64.decode(json.content);
+                                if (this.isDev) {
+                                    this.notePath.content = text;
+                                } else {
+                                    let json = JSON.parse(text);
+                                    this.notePath.content = Base64.decode(json.content);
+                                }
                                 this.$notify({
                                     duration: 1000,
                                     message: 'query success'
