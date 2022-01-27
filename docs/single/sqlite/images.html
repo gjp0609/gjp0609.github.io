@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SQLite</title>
+        <script src="../../common/js/vue.2.6.14.min.js"></script>
+        <script src="../../common/js/sqlite/sql-wasm.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                height: 100vh;
+                margin: 0;
+            }
+            #app {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+            #app .search {
+                flex: 0 0 1.8rem;
+                text-align: center;
+                height: 2rem;
+            }
+            #app .search input {
+                width: 300px;
+            }
+            #app .list {
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+                scrollbar-width: none;
+            }
+            #app .list::-webkit-scrollbar {
+                display: none;
+            }
+
+            #app .list .item {
+                border-top: 0.01rem solid black;
+                height: 100px;
+                min-height: 100px;
+                display: flex;
+            }
+            #app .list .item.lastChosen,
+            #app .list .item.lastChosen .text textarea {
+                background-color: #aaaaaa;
+            }
+            #app .list .item .imgWrapper {
+                width: 100px;
+                min-width: 100px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                background-color: #efefef;
+            }
+            #app .list .item .imgWrapper img {
+                max-width: 99px;
+                max-height: 99px;
+            }
+            #app .list .item .path {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 0 1rem;
+            }
+            #app .list .item .text {
+                flex: 2;
+                overflow: hidden;
+                text-overflow: fade ellipsis;
+            }
+            #app .list .item .text textarea {
+                width: 100%;
+                height: 100%;
+                border: none;
+                outline: none;
+            }
+            #app .maxImage {
+                user-select: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 100vw;
+                background-color: rgba(177, 177, 177, 0.8);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <div class="search">
+                <span>{{lastChosen}}</span>
+                <input v-model="keyword" />
+                <button @click="query">query</button>
+                <span>{{result.length}}</span>
+            </div>
+            <div class="list">
+                <div class="item" v-for="item of result" v-key="item.ID" :data-id="item.ID" :class="item.ID===lastChosen?'lastChosen':''">
+                    <div class="path">{{item.PATH.replaceAll(/\\/g,'/')}}</div>
+                    <div class="imgWrapper" @click="max">
+                        <img alt="img" :src="getUrl(item.PATH)" />
+                    </div>
+                    <div class="text">
+                        <textarea>
+                            {{item.TEXT}}
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="maxImage" v-if="maxImage.id">
+                <div class="imgWrapper">
+                    <img alt="image" :src="maxImage.url" />
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        new Vue({
+            el: '#app',
+            data: () => {
+                return {
+                    server: 'http://127.0.0.1:43999/',
+                    db: undefined,
+                    keyword: 'epay',
+                    result: [],
+                    resultIds: [],
+                    maxImage: {
+                        id: undefined,
+                        url: undefined
+                    },
+                    lastChosen: undefined,
+                    loading: false
+                };
+            },
+            mounted() {
+                const sqlPromise = initSqlJs({
+                    locateFile: (file) => `../../common/js/sqlite/${file}`
+                });
+                const dataPromise = fetch('./imageText.db').then((res) => res.arrayBuffer());
+                Promise.all([sqlPromise, dataPromise]).then((result) => {
+                    let SQL = result[0];
+                    let buf = result[1];
+                    this.db = new SQL.Database(new Uint8Array(buf));
+                    console.log(this.db);
+                    console.log('init');
+                    this.query();
+                });
+                document.addEventListener('mousedown', (e) => {
+                    if (e.button === 1) {
+                        this.maxImage.id = undefined;
+                        this.maxImage.url = undefined;
+                    }
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'Escape' || e.code === 'Space') {
+                        this.maxImage.id = undefined;
+                        this.maxImage.url = undefined;
+                    }
+                    if (this.maxImage.id && (e.code === 'ArrowRight' || e.code === 'ArrowLeft')) {
+                        let index = this.resultIds.indexOf(this.maxImage.id);
+                        let len = this.resultIds.length;
+                        index += len;
+                        if (e.code === 'ArrowRight') {
+                            index = (index + 1) % len;
+                        }
+                        if (e.code === 'ArrowLeft') {
+                            index = (index - 1) % len;
+                        }
+                        this.maxImage.id = this.result[index].ID;
+                        this.maxImage.url = this.getUrl(this.result[index].PATH);
+                        this.lastChosen = this.maxImage.id;
+                        let current = document.querySelector('#app .list .item[data-id="' + this.maxImage.id + '"]');
+                        document.querySelector('#app .list').scrollTo(0, current.offsetTop);
+                    }
+                });
+                document.querySelector('#app .search input').focus();
+                document.querySelector('#app .search input').addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        this.query();
+                    }
+                });
+            },
+            methods: {
+                getUrl(path) {
+                    return this.server + path.replaceAll(/\\/g, '/');
+                },
+                query() {
+                    this.maxImage.id = undefined;
+                    this.maxImage.url = undefined;
+                    if (this.keyword && this.keyword.trim()) {
+                        const stmt = this.db.prepare(`select * from image_text where TEXT like '%${this.keyword}%'`);
+                        this.result = [];
+                        this.resultIds = [];
+                        while (stmt.step()) {
+                            const row = stmt.getAsObject();
+                            this.resultIds.push(row.ID);
+                            this.result.push(row);
+                        }
+                    }
+                },
+                max(e) {
+                    let wrapper;
+                    let src;
+                    if (e.target.nodeName === 'IMG') {
+                        src = e.target.src;
+                        console.log([e.target.parentElement.parentElement]);
+                        wrapper = e.target.parentElement.parentElement;
+                    } else if (e.target.nodeName === 'DIV') {
+                        src = e.target.querySelector('img').src;
+                        console.log([e.target.parentElement]);
+                        wrapper = e.target.parentElement;
+                    } else {
+                        console.log('xxxxx');
+                        return;
+                    }
+                    this.maxImage.id = wrapper.dataset.id;
+                    this.maxImage.url = src;
+                    this.lastChosen = this.maxImage.id;
+                    let current = document.querySelector('#app .list .item[data-id="' + this.maxImage.id + '"]');
+                    document.querySelector('#app .list').scrollTo(0, current.offsetTop);
+
+                    this.$nextTick(() => {
+                        // 获取dom
+                        let maxImage = document.querySelector('#app .maxImage');
+                        let image = document.querySelector('#app .maxImage .imgWrapper img');
+
+                        let result,
+                            x,
+                            y,
+                            scale = 1,
+                            minScale = 0.5,
+                            maxScale = 4,
+                            isPointerdown = false, // 按下标识
+                            point = { x: 0, y: 0 }, // 第一个点坐标
+                            diff = { x: 0, y: 0 }, // 相对于上一次pointermove移动差值
+                            lastPointermove = { x: 0, y: 0 }; // 用于计算diff
+                        // 图片加载完成后再绑定事件
+                        image.addEventListener('load', function () {
+                            result = getImgSize(image.naturalWidth, image.naturalHeight, window.innerWidth, window.innerHeight);
+                            image.style.width = result.width + 'px';
+                            image.style.height = result.height + 'px';
+                            x = (window.innerWidth - result.width) * 0.5;
+                            y = (window.innerHeight - result.height) * 0.5;
+                            image.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0) scale(1)';
+                            // 拖拽查看
+                            drag();
+                            // 滚轮缩放
+                            wheelZoom();
+                        });
+                        /**
+                         * 获取图片缩放尺寸
+                         * @param {number} naturalWidth
+                         * @param {number} naturalHeight
+                         * @param {number} maxWidth
+                         * @param {number} maxHeight
+                         * @returns
+                         */
+                        function getImgSize(naturalWidth, naturalHeight, maxWidth, maxHeight) {
+                            const imgRatio = naturalWidth / naturalHeight;
+                            const maxRatio = maxWidth / maxHeight;
+                            let width, height;
+                            // 如果图片实际宽高比例 >= 显示宽高比例
+                            if (imgRatio >= maxRatio) {
+                                if (naturalWidth > maxWidth) {
+                                    width = maxWidth;
+                                    height = (maxWidth / naturalWidth) * naturalHeight;
+                                } else {
+                                    width = naturalWidth;
+                                    height = naturalHeight;
+                                }
+                            } else {
+                                if (naturalHeight > maxHeight) {
+                                    width = (maxHeight / naturalHeight) * naturalWidth;
+                                    height = maxHeight;
+                                } else {
+                                    width = naturalWidth;
+                                    height = naturalHeight;
+                                }
+                            }
+                            return { width: width, height: height };
+                        }
+
+                        // 滚轮缩放
+                        function wheelZoom() {
+                            maxImage.addEventListener('wheel', function (e) {
+                                let ratio = 1.1;
+                                // 缩小
+                                if (e.deltaY > 0) {
+                                    ratio = 1 / 1.1;
+                                }
+                                // 限制缩放倍数
+                                const _scale = scale * ratio;
+                                if (_scale > maxScale) {
+                                    ratio = maxScale / scale;
+                                    scale = maxScale;
+                                } else if (_scale < minScale) {
+                                    ratio = minScale / scale;
+                                    scale = minScale;
+                                } else {
+                                    scale = _scale;
+                                }
+                                // 目标元素是img说明鼠标在img上，以鼠标位置为缩放中心，否则默认以图片中心点为缩放中心
+                                if (e.target.tagName === 'IMG') {
+                                    const origin = {
+                                        x: (ratio - 1) * result.width * 0.5,
+                                        y: (ratio - 1) * result.height * 0.5
+                                    };
+                                    // 计算偏移量
+                                    x -= (ratio - 1) * (e.clientX - x) - origin.x;
+                                    y -= (ratio - 1) * (e.clientY - y) - origin.y;
+                                }
+                                image.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0) scale(' + scale + ')';
+                                e.preventDefault();
+                            });
+                        }
+
+                        // 拖拽查看
+                        function drag() {
+                            // 绑定 pointerdown
+                            image.addEventListener('pointerdown', function (e) {
+                                isPointerdown = true;
+                                image.setPointerCapture(e.pointerId);
+                                point = { x: e.clientX, y: e.clientY };
+                                lastPointermove = { x: e.clientX, y: e.clientY };
+                            });
+                            // 绑定 pointermove
+                            image.addEventListener('pointermove', function (e) {
+                                if (isPointerdown) {
+                                    const current1 = { x: e.clientX, y: e.clientY };
+                                    diff.x = current1.x - lastPointermove.x;
+                                    diff.y = current1.y - lastPointermove.y;
+                                    lastPointermove = { x: current1.x, y: current1.y };
+                                    x += diff.x;
+                                    y += diff.y;
+                                    image.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0) scale(' + scale + ')';
+                                }
+                                e.preventDefault();
+                            });
+                            // 绑定 pointerup
+                            image.addEventListener('pointerup', function (e) {
+                                if (isPointerdown) {
+                                    isPointerdown = false;
+                                }
+                            });
+                            // 绑定 pointercancel
+                            image.addEventListener('pointercancel', function (e) {
+                                if (isPointerdown) {
+                                    isPointerdown = false;
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</html>

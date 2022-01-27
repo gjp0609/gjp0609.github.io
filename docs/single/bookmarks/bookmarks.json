@@ -123,6 +123,10 @@
             "title": "ASCII Tools",
             "url": "https://ascii.co.uk/",
             "desc": "The place for all things textual."
+        },
+        {
+            "title": "让我帮你百度一下",
+            "url": "https://btfy.vercel.app/"
         }
     ],
     "Server": [
