@@ -143,7 +143,7 @@ export const constantMenuRouterMap = [
                 realPath: 'fps/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
-                    name: 'fps',
+                    name: 'FPS',
                     icon: {
                         type: 'material-icons',
                         name: 'videogame_asset'
@@ -163,11 +163,23 @@ export const constantMenuRouterMap = [
                 }
             },
             {
+                path: 'sqlite/images.html',
+                realPath: 'sqlite/images.html',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Image Search',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'format_align_center'
+                    }
+                }
+            },
+            {
                 path: 'keywords',
                 realPath: 'keywords/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
-                    name: 'keywords',
+                    name: 'Keywords',
                     icon: {
                         type: 'material-icons',
                         name: 'line_weight'
