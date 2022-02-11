@@ -15,7 +15,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: npm ci
+    - run: npm i
 
     - name: empty build dir
       run: node .github/actions/empty-build-dir.js
