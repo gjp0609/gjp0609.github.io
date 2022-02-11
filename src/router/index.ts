@@ -235,6 +235,18 @@ export const constantMenuRouterMap = [
                 }
             },
             {
+                path: 'sqlite/images.html',
+                realPath: 'sqlite/images.html',
+                component: () => import('../views/single/Wrapper.vue'),
+                meta: {
+                    name: 'Image Search',
+                    icon: {
+                        type: 'material-icons',
+                        name: 'image_search'
+                    }
+                }
+            },
+            {
                 path: 'timer',
                 realPath: 'timer/',
                 component: () => import('../views/single/Wrapper.vue'),
