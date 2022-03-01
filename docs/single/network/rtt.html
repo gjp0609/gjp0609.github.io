@@ -66,6 +66,7 @@
                 }
             }
             let testUrl = params['testUrl'] ? decodeURIComponent(params['testUrl']) : 'https://httpbin.org/get';
+            document.getElementById('url').value = testUrl;
             let total = params['total'] ? parseInt(params['total']) : 60;
             let resultDom = document.getElementById('result');
             let timeList = [];
