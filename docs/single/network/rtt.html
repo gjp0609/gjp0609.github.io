@@ -75,19 +75,31 @@
 
             function start() {
                 if (!task) {
+                    let testUrl;
                     if (document.getElementById('url').value) {
                         testUrl = document.getElementById('url').value;
                     }
-                    task = setInterval(() => {
-                        let startTime = new Date().getTime();
-                        fetch(testUrl)
-                            .then((resp) => {
-                                record(startTime);
-                            })
-                            .catch((e) => {
-                                record(startTime);
-                            });
-                    }, 1000);
+                    if (testUrl) {
+                        console.log(testUrl);
+                        if (testUrl.indexOf('https://') !== 0) {
+                            if (testUrl.indexOf('http://') === 0) {
+                                testUrl = testUrl.replace('http://', 'https://');
+                            } else {
+                                testUrl = 'https://' + testUrl;
+                            }
+                        }
+                        console.log(testUrl);
+                        task = setInterval(() => {
+                            let startTime = new Date().getTime();
+                            fetch(testUrl)
+                                .then((resp) => {
+                                    record(startTime);
+                                })
+                                .catch((e) => {
+                                    record(startTime);
+                                });
+                        }, 1000);
+                    }
                 }
             }
 
