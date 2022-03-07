@@ -2,7 +2,7 @@ const cache = {
     expireKey: ':expire',
     saveLocal: (key, value, expire) => {
         let defaultExpire = 60 * 60 * 2; // 默认 2 小时
-        expire = expire || defaultExpire;
+        expire = expire ?? defaultExpire;
         if (expire > 0) {
             let now = Date.now() / 1000;
             expire = expire + now;
@@ -54,7 +54,7 @@ const cachedFetch = function (url, options, debugMode) {
         options = undefined;
     } else if (typeof options === 'object') {
         // I hope you didn't set it to 0 seconds
-        expiry = options.seconds || expiry;
+        expiry = options.seconds ?? expiry;
     }
     // 将 URL 作为 localStorage 的 key
     let cached = cache.getLocal(url);

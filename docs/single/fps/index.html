@@ -75,7 +75,7 @@
             let nowSecond = new Date().getSeconds();
             frameCount++;
             if (lastSecond !== nowSecond) {
-                fps.innerText = 'fps: ' + frameCount + '\nmax: ' + (frameMax || '') + '\nmin: ' + (frameMin || '');
+                fps.innerText = 'fps: ' + frameCount + '\nmax: ' + (frameMax ?? '') + '\nmin: ' + (frameMin ?? '');
                 if (count > 1) {
                     frameMax = frameMax ? (frameCount > frameMax ? frameCount : frameMax) : frameCount;
                     frameMin = frameMin ? (frameCount < frameMin ? frameCount : frameMin) : frameCount;

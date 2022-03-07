@@ -206,7 +206,7 @@
                         elements = document.getElementsByTagName('img');
                     }
                     for (let img of elements) {
-                        let src = url || img.getAttribute('img-url');
+                        let src = url ?? img.getAttribute('img-url');
                         if (src) {
                             this.getImageContent(src, 0, (imageUrl) => {
                                 if (imageUrl) {
@@ -392,7 +392,7 @@
                         });
                 },
                 getIcon(url, index) {
-                    index = index || 0;
+                    index = index ?? 0;
                     let type = index % 2;
                     index = index >> 1;
                     let array = [
