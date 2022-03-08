@@ -29,6 +29,7 @@
 }
 * {
   box-sizing: border-box;
+  font-family: '等距更纱黑体 SC', 'Sarasa Mono SC', 'mononoki regular', 'Consolas', monospace;
 }
 html,
 body {
@@ -224,6 +225,17 @@ body {
 #app .parent .types-wrapper .types .type .bookmark.empty {
   text-align: center;
 }
+#app .parent .types-wrapper .types .type .bookmark.br {
+  position: relative;
+}
+#app .parent .types-wrapper .types .type .bookmark.br .url::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.5rem;
+  border-bottom: 1px solid black;
+}
 @media screen and (min-width: 1024px) {
   #app .parent .types-wrapper .types .type .bookmark:hover > .arrow {
     visibility: visible;
@@ -274,7 +286,7 @@ body {
 #app .parent .types-wrapper .types .type .bookmark .tooltip {
   visibility: hidden;
   position: absolute;
-  width: 25rem;
+  max-width: 25rem;
   padding: 0.5rem;
   font-size: 0.8rem;
   border-radius: 0.3rem;

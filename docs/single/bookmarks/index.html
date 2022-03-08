@@ -68,7 +68,7 @@
                     <div class="types" id="types">
                         <div class="type" v-for="(items,type) in bookmarks">
                             <div class="title" @click="expand(items)">{{ type }}</div>
-                            <div class="bookmark" v-for="item in items" @click="jump(item.url)" v-show="item.expand">
+                            <div class="bookmark" v-for="item in items" :class="item.br?'br':''" @click="jump(item.url)" v-show="item.expand">
                                 <div class="title-wrapper">
                                     <div class="image">
                                         <img :src="loading" :img-url="item.favicon?item.favicon:item.url" :alt="item.title" />

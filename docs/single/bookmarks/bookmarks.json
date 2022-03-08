@@ -1,21 +1,4 @@
 {
-    "Mine": [
-        {
-            "title": "Github Pages",
-            "url": "https://pages.onysakura.fun/",
-            "tags": ["github", "pages"]
-        },
-        {
-            "title": "Google Sites",
-            "url": "https://sites.google.com/site/gjp0609/home/",
-            "tags": ["google", "sites"]
-        },
-        {
-            "title": "Personal Sites",
-            "url": "https://www.onysakura.fun/",
-            "tags": ["onysakura", "fun"]
-        }
-    ],
     "BBS": [
         {
             "title": "V2EX",
@@ -75,10 +58,6 @@
         {
             "title": "Dmhy",
             "url": "https://share.dmhy.org/"
-        },
-        {
-            "title": "Home Server",
-            "url": "http://e.onysakura.fun/"
         }
     ],
     "Tools": [
@@ -93,6 +72,10 @@
         {
             "title": "Tsinghua Mirror",
             "url": "https://mirrors.tuna.tsinghua.edu.cn/"
+        },
+        {
+            "title": "Github Proxy",
+            "url": "https://mirror.ghproxy.com/"
         },
         {
             "title": "GoProxy",

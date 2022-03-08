@@ -11,6 +11,7 @@
 
 * {
     box-sizing: border-box;
+    font-family: '等距更纱黑体 SC', 'Sarasa Mono SC', 'mononoki regular', 'Consolas', monospace;
 }
 
 html,
@@ -227,6 +228,18 @@ body {
                             text-align: center;
                         }
 
+                        &.br {
+                            position: relative;
+                            .url::before {
+                                content: '';
+                                position: absolute;
+                                left: 0;
+                                right: 0;
+                                bottom: 0.5rem;
+                                border-bottom: 1px solid black;
+                            }
+                        }
+
                         #common.pc({
                             &:hover > .arrow {
                                 visibility: visible;
@@ -286,7 +299,7 @@ body {
                         .tooltip {
                             visibility: hidden;
                             position: absolute;
-                            width: @bookmark-width;
+                            max-width: @bookmark-width;
                             padding: 0.5rem;
                             font-size: 0.8rem;
                             border-radius: 0.3rem;
