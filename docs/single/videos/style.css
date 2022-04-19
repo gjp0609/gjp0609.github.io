@@ -156,6 +156,9 @@ body {
 #app aside .list .item .part-wrapper .part:hover {
   background-color: #cee3e3;
 }
+#app aside .list .item .part-wrapper .part.active {
+  background-color: #6ddcb7;
+}
 #app aside .no-data {
   color: gray;
   text-align: center;

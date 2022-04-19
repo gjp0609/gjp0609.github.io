@@ -31,6 +31,7 @@
                                         <template v-for="num in item.num" v-key="num" v-if="num >= item.startNum">
                                             <div
                                                 class="part"
+                                                :class="current===getFileName(item.nameReg, num)?'active':''"
                                                 @click="play(key, item, getFileName(item.nameReg, num), $event)"
                                                 @dblclick="copyUrl(key, item, getFileName(item.nameReg, num))"
                                             >
@@ -66,7 +67,7 @@
     <script src="../../common/js/video.min.js"></script>
     <script>
         let isWindows = navigator.appVersion.indexOf('Windows') > 0;
-        let domain = 'http://e.onysakura.fun/videos/';
+        let domain = 'http://v.noif.fun/videos/';
         let appDom = document.getElementById('app');
         let vm = new Vue({
             el: appDom,
@@ -237,21 +238,24 @@
             }
         });
 
-        fetch('./data.csv?timestamp=' + new Date().getTime())
+        fetch(domain + 'data.csv?timestamp=' + new Date().getTime())
             .then((response) => response.text())
             .then((text) => {
                 let sp = text.split('\n');
                 for (let i = 1; i < sp.length; i++) {
                     if (sp[i].length > 0) {
                         let lineSplit = sp[i].split('|');
+                        if (lineSplit.length <= 1) {
+                            continue;
+                        }
                         let category = lineSplit[0].trim();
                         let dir = lineSplit[1].trim();
                         let nameReg = lineSplit[2].trim();
                         let nums = lineSplit[3].trim();
                         let status = lineSplit[4].trim();
                         let subs = lineSplit[5].trim();
-                        let info = lineSplit[6].trim();
-                        let title = lineSplit[7].trim();
+                        let title = lineSplit[6].trim();
+                        let info = ''; //lineSplit[6].trim();
                         let startNum, endNum;
                         let statusText;
                         switch (status) {
