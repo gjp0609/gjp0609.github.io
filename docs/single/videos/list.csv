@@ -1,0 +1,9 @@
+Categories|Dir                  |NameReg                              |Num  |Status|Sub                  |Name
+
+Anime     |Test1                |01.mkv                               |9    |0     |SAIO-Raws            |Test Anime1
+Anime     |Test2                |${num}.mkv                           |0-6  |1     |VCB-Studio           |Test Anime2
+Anime     |Test3                |${num}.mp4,SP${num}.mp4,OAD.mp4      |24,2 |2     |SAIO-Raws            |Test Anime3
+
+Film      |Animation            |XXX.mkv                              |0    |      |Netflix              |XXX
+
+Music     |MMD                  |aa - bb.mp4                          |0    |      |                     |aa - bb

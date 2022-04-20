@@ -28,14 +28,14 @@
                                         <span class="subs" v-show="item.subs">{{ item.subs }}</span>
                                     </div>
                                     <div class="part-wrapper" v-show="item.show">
-                                        <template v-for="num in item.num" v-key="num" v-if="num >= item.startNum">
+                                        <template v-for="part in item.part" v-key="part">
                                             <div
                                                 class="part"
-                                                :class="current===getFileName(item.nameReg, num)?'active':''"
-                                                @click="play(key, item, getFileName(item.nameReg, num), $event)"
-                                                @dblclick="copyUrl(key, item, getFileName(item.nameReg, num))"
+                                                :class="current===part?'active':''"
+                                                @click="play(key, item, part, $event)"
+                                                @dblclick="copyUrl(key, item, part)"
                                             >
-                                                {{ padNumber(num) }}
+                                                {{ part.substring(0,part.lastIndexOf('.')) }}
                                             </div>
                                         </template>
                                     </div>
@@ -218,9 +218,6 @@
                     }
                     return num;
                 },
-                getFileName(nameReg, num) {
-                    return nameReg.replace(/\${num}/g, this.padNumber(num));
-                },
                 writeClipboard(text) {
                     let input = document.createElement('input');
                     input.value = text;
@@ -238,7 +235,7 @@
             }
         });
 
-        fetch(domain + 'data.csv?timestamp=' + new Date().getTime())
+        fetch(domain + 'list.csv?timestamp=' + new Date().getTime())
             .then((response) => response.text())
             .then((text) => {
                 let sp = text.split('\n');
@@ -256,7 +253,27 @@
                         let subs = lineSplit[5].trim();
                         let title = lineSplit[6].trim();
                         let info = ''; //lineSplit[6].trim();
-                        let startNum, endNum;
+                        let part = [];
+                        let namesArr = nameReg.split(',');
+                        let numsArr = nums.split(',');
+                        for (let j = 0; j < namesArr.length; j++) {
+                            let name = namesArr[j];
+                            if (name.includes('${num}')) {
+                                let num = numsArr[j];
+                                let startNum = 1;
+                                let endNum = num;
+                                if (num.includes('-')) {
+                                    let numSplit = num.split('-');
+                                    startNum = numSplit[0];
+                                    endNum = numSplit[1];
+                                }
+                                for (let p = startNum; p <= endNum; p++) {
+                                    part.push(name.replace('${num}', vm.padNumber(p)));
+                                }
+                            } else {
+                                part.push(name);
+                            }
+                        }
                         let statusText;
                         switch (status) {
                             case '0':
@@ -273,13 +290,6 @@
                                 statusText = '';
                                 break;
                         }
-                        if (nums.indexOf('-') > 0) {
-                            startNum = nums.split('-')[0];
-                            endNum = nums.split('-')[1];
-                        } else {
-                            startNum = '1';
-                            endNum = nums;
-                        }
                         let list = vm.categories[category].list;
                         list.push({
                             dir: dir,
@@ -290,8 +300,7 @@
                             statusText: statusText,
                             subs: subs,
                             info: info,
-                            startNum: parseInt(startNum),
-                            num: parseInt(endNum)
+                            part: part
                         });
                     }
                 }
