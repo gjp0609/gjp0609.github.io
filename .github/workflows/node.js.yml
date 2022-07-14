@@ -9,18 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
+    - uses: pnpm/action-setup@v2.2.2
+      with:
+        version: 7
     - name: Use Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: 14.x
+        node-version: 16.x
+        cache: 'pnpm'
 
-    - run: pnpm ci
+    - run: pnpm install
 
     - name: empty build dir
       run: node .github/actions/empty-build-dir.js
 
-    - run: pnpm run build --if-present
+    - run: pnpm run build
 
     - name: Commit & Push changes
       uses: EndBug/add-and-commit@v7
