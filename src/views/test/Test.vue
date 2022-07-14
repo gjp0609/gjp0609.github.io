@@ -6,10 +6,11 @@
     </div>
 </template>
 
-<script>
-import { INCREMENT_COUNT, store } from '../../store'
+<script lang="ts">
+    import { INCREMENT_COUNT, store } from '../../store';
+    import { defineComponent } from 'vue';
 
-    export default {
+    export default defineComponent({
         name: 'Test',
         data() {
             return {
@@ -33,7 +34,7 @@ import { INCREMENT_COUNT, store } from '../../store'
                 this.$router.push('/index/home');
             }
         }
-    };
+    });
 </script>
 
 <style lang="scss" scoped>

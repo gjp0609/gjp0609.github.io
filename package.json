@@ -12,6 +12,7 @@
     },
     "license": "ISC",
     "scripts": {
+        "_clean": "node .github/actions/empty-build-dir.js",
         "_install": "pnpm install",
         "dev": "vite",
         "build": "vite build"

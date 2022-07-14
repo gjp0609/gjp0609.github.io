@@ -6,10 +6,11 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    import { defineComponent } from 'vue';
     import { DECREASE_COUNT, store } from '../../store';
 
-    export default {
+    export default defineComponent({
         name: 'Test',
         data() {
             return {
@@ -33,7 +34,7 @@
                 this.$router.push('/index/home');
             }
         }
-    };
+    });
 </script>
 
 <style lang="scss" scoped>
