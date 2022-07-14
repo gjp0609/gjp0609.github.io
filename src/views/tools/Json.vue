@@ -11,7 +11,7 @@
                         <span>Auto Format:</span>
                         <el-switch v-model="autoFormat" active-color="#13ce66" inactive-color="#ff4949" @change="save"></el-switch>
                     </div>
-                    <div v-if="autoFormat">
+                    <div v-show="autoFormat">
                         <span>Pretty:</span>
                         <el-switch v-model="pretty" active-color="#13ce66" inactive-color="#ff4949" @change="save"></el-switch>
                     </div>
@@ -24,108 +24,97 @@
             </el-col>
             <el-col :span="16">
                 <div class="json-text">
-                    <json-display :obj="getObj" :index="1" :expand="expand"></json-display>
+                    <json-display :obj="target" :index="1" :expand="expand"></json-display>
                 </div>
             </el-col>
         </el-row>
     </div>
 </template>
 
-<script>
+<script lang="ts" setup>
     import JsonDisplay from './components/JsonDisplay.vue';
+    import { onMounted, watch, ref } from 'vue';
 
-    export default {
-        name: 'Json',
-        components: {
-            JsonDisplay
-        },
-        data() {
-            return {
-                source: '',
-                autoFormat: undefined,
-                pretty: undefined,
-                expand: undefined,
-                isMounted: false
-            };
-        },
-        computed: {
-            getObj: function () {
-                let source = this.source;
-                if (this.isMounted) {
-                    this.save();
-                }
-                if (source) {
-                    console.log('%c source', 'color:green', source);
-                    let obj = undefined;
-                    try {
-                        source = source.replace(/:\s*([-+Ee0-9.]{16,})/g, ': "$1"');
-                        source = source.replace(/\n/g, '');
-                        obj = JSON.parse(source);
-                    } catch (e) {
-                        console.warn('>>> parse json error, ', e.toString());
-                        try {
-                            obj = eval('(' + source + ')');
-                        } catch (e) {
-                            console.warn('>>> parse single quot json error, ', e.toString());
-                        }
-                    }
-                    if (obj) {
-                        console.log('%c obj', 'color:blue', obj);
-                        if (this.autoFormat) {
-                            this.source = JSON.stringify(obj);
-                            if (this.pretty) {
-                                this.source = JSON.stringify(obj, null, 2);
-                            }
-                        }
-                        return obj;
-                    }
-                }
-                return {};
-            }
-        },
-        mounted() {
-            console.log('mounted');
-            this.get();
-            this.isMounted = true;
-        },
-        methods: {
-            save() {
-                let jsonData = {
-                    source: this.source,
-                    autoFormat: this.autoFormat,
-                    pretty: this.pretty,
-                    expand: this.expand
-                };
-                localStorage.setItem('jsonData', JSON.stringify(jsonData));
-            },
-            get() {
-                let jsonData;
+    const source = ref('');
+    const target = ref({});
+    const expand = ref(true);
+    const autoFormat = ref(true);
+    const pretty = ref(true);
+    const isMounted = ref(false);
+
+    type Save = {
+        source: string;
+        expand: boolean;
+        autoFormat: boolean;
+        pretty: boolean;
+    };
+
+    onMounted(() => {
+        console.log('mounted');
+        get();
+        isMounted.value = true;
+    });
+    watch([source, expand, autoFormat, pretty], (values) => {
+        if (isMounted.value) {
+            save();
+        }
+        let src = values[0];
+        if (src) {
+            console.log('%c source', 'color:green', src);
+            let obj = undefined;
+            try {
+                src = src.replace(/:\s*([-+Ee0-9.]{16,})/g, ': "$1"');
+                src = src.replace(/\n/g, '');
+                obj = JSON.parse(src);
+            } catch (e) {
+                console.warn('>>> parse json error, ', e);
                 try {
-                    jsonData = JSON.parse(localStorage.getItem('jsonData'));
-                    if (!jsonData) {
-                        jsonData = {
-                            source: '',
-                            autoFormat: true,
-                            pretty: true,
-                            expand: true
-                        };
-                    }
+                    obj = eval('(' + src + ')');
                 } catch (e) {
-                    jsonData = {
-                        source: '',
-                        autoFormat: true,
-                        pretty: true,
-                        expand: true
-                    };
+                    console.warn('>>> parse single quot json error, ', e);
                 }
-                this.source = jsonData.source;
-                this.autoFormat = jsonData.autoFormat;
-                this.pretty = jsonData.pretty;
-                this.expand = jsonData.expand;
-                console.log(this.pretty);
+            }
+            if (obj) {
+                console.log('%c obj', 'color:blue', obj);
+                if (autoFormat.value) {
+                    source.value = JSON.stringify(obj);
+                    if (pretty.value) {
+                        source.value = JSON.stringify(obj, null, 2);
+                    }
+                }
+                target.value = obj;
+                return;
             }
         }
-    };
+        target.value = {};
+    });
+
+    function save() {
+        let jsonData = {
+            source: source.value,
+            expand: expand.value,
+            autoFormat: autoFormat.value,
+            pretty: pretty.value
+        };
+        localStorage.setItem('jsonData', JSON.stringify(jsonData));
+    }
+    function get() {
+        let jsonData: Save;
+        try {
+            jsonData = JSON.parse(localStorage.getItem('jsonData') ?? '');
+        } catch (e) {
+            jsonData = {
+                source: '',
+                expand: true,
+                autoFormat: true,
+                pretty: true
+            };
+        }
+        source.value = jsonData.source;
+        expand.value = jsonData.expand;
+        autoFormat.value = jsonData.autoFormat;
+        pretty.value = jsonData.pretty;
+    }
 </script>
 
 <style lang="scss" scoped>

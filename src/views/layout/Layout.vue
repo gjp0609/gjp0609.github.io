@@ -14,35 +14,35 @@
             >
                 <template v-for="router in routerMap">
                     <template v-if="!router.meta.hidden">
-                        <el-sub-menu v-if="router.children" :index="router.realPath">
+                        <el-sub-menu v-if="router.children" :index="router.path">
                             <template #title>
                                 <template v-if="router.meta.icon">
-                                    <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
-                                    <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
-                                    <component :is="router.meta.icon.name" v-if="router.meta.icon.type === 'element-plus'" />
+                                    <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons outlined">
+                                        {{ router.meta.icon.name }}
+                                    </i>
+                                    <el-icon v-if="router.meta.icon.type === 'element-ui'">
+                                        <component :is="router.meta.icon.name"></component>
+                                    </el-icon>
                                 </template>
                                 <span>{{ router.meta.name }}</span>
                             </template>
-                            <el-menu-item
-                                v-for="subRouter in router.children"
-                                :key="subRouter.realPath"
-                                :index="router.realPath + '/' + subRouter.realPath"
-                            >
+                            <el-menu-item v-for="subRouter in router.children" :key="subRouter.path" :index="router.path + '/' + subRouter.path">
                                 <template v-if="!subRouter.meta.hidden">
                                     <template v-if="subRouter.meta.icon">
-                                        <i v-if="subRouter.meta.icon.type === 'material-icons'" class="material-icons">
+                                        <i v-if="subRouter.meta.icon.type === 'material-icons'" class="material-icons outlined">
                                             {{ subRouter.meta.icon.name }}
                                         </i>
-                                        <i v-if="subRouter.meta.icon.type === 'element-ui'" :class="subRouter.meta.icon.name"></i>
-                                        <component :is="subRouter.meta.icon.name" v-if="subRouter.meta.icon.type === 'element-plus'" />
+                                        <el-icon v-if="subRouter.meta.icon.type === 'element-ui'">
+                                            <component :is="subRouter.meta.icon.name"></component>
+                                        </el-icon>
                                     </template>
                                     <span> {{ subRouter.meta.name }}</span>
                                 </template>
                             </el-menu-item>
                         </el-sub-menu>
-                        <el-menu-item v-else :index="router.realPath">
+                        <el-menu-item v-else :index="router.path">
                             <template v-if="router.meta.icon">
-                                <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons">{{ router.meta.icon.name }}</i>
+                                <i v-if="router.meta.icon.type === 'material-icons'" class="material-icons outlined">{{ router.meta.icon.name }}</i>
                                 <i v-if="router.meta.icon.type === 'element-ui'" :class="router.meta.icon.name"></i>
                                 <component :is="router.meta.icon.name" v-if="router.meta.icon.type === 'element-plus'" />
                             </template>
@@ -52,8 +52,8 @@
                 </template>
             </el-menu>
             <div v-if="!isMobile" class="operations">
-                <i class="material-icons" @click="menuCollapseChange">{{ isCollapse ? 'last_page' : 'first_page' }}</i>
-                <i class="material-icons" @click="handleThemeChange">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
+                <i class="material-icons outlined" @click="menuCollapseChange">{{ isCollapse ? 'last_page' : 'first_page' }}</i>
+                <i class="material-icons outlined" @click="handleThemeChange">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
             </div>
         </aside>
         <div class="main">
@@ -207,8 +207,7 @@
         .el-menu-item,
         .el-sub-menu,
         .el-menu--popup {
-            i,
-            svg {
+            i {
                 color: #909399;
                 vertical-align: middle;
                 width: 1.2rem;

@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import ElementPlus from 'element-plus';
 import 'element-plus/theme-chalk/index.css';
-const iconListPromise = import('@element-plus/icons');
+import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import { store, key } from './store';
 import router from './router/index';
 import App from './App.vue';
@@ -11,17 +11,11 @@ import './styles/base.scss';
 
 const app = createApp(App);
 
-const iconList = ['Notebook'];
-
 app.use(ElementPlus);
 app.use(store, key);
 app.use(router);
-console.log(iconListPromise);
-iconListPromise.then((icons) => {
-    console.log(icons);
-    for (const iconName of iconList) {
-        // @ts-ignore
-        app.component(iconName, icons[iconName]);
-    }
-});
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component);
+}
 app.mount('#app');

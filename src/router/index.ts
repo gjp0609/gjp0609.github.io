@@ -4,8 +4,6 @@ import Layout from '../views/layout/Layout.vue';
 export const constantMenuRouterMap = [
     {
         path: '/',
-        realPath: '/',
-        component: Layout,
         redirect: '/index/home',
         meta: {
             name: 'Index',
@@ -17,19 +15,17 @@ export const constantMenuRouterMap = [
     },
     {
         path: '/tools',
-        realPath: '/tools',
         component: Layout,
         meta: {
             name: 'Tools',
             icon: {
                 type: 'element-ui',
-                name: 'el-icon-s-cooperation'
+                name: 'KnifeFork'
             }
         },
         children: [
             {
                 path: 'encode',
-                realPath: 'encode/',
                 component: () => import('../views/tools/Encode.vue'),
                 meta: {
                     name: 'Encode',
@@ -41,7 +37,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'xml',
-                realPath: 'xml/',
                 component: () => import('../views/tools/Xml.vue'),
                 meta: {
                     name: 'Xml',
@@ -53,7 +48,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'json',
-                realPath: 'json/',
                 component: () => import('../views/tools/Json.vue'),
                 meta: {
                     name: 'Json',
@@ -65,48 +59,44 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'pasteBin',
-                realPath: 'pasteBin/',
                 component: () => import('../views/tools/PasteBin.vue'),
                 meta: {
                     name: 'PasteBin',
                     icon: {
                         type: 'element-ui',
-                        name: 'el-icon-document-copy'
+                        name: 'DocumentCopy'
                     }
                 }
             },
             {
                 path: 'QrCode',
-                realPath: 'QrCode/',
                 component: () => import('../views/tools/QrCode.vue'),
                 meta: {
                     name: 'QrCode',
                     icon: {
                         type: 'element-ui',
-                        name: 'el-icon-camera-solid'
+                        name: 'Camera'
                     }
                 }
             },
             {
                 path: 'ECharts',
-                realPath: 'ECharts/',
                 component: () => import('../views/tools/ECharts.vue'),
                 meta: {
                     name: 'ECharts',
                     icon: {
                         type: 'element-ui',
-                        name: 'el-icon-pie-chart'
+                        name: 'PieChart'
                     }
                 }
             },
             {
                 path: 'notes/:pathMatch(.*)*',
-                realPath: 'notes/',
                 component: () => import('../views/tools/Notes.vue'),
                 meta: {
                     name: 'Notes',
                     icon: {
-                        type: 'element-plus',
+                        type: 'element-ui',
                         name: 'Notebook'
                     }
                 }
@@ -115,7 +105,6 @@ export const constantMenuRouterMap = [
     },
     {
         path: '/single',
-        realPath: '/single',
         component: Layout,
         meta: {
             name: 'Single',
@@ -127,7 +116,6 @@ export const constantMenuRouterMap = [
         children: [
             {
                 path: 'bookmarks',
-                realPath: 'bookmarks/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Bookmarks',
@@ -140,7 +128,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'fps',
-                realPath: 'fps/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'FPS',
@@ -152,7 +139,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'highlight.js',
-                realPath: 'highlight.js/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'highlight.js',
@@ -164,19 +150,17 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'sqlite/images.html',
-                realPath: 'sqlite/images.html',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Image Search',
                     icon: {
-                        type: 'material-icons',
-                        name: 'format_align_center'
+                        type: 'element-ui',
+                        name: 'Picture'
                     }
                 }
             },
             {
                 path: 'keywords',
-                realPath: 'keywords/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Keywords',
@@ -188,7 +172,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'materialDesignIcons',
-                realPath: 'materialDesignIcons/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Material Design Icons',
@@ -200,7 +183,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'network/rtt.html',
-                realPath: 'network/rtt.html',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Network RTT',
@@ -212,7 +194,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'read',
-                realPath: 'read/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Read',
@@ -224,7 +205,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'solarSystem',
-                realPath: 'solarSystem/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Solar System',
@@ -236,7 +216,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'sqlite/images.html',
-                realPath: 'sqlite/images.html',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Image Search',
@@ -248,7 +227,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'timer',
-                realPath: 'timer/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Timer',
@@ -260,7 +238,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'videos',
-                realPath: 'videos/',
                 component: () => import('../views/single/Wrapper.vue'),
                 meta: {
                     name: 'Videos',
@@ -274,7 +251,6 @@ export const constantMenuRouterMap = [
     },
     {
         path: '/test',
-        realPath: '/test',
         component: Layout,
         meta: {
             name: 'Test',
@@ -286,7 +262,6 @@ export const constantMenuRouterMap = [
         children: [
             {
                 path: 'test',
-                realPath: 'test/',
                 component: () => import('../views/test/Test.vue'),
                 meta: {
                     name: 'TestPage',
@@ -298,7 +273,6 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'test2',
-                realPath: 'test2/',
                 component: () => import('../views/test/Test2.vue'),
                 meta: {
                     name: 'TestPage2',
@@ -312,7 +286,7 @@ export const constantMenuRouterMap = [
     }
 ];
 
-const routes: Array<RouteRecordRaw> = [
+const routes: RouteRecordRaw[] = [
     ...constantMenuRouterMap,
     {
         path: '/index',
