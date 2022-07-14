@@ -44,6 +44,14 @@
             "url": "https://developer.mozilla.org/zh-CN/docs/Web",
             "searchUrl": "https://developer.mozilla.org/zh-CN/search?q=${keyword}",
             "tags": ["search", "mdn", "html", "css", "js"]
+        },
+        {
+            "title": "Java API",
+            "url": "https://docs.oracle.com/en/java/javase/17/docs/api/index.html"
+        },
+        {
+            "title": "Java Specification",
+            "url": "https://docs.oracle.com/javase/specs/index.html"
         }
     ],
     "Video": [
@@ -120,6 +128,10 @@
         {
             "title": "Tencent Cloud",
             "url": "https://console.cloud.tencent.com/"
+        },
+        {
+            "title": "DNSPod",
+            "url": "https://console.dnspod.cn/dns/"
         }
     ],
     "NetDisk": [
@@ -206,41 +218,7 @@
             "tags": ["tencent"]
         }
     ],
-    "Search": [
-        "Collapsed by default",
-        {
-            "title": "Google",
-            "url": "https://www.google.com/ncr",
-            "searchUrl": "https://www.google.com/search?q=${keyword}",
-            "tags": ["search"]
-        },
-        {
-            "title": "Bing",
-            "url": "https://cn.bing.com/",
-            "searchUrl": "https://cn.bing.com/search?q=${keyword}",
-            "tags": ["search", "microsoft"]
-        },
-        {
-            "title": "Baidu",
-            "url": "https://www.baidu.com/",
-            "searchUrl": "https://www.baidu.com/s?wd=${keyword}",
-            "tags": ["search"]
-        },
-        {
-            "title": "Mag[i]",
-            "url": "https://magi.com/",
-            "searchUrl": "https://magi.com/search?q=${keyword}",
-            "tags": ["search", "microsoft"]
-        },
-        {
-            "title": "Duckduckgo",
-            "url": "https://duckduckgo.com/?t=h_",
-            "searchUrl": "https://duckduckgo.com/?q=${keyword}",
-            "tags": ["search"]
-        }
-    ],
     "Translation": [
-        "Collapsed by default",
         {
             "title": "I18n Translation",
             "url": "https://i18ns.com/zh/index.html",
@@ -275,6 +253,39 @@
             "title": "DeepL Translate",
             "url": "https://www.deepl.com/zh/translator",
             "searchUrl": "https://www.deepl.com/zh/translator#en/zh/${keyword}"
+        }
+    ],
+    "Search": [
+        "Collapsed by default",
+        {
+            "title": "Google",
+            "url": "https://www.google.com/ncr",
+            "searchUrl": "https://www.google.com/search?q=${keyword}",
+            "tags": ["search"]
+        },
+        {
+            "title": "Bing",
+            "url": "https://cn.bing.com/",
+            "searchUrl": "https://cn.bing.com/search?q=${keyword}",
+            "tags": ["search", "microsoft"]
+        },
+        {
+            "title": "Baidu",
+            "url": "https://www.baidu.com/",
+            "searchUrl": "https://www.baidu.com/s?wd=${keyword}",
+            "tags": ["search"]
+        },
+        {
+            "title": "Mag[i]",
+            "url": "https://magi.com/",
+            "searchUrl": "https://magi.com/search?q=${keyword}",
+            "tags": ["search", "microsoft"]
+        },
+        {
+            "title": "Duckduckgo",
+            "url": "https://duckduckgo.com/?t=h_",
+            "searchUrl": "https://duckduckgo.com/?q=${keyword}",
+            "tags": ["search"]
         }
     ],
     "Icon": [
