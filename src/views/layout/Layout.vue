@@ -8,9 +8,6 @@
                 :default-active="defaultActive"
                 :router="true"
                 :unique-opened="true"
-                :active-text-color="themeColor.activeTextColor"
-                :background-color="themeColor.backgroundColor"
-                :text-color="themeColor.textColor"
             >
                 <template v-for="router in routerMap">
                     <template v-if="!router.meta.hidden">
@@ -53,7 +50,7 @@
             </el-menu>
             <div v-if="!isMobile" class="operations">
                 <i class="material-icons outlined" @click="menuCollapseChange">{{ isCollapse ? 'last_page' : 'first_page' }}</i>
-                <i class="material-icons outlined" @click="handleThemeChange">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
+                <i v-show="!isCollapse" class="material-icons outlined" @click="handleThemeChange">{{ isDark ? 'brightness_4' : 'brightness_7' }}</i>
             </div>
         </aside>
         <div class="main">
@@ -85,41 +82,32 @@
             };
         },
         computed: {
-            themeColor() {
-                if (this.isDark) {
-                    return {
-                        activeTextColor: '#ffd04b',
-                        backgroundColor: '#545c64',
-                        textColor: '#ffffff'
-                    };
-                } else {
-                    return {
-                        activeTextColor: '#3685d6',
-                        backgroundColor: '#dddddd',
-                        textColor: '#000000'
-                    };
-                }
-            },
             isMobile() {
                 return this.screenWidth < 1024;
             }
         },
+        watch: {
+            isDark(newVal) {
+                console.log(newVal);
+                console.log(document);
+                document.documentElement.className = newVal ? 'dark' : '';
+            }
+        },
         mounted() {
-            let _this = this;
             let indexPath = '/index/home';
             console.log(this.$router.currentRoute.value.fullPath);
             if (this.$router.currentRoute.value.fullPath !== indexPath) {
-                _this.defaultActive = this.$router.currentRoute.value.fullPath;
+                this.defaultActive = this.$router.currentRoute.value.fullPath;
             }
             this.$router.beforeEach((to, from, next) => {
-                _this.defaultActive = to.path;
+                this.defaultActive = to.path;
                 if (to.path === indexPath) {
-                    _this.defaultActive = '/';
+                    this.defaultActive = '/';
                 }
                 next();
             });
             setInterval(() => {
-                _this.time = moment().format('YYYY-MM-DD HH:mm:ss');
+                this.time = moment().format('YYYY-MM-DD HH:mm:ss');
             }, 500);
             window.onresize = () => {
                 return (() => {
@@ -128,6 +116,10 @@
                     console.log(_this.screenWidth);
                 })();
             };
+            this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+                this.isDark = event.matches;
+            });
         },
         methods: {
             menuCollapseChange() {
@@ -148,67 +140,11 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../styles/menu-colors.scss';
-    @mixin operations($isCollapse, $theme) {
-        @if ($isCollapse == 'isCollapse') {
-            .operations {
-                i {
-                    display: none;
-                    &:first-child {
-                        @if ($theme == 'dark') {
-                            color: $dark-active-text-color;
-                        } @else {
-                            color: $light-active-text-color;
-                        }
-                        display: block;
-                    }
-                }
-            }
-        }
-    }
-    @mixin layout($theme) {
-        $menuBackgroundColor: null;
-        @if ($theme == 'dark') {
-            $menuBackgroundColor: $dark-background-color;
-        } @else {
-            $menuBackgroundColor: $light-background-color;
-        }
-        .menu {
-            background-color: lighten($menuBackgroundColor, 5%);
-            &.is-collapse {
-                @include operations('isCollapse', $theme);
-            }
-            &.not-collapse {
-                @include operations('notCollapse', $theme);
-            }
-            .operations {
-                @if ($theme == 'dark') {
-                    color: $dark-text-color;
-                    background-color: darken($menuBackgroundColor, 10%);
-                } @else {
-                    color: $light-text-color;
-                    background-color: darken($menuBackgroundColor, 10%);
-                }
-            }
-        }
-        .main {
-            header {
-                @if ($theme == 'dark') {
-                    color: $dark-text-color;
-                    background-color: lighten($menuBackgroundColor, 10%);
-                } @else {
-                    color: $light-text-color;
-                    background-color: lighten($menuBackgroundColor, 10%);
-                }
-            }
-        }
-    }
     .el-menu {
         .el-menu-item,
         .el-sub-menu,
         .el-menu--popup {
             i {
-                color: #909399;
                 vertical-align: middle;
                 width: 1.2rem;
                 font-size: 1.2rem;
@@ -227,14 +163,9 @@
         @media screen and (max-width: 1024px) {
             flex-direction: column;
         }
-        &.light {
-            @include layout('light');
-        }
-        &.dark {
-            @include layout('dark');
-        }
         .menu {
             display: flex;
+            border-right: 0.01rem solid var(--el-border-color);
             @media screen and (min-width: 1024px) {
                 $menuCollapseWidth: 65px;
                 flex-direction: column;

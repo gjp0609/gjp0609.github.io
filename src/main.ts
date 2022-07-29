@@ -1,13 +1,13 @@
 import { createApp } from 'vue';
 import ElementPlus from 'element-plus';
-import 'element-plus/theme-chalk/index.css';
+import './styles/base.scss';
+import './styles/dark.scss';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import { store, key } from './store';
 import router from './router/index';
 import App from './App.vue';
 
 import '../docs/common/css/material-design-icons/material-design-icons.css';
-import './styles/base.scss';
 
 const app = createApp(App);
 

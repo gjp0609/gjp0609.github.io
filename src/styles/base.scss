@@ -1,3 +1,12 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+    $colors: (
+        'primary': (
+            'base': #6ccccf
+        )
+    )
+);
+@use 'element-plus/theme-chalk/src/index.scss' as *;
+
 @font-face {
     font-family: MononokiWoff2;
     font-style: normal;
@@ -48,11 +57,11 @@ i {
 *::-webkit-scrollbar-thumb:active {
     background-color: rgba(100, 200, 250, 1);
 }
-*::-webkit-scrollbar-cornor {
+*::-webkit-scrollbar-corner {
     background-color: rgba(100, 200, 250, 1);
     border-radius: 2px;
     transition: background-color 0.3s;
 }
-*::-webkit-scrollbar-cornor:hover {
+*::-webkit-scrollbar-corner:hover {
     background-color: rgba(100, 200, 250, 0.5);
 }
