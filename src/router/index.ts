@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import Layout from '../views/layout/Layout.vue';
+import RootLayout from '../views/layout/RootLayout.vue';
+import SingleWrapper from '../views/layout/SingleWrapper.vue';
 
 export const constantMenuRouterMap = [
     {
@@ -15,7 +16,7 @@ export const constantMenuRouterMap = [
     },
     {
         path: '/tools',
-        component: Layout,
+        component: RootLayout,
         meta: {
             name: 'Tools',
             icon: {
@@ -105,7 +106,7 @@ export const constantMenuRouterMap = [
     },
     {
         path: '/single',
-        component: Layout,
+        component: RootLayout,
         meta: {
             name: 'Single',
             icon: {
@@ -116,7 +117,7 @@ export const constantMenuRouterMap = [
         children: [
             {
                 path: 'bookmarks',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Bookmarks',
                     params: { a: 1 },
@@ -128,7 +129,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'fps',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'FPS',
                     icon: {
@@ -139,7 +140,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'highlight.js',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'highlight.js',
                     icon: {
@@ -149,19 +150,8 @@ export const constantMenuRouterMap = [
                 }
             },
             {
-                path: 'sqlite/images.html',
-                component: () => import('../views/single/Wrapper.vue'),
-                meta: {
-                    name: 'Image Search',
-                    icon: {
-                        type: 'element-ui',
-                        name: 'Picture'
-                    }
-                }
-            },
-            {
                 path: 'keywords',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Keywords',
                     icon: {
@@ -172,7 +162,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'materialDesignIcons',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Material Design Icons',
                     icon: {
@@ -183,7 +173,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'network/rtt.html',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Network RTT',
                     icon: {
@@ -194,7 +184,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'read',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Read',
                     icon: {
@@ -205,7 +195,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'solarSystem',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Solar System',
                     icon: {
@@ -216,7 +206,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'sqlite/images.html',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Image Search',
                     icon: {
@@ -227,7 +217,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'timer',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Timer',
                     icon: {
@@ -238,7 +228,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'videos',
-                component: () => import('../views/single/Wrapper.vue'),
+                component: () => SingleWrapper,
                 meta: {
                     name: 'Videos',
                     icon: {
@@ -251,7 +241,7 @@ export const constantMenuRouterMap = [
     },
     {
         path: '/test',
-        component: Layout,
+        component: RootLayout,
         meta: {
             name: 'Test',
             icon: {
@@ -290,7 +280,7 @@ const routes: RouteRecordRaw[] = [
     ...constantMenuRouterMap,
     {
         path: '/index',
-        component: Layout,
+        component: RootLayout,
         children: [
             {
                 path: 'home',
