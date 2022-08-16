@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import RootLayout from '../views/layout/RootLayout.vue';
-import SingleWrapper from '../views/layout/SingleWrapper.vue';
 
 export const constantMenuRouterMap = [
     {
@@ -117,7 +116,7 @@ export const constantMenuRouterMap = [
         children: [
             {
                 path: 'bookmarks',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Bookmarks',
                     params: { a: 1 },
@@ -129,7 +128,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'fps',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'FPS',
                     icon: {
@@ -140,7 +139,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'highlight.js',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'highlight.js',
                     icon: {
@@ -151,7 +150,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'keywords',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Keywords',
                     icon: {
@@ -162,7 +161,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'materialDesignIcons',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Material Design Icons',
                     icon: {
@@ -173,7 +172,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'network/rtt.html',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Network RTT',
                     icon: {
@@ -184,7 +183,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'read',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Read',
                     icon: {
@@ -195,7 +194,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'solarSystem',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Solar System',
                     icon: {
@@ -206,7 +205,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'sqlite/images.html',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Image Search',
                     icon: {
@@ -217,7 +216,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'timer',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Timer',
                     icon: {
@@ -228,7 +227,7 @@ export const constantMenuRouterMap = [
             },
             {
                 path: 'videos',
-                component: () => SingleWrapper,
+                component: () => import('../views/layout/SingleWrapper.vue'),
                 meta: {
                     name: 'Videos',
                     icon: {
