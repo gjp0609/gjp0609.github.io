@@ -1,0 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+body #app {
+  height: 100vh;
+  width: 100vw;
+}
+/*# sourceMappingURL=style.css.map */
