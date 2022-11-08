@@ -1,0 +1,84 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+body #app {
+  height: 100vh;
+  width: 100vw;
+}
+body #app .tabs {
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+body #app .tabs .tab {
+  padding: 0.2rem 0.1rem;
+  display: flex;
+  flex-direction: column;
+}
+body #app .tabs .tab .navigator {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.2rem;
+  line-height: 2rem;
+  height: 2rem;
+  border: 0.01rem solid #ddd;
+}
+body #app .tabs .tab .navigator:hover {
+  outline: 0.1rem solid #cdeeff;
+}
+body #app .tabs .tab .navigator:focus-within {
+  outline: 0.1rem solid #6cf;
+}
+body #app .tabs .tab .navigator .url {
+  flex: 1;
+  border: none;
+  outline: none;
+}
+body #app .tabs .tab .navigator .icons {
+  width: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: #ddd;
+}
+body #app .tabs .tab .navigator .icons:hover {
+  color: #6cf;
+}
+body #app .tabs .tab .navigator .icons > div {
+  margin: auto;
+}
+body #app .tabs .tab .page {
+  flex: 1;
+  display: flex;
+  user-select: none;
+}
+body #app .tabs .tab .page iframe {
+  flex: 1;
+  border: 1px solid #ddd;
+}
+body #app .add {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  color: #ddd;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+body #app .add:hover {
+  color: #cdeeff;
+}
+body #app .add:focus {
+  color: #6cf;
+}
+body #app .add .gg-add {
+  margin: auto;
+  --ggs: 1.2;
+}
+/*# sourceMappingURL=style.css.map */
