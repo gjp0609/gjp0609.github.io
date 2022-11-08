@@ -91,6 +91,7 @@
                 return {
                     show: false,
                     fileName: '',
+                    interval: null,
                     lines: []
                 };
             },
@@ -115,7 +116,7 @@
                     this.lines = [];
                     for (let line of list) {
                         if (line && line.trim()) {
-                            this.lines.push(line.trim());
+                            this.lines.push(line);
                         }
                     }
                     let history = localStorage.getItem('fish-text-' + encodeURIComponent(this.fileName));
@@ -143,7 +144,10 @@
                     this.autoSave();
                 },
                 autoSave() {
-                    setInterval(() => {
+                    if (this.interval) {
+                        clearInterval(this.interval);
+                    }
+                    this.interval = setInterval(() => {
                         let list = document.getElementsByClassName('index');
                         let current = '0';
                         for (let index of list) {
